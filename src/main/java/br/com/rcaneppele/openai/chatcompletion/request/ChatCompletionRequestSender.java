@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.chatcompletion.request;
 
+import br.com.rcaneppele.openai.exception.ExceptionHandlerInterceptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import java.io.IOException;
 import java.time.Duration;
 
 public final class ChatCompletionRequestSender {
@@ -22,7 +24,7 @@ public final class ChatCompletionRequestSender {
 
     public ChatCompletionRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         this.chatCompletionUrl = apiBaseUrl + CHAT_COMPLETION_URI;
-        this.http = new OkHttpClient.Builder().readTimeout(timeout).build();
+        this.http = new OkHttpClient.Builder().readTimeout(timeout).addInterceptor(new ExceptionHandlerInterceptor()).build();
         this.apiKey = apiKey;
     }
 
@@ -37,7 +39,7 @@ public final class ChatCompletionRequestSender {
         try {
             var response = http.newCall(httpRequest).execute();
             return response.body().string();
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException("Error sending chat completion request", e);
         }
     }
