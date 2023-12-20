@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai;
+package br.com.rcaneppele.openai.chatcompletion.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,7 +11,7 @@ import okhttp3.RequestBody;
 
 import java.time.Duration;
 
-final class ChatCompletionRequestSender {
+public final class ChatCompletionRequestSender {
 
     private static final String CHAT_COMPLETION_URI = "chat/completions";
     private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");

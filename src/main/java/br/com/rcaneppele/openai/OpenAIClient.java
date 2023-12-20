@@ -1,5 +1,8 @@
 package br.com.rcaneppele.openai;
 
+import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
+import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
+
 import java.time.Duration;
 
 public class OpenAIClient {

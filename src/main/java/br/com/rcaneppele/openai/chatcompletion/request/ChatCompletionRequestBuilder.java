@@ -1,5 +1,7 @@
-package br.com.rcaneppele.openai;
+package br.com.rcaneppele.openai.chatcompletion.request;
 
+import br.com.rcaneppele.openai.common.OpenAIMessage;
+import br.com.rcaneppele.openai.common.OpenAIModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;

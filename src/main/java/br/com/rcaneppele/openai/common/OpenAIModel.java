@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai;
+package br.com.rcaneppele.openai.common;
 
 public enum OpenAIModel {
 
