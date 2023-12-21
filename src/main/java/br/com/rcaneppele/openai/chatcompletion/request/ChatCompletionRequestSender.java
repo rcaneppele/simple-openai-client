@@ -1,10 +1,9 @@
 package br.com.rcaneppele.openai.chatcompletion.request;
 
-import br.com.rcaneppele.openai.exception.ExceptionHandlerInterceptor;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
+import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponseBuilder;
+import br.com.rcaneppele.openai.common.JsonConverter;
+import br.com.rcaneppele.openai.http.HttpClientBuilder;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,43 +20,30 @@ public final class ChatCompletionRequestSender {
     private final OkHttpClient http;
     private final String apiKey;
     private final String chatCompletionUrl;
+    private final JsonConverter jsonConverter;
 
     public ChatCompletionRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         this.chatCompletionUrl = apiBaseUrl + CHAT_COMPLETION_URI;
-        this.http = new OkHttpClient.Builder().readTimeout(timeout).addInterceptor(new ExceptionHandlerInterceptor()).build();
+        this.http = new HttpClientBuilder().build(timeout);
         this.apiKey = apiKey;
+        this.jsonConverter = new JsonConverter();
     }
 
-    public String sendRequest(ChatCompletionRequest request) {
+    public ChatCompletionResponse sendRequest(ChatCompletionRequest request) {
+        var json = jsonConverter.convertChatCompletionRequestToJson(request);
         var httpRequest =  new Request.Builder()
                 .url(chatCompletionUrl)
-                .header("Content-Type", "application/json")
+                .header("Content-Type", MEDIA_TYPE.type())
                 .header("Authorization", "Bearer " +this.apiKey)
-                .post(RequestBody.create(generateJsonForRequest(request), MEDIA_TYPE))
+                .post(RequestBody.create(json, MEDIA_TYPE))
                 .build();
 
         try {
             var response = http.newCall(httpRequest).execute();
-            return response.body().string();
+            return new ChatCompletionResponseBuilder().build(response);
         } catch (IOException e) {
             throw new RuntimeException("Error sending chat completion request", e);
         }
-    }
-
-    private String generateJsonForRequest(ChatCompletionRequest request) {
-        try {
-            var objectMapper = createObjectMapper();
-            return objectMapper.writeValueAsString(request);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error during serialization of request to json", e);
-        }
-    }
-
-    private ObjectMapper createObjectMapper() {
-        var mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        return mapper;
     }
 
 }

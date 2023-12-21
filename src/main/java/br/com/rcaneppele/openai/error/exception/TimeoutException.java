@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.exception;
+package br.com.rcaneppele.openai.error.exception;
 
 public class TimeoutException extends RuntimeException {
 

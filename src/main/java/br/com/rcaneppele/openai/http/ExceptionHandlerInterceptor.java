@@ -1,5 +1,6 @@
-package br.com.rcaneppele.openai.exception;
+package br.com.rcaneppele.openai.http;
 
+import br.com.rcaneppele.openai.error.exception.TimeoutException;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 

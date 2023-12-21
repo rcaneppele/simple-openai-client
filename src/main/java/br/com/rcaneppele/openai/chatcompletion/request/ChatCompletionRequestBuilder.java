@@ -1,7 +1,7 @@
 package br.com.rcaneppele.openai.chatcompletion.request;
 
-import br.com.rcaneppele.openai.common.OpenAIMessage;
 import br.com.rcaneppele.openai.common.OpenAIModel;
+import br.com.rcaneppele.openai.common.message.ChatMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -125,15 +125,15 @@ public class ChatCompletionRequestBuilder {
         return this.systemMessage != null && !this.systemMessage.isBlank();
     }
 
-    private List<OpenAIMessage> createOpenAIMessages() {
-        var messages = new ArrayList<OpenAIMessage>();
+    private List<ChatMessage> createOpenAIMessages() {
+        var messages = new ArrayList<ChatMessage>();
 
         if (isUserMessageProvided()) {
-            messages.add(new OpenAIMessage("user", this.userMessage));
+            messages.add(new ChatMessage("user", this.userMessage));
         }
 
         if (isSystemMessageProvided()) {
-            messages.add(new OpenAIMessage("system", this.systemMessage));
+            messages.add(new ChatMessage("system", this.systemMessage));
         }
 
         return messages;

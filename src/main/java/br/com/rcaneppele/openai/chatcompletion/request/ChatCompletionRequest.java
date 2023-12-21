@@ -1,6 +1,6 @@
 package br.com.rcaneppele.openai.chatcompletion.request;
 
-import br.com.rcaneppele.openai.common.OpenAIMessage;
+import br.com.rcaneppele.openai.common.message.ChatMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -19,6 +19,6 @@ public record ChatCompletionRequest(
         Double topP,
         String[] stop,
         Boolean stream,
-        List<OpenAIMessage> messages
+        List<ChatMessage> messages
 ) {
 }

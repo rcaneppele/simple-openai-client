@@ -2,6 +2,7 @@ package br.com.rcaneppele.openai;
 
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
+import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 
 import java.time.Duration;
 
@@ -26,7 +27,7 @@ public class OpenAIClient {
         this(apiKey, DEFAULT_TIMEOUT);
     }
 
-    public String sendChatCompletionRequest(ChatCompletionRequest request) {
+    public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
         var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }
