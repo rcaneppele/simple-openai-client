@@ -7,7 +7,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
-public class ExceptionHandlerInterceptor implements Interceptor {
+class ExceptionHandlerInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {

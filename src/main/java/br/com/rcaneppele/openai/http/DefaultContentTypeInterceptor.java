@@ -5,7 +5,7 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
-public class DefaultContentTypeInterceptor implements Interceptor {
+class DefaultContentTypeInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
