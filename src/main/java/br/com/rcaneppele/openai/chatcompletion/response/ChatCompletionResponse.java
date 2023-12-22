@@ -4,12 +4,13 @@ import br.com.rcaneppele.openai.common.TokenUsage;
 import br.com.rcaneppele.openai.common.message.ChatCompletionChoice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Instant;
 import java.util.List;
 
 public record ChatCompletionResponse(
         String id,
         String object,
-        Long created,
+        Instant created,
         String model,
         @JsonProperty("system_fingerprint")
         String systemFingerprint,
