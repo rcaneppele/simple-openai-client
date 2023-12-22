@@ -23,47 +23,71 @@ public class ChatCompletionRequestBuilder {
     private Integer topLogprobs;
 
     public ChatCompletionRequestBuilder model(OpenAIModel model) {
+        if (model == null) {
+            throw new IllegalArgumentException("Model cannot be null!");
+        }
         this.model = model;
         return this;
     }
 
     public ChatCompletionRequestBuilder n(Integer n) {
+        if (n == null || n < 1) {
+            throw new IllegalArgumentException("Parameter n must be greater than or equal to 1!");
+        }
         this.n = n;
         return this;
     }
 
     public ChatCompletionRequestBuilder maxTokens(Integer maxTokens) {
+        if (maxTokens == null || maxTokens < 1) {
+            throw new IllegalArgumentException("Parameter maxTokens must be greater than or equal to 1!");
+        }
         this.maxTokens = maxTokens;
         return this;
     }
 
     public ChatCompletionRequestBuilder frequencyPenalty(Double frequencyPenalty) {
+        if (frequencyPenalty == null || frequencyPenalty < -2.0 || frequencyPenalty > 2.0) {
+            throw new IllegalArgumentException("Parameter frequencyPenalty must be between -2.0 and 2.0!");
+        }
         this.frequencyPenalty = frequencyPenalty;
         return this;
     }
 
     public ChatCompletionRequestBuilder presencePenalty(Double presencePenalty) {
+        if (presencePenalty == null || presencePenalty < -2.0 || presencePenalty > 2.0) {
+            throw new IllegalArgumentException("Parameter presencePenalty must be between -2.0 and 2.0!");
+        }
         this.presencePenalty = presencePenalty;
         return this;
     }
 
     public ChatCompletionRequestBuilder temperature(Double temperature) {
+        if (temperature == null || temperature < 0 || temperature > 2.0) {
+            throw new IllegalArgumentException("Parameter temperature must be between 0 and 2.0!");
+        }
         this.temperature = temperature;
         return this;
     }
 
     public ChatCompletionRequestBuilder topP(Double topP) {
+        if (topP == null || topP < 0 || topP > 1.0) {
+            throw new IllegalArgumentException("Parameter topP must be between 0 and 1.0!");
+        }
         this.topP = topP;
         return this;
     }
 
-    public ChatCompletionRequestBuilder stop(String[] stop) {
+    public ChatCompletionRequestBuilder stop(String... stop) {
+        if (stop == null || stop.length > 4) {
+            throw new IllegalArgumentException("Parameter stop must be up to 4 sequences!");
+        }
         this.stop = stop;
         return this;
     }
 
-    public ChatCompletionRequestBuilder stream(Boolean stream) {
-        this.stream = stream;
+    public ChatCompletionRequestBuilder stream() {
+        this.stream = true;
         return this;
     }
 
@@ -83,6 +107,9 @@ public class ChatCompletionRequestBuilder {
     }
 
     public ChatCompletionRequestBuilder topLogprobs(Integer topLogprobs) {
+        if (topLogprobs == null || topLogprobs < 0 || topLogprobs > 5) {
+            throw new IllegalArgumentException("Parameter topLogprobs must be between 0 and 5!");
+        }
         this.topLogprobs = topLogprobs;
         // To use the 'topLogprobs' parameter, 'logprobs' must be set to 'true'
         this.logprobs = true;
