@@ -7,6 +7,9 @@
     <groupId>br.com.rcaneppele.openai</groupId>
     <artifactId>simple-openai-client</artifactId>
     <version>1.0</version>
+    <name>simple-openai-client</name>
+    <description>A simple Java library for seamless integration of your Java applications with OpenAI API</description>
+    <url>https://github.com/rcaneppele/simple-openai-client</url>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -27,5 +30,25 @@
             <version>4.12.0</version>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Rodrigo Caneppele</name>
+            <email>r.caneppele@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/rcaneppele/simple-openai-client.git</connection>
+        <developerConnection>scm:git:ssh://github.com:rcaneppele/simple-openai-client.git</developerConnection>
+        <url>http://github.com/rcaneppele/simple-openai-client/tree/main</url>
+    </scm>
 
 </project>
