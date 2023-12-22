@@ -4,6 +4,7 @@ import br.com.rcaneppele.openai.common.message.ChatMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Map;
 
 public record ChatCompletionRequest(
         String model,
@@ -24,6 +25,8 @@ public record ChatCompletionRequest(
         @JsonProperty("top_logprobs")
         Integer topLogprobs,
         String user,
-        Integer seed
+        Integer seed,
+        @JsonProperty("logit_bias")
+        Map<Integer, Integer> logitBias
 ) {
 }

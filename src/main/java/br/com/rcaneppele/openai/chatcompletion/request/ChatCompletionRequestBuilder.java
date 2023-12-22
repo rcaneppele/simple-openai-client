@@ -5,6 +5,7 @@ import br.com.rcaneppele.openai.common.message.ChatMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ChatCompletionRequestBuilder {
 
@@ -23,6 +24,7 @@ public class ChatCompletionRequestBuilder {
     private Integer topLogprobs;
     private String user;
     private Integer seed;
+    private Map<Integer, Integer> logitBias;
 
     public ChatCompletionRequestBuilder model(OpenAIModel model) {
         if (model == null) {
@@ -128,6 +130,15 @@ public class ChatCompletionRequestBuilder {
         return this;
     }
 
+    public ChatCompletionRequestBuilder logitBias(Map<Integer, Integer> logitBias) {
+        var valuesValid = logitBias.values().stream().allMatch(value -> value >= -100 && value <= 100);
+        if (!valuesValid) {
+            throw new IllegalArgumentException("Values of logitBias parameter must be between -100 and 100!");
+        }
+        this.logitBias = logitBias;
+        return this;
+    }
+
     public ChatCompletionRequest build() {
         validateRequiredFields();
 
@@ -145,7 +156,8 @@ public class ChatCompletionRequestBuilder {
                 this.logprobs,
                 this.topLogprobs,
                 this.user,
-                this.seed
+                this.seed,
+                this.logitBias
         );
     }
 
