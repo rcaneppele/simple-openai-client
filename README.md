@@ -63,8 +63,11 @@ response.choices().forEach(c -> System.out.println(c.message().content()));
 The default OpenAI API response timeout is **15 seconds**. If you need to change it:
 
 ```java
-var myTimeout = Duration.ofSeconds(30);
-var client = new OpenAIClient("YOUR_API_KEY", myTimeout);
+// 30 seconds timeout
+var client = new OpenAIClient("YOUR_API_KEY", 30);
+
+// No timeout
+var client = new OpenAIClient("YOUR_API_KEY", 0);
 ```
 
 ### API Key

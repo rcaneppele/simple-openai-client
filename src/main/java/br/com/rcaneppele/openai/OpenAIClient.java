@@ -8,23 +8,22 @@ import java.time.Duration;
 
 public class OpenAIClient {
 
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/";
 
     private final String apiKey;
     private final Duration timeout;
 
-    public OpenAIClient(String apiKey, Duration timeout) {
+    public OpenAIClient(String apiKey, int timeoutInSeconds) {
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalArgumentException("API Key is required!");
         }
 
         this.apiKey = apiKey;
-        this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
+        this.timeout = Duration.ofSeconds(timeoutInSeconds);
     }
 
     public OpenAIClient(String apiKey) {
-        this(apiKey, DEFAULT_TIMEOUT);
+        this(apiKey, 15);
     }
 
     public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
