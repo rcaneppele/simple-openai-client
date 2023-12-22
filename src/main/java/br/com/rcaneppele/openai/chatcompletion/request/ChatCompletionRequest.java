@@ -23,6 +23,7 @@ public record ChatCompletionRequest(
         Boolean logprobs,
         @JsonProperty("top_logprobs")
         Integer topLogprobs,
-        String user
+        String user,
+        Integer seed
 ) {
 }

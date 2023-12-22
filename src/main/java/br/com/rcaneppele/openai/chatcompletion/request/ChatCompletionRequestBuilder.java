@@ -22,6 +22,7 @@ public class ChatCompletionRequestBuilder {
     private Boolean logprobs = false;
     private Integer topLogprobs;
     private String user;
+    private Integer seed;
 
     public ChatCompletionRequestBuilder model(OpenAIModel model) {
         if (model == null) {
@@ -122,6 +123,11 @@ public class ChatCompletionRequestBuilder {
         return this;
     }
 
+    public ChatCompletionRequestBuilder seed(Integer seed) {
+        this.seed = seed;
+        return this;
+    }
+
     public ChatCompletionRequest build() {
         validateRequiredFields();
 
@@ -138,7 +144,8 @@ public class ChatCompletionRequestBuilder {
                 createOpenAIMessages(),
                 this.logprobs,
                 this.topLogprobs,
-                this.user
+                this.user,
+                this.seed
         );
     }
 
