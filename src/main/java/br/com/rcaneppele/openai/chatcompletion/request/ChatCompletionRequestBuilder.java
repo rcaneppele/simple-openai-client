@@ -2,7 +2,6 @@ package br.com.rcaneppele.openai.chatcompletion.request;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.message.ChatMessage;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +10,17 @@ public class ChatCompletionRequestBuilder {
 
     private OpenAIModel model;
     private Integer n = 1;
-    @JsonProperty("max_tokens")
     private Integer maxTokens = 256;
-    @JsonProperty("frequency_penalty")
     private Double frequencyPenalty = 0.0;
-    @JsonProperty("presence_penalty")
     private Double presencePenalty = 0.0;
     private Double temperature = 1.0;
-    @JsonProperty("top_p")
     private Double topP = 1.0;
     private String[] stop;
     private Boolean stream = false;
     private String userMessage;
     private String systemMessage;
+    private Boolean logprobs = false;
+    private Integer topLogprobs;
 
     public ChatCompletionRequestBuilder model(OpenAIModel model) {
         this.model = model;
@@ -80,6 +77,18 @@ public class ChatCompletionRequestBuilder {
         return this;
     }
 
+    public ChatCompletionRequestBuilder logprobs() {
+        this.logprobs = true;
+        return this;
+    }
+
+    public ChatCompletionRequestBuilder topLogprobs(Integer topLogprobs) {
+        this.topLogprobs = topLogprobs;
+        // To use the 'topLogprobs' parameter, 'logprobs' must be set to 'true'
+        this.logprobs = true;
+        return this;
+    }
+
     public ChatCompletionRequest build() {
         validateRequiredFields();
 
@@ -93,7 +102,9 @@ public class ChatCompletionRequestBuilder {
                 this.topP,
                 this.stop,
                 this.stream,
-                createOpenAIMessages()
+                createOpenAIMessages(),
+                this.logprobs,
+                this.topLogprobs
         );
     }
 

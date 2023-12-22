@@ -19,6 +19,9 @@ public record ChatCompletionRequest(
         Double topP,
         String[] stop,
         Boolean stream,
-        List<ChatMessage> messages
+        List<ChatMessage> messages,
+        Boolean logprobs,
+        @JsonProperty("top_logprobs")
+        Integer topLogprobs
 ) {
 }

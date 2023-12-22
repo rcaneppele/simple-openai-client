@@ -6,7 +6,7 @@ public record ChatCompletionChoice(
         Long index,
         ChatMessage message,
         @JsonProperty("logprobs")
-        Object logProbs,
+        LogProbability logProbs,
         @JsonProperty("finish_reason")
         String finishReason
 ) {
