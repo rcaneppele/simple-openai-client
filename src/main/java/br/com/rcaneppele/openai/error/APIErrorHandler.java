@@ -16,6 +16,8 @@ public class APIErrorHandler {
     public void handleError(Response response) {
         var error = getApiErrorOfResponse(response);
         switch (response.code()) {
+            case 400:
+                throw new APIKeyException("Bad Request: " + error.message());
             case 401:
                 throw new APIKeyException("API KEY Error: " + error.message());
             case 429:
@@ -23,7 +25,7 @@ public class APIErrorHandler {
             case 503:
                 throw new APIKeyException("Service Unavailable Error: " + error.message());
             default:
-                throw new RuntimeException("Unknown error: " + response.message());
+                throw new RuntimeException("Unknown error: " + error.message());
         }
     }
 
