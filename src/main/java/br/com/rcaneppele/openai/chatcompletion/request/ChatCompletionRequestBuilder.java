@@ -21,6 +21,7 @@ public class ChatCompletionRequestBuilder {
     private String systemMessage;
     private Boolean logprobs = false;
     private Integer topLogprobs;
+    private String user;
 
     public ChatCompletionRequestBuilder model(OpenAIModel model) {
         if (model == null) {
@@ -116,6 +117,11 @@ public class ChatCompletionRequestBuilder {
         return this;
     }
 
+    public ChatCompletionRequestBuilder user(String user) {
+        this.user = user;
+        return this;
+    }
+
     public ChatCompletionRequest build() {
         validateRequiredFields();
 
@@ -131,7 +137,8 @@ public class ChatCompletionRequestBuilder {
                 this.stream,
                 createOpenAIMessages(),
                 this.logprobs,
-                this.topLogprobs
+                this.topLogprobs,
+                this.user
         );
     }
 
