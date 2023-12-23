@@ -2,7 +2,7 @@ package br.com.rcaneppele.openai.chatcompletion.request;
 
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponseBuilder;
-import br.com.rcaneppele.openai.common.JsonConverter;
+import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.http.HttpClientBuilder;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

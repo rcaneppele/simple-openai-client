@@ -1,24 +1,18 @@
-package br.com.rcaneppele.openai.common;
+package br.com.rcaneppele.openai.common.json;
 
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.error.APIError;
 import br.com.rcaneppele.openai.error.APIErrorResponse;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class JsonConverter {
 
     private final ObjectMapper mapper;
 
     public JsonConverter() {
-        this.mapper = new ObjectMapper();
-        this.mapper.registerModule(new JavaTimeModule());
-        this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        this.mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        this.mapper = new ObjectMapperCreator().create();
     }
 
     public String convertChatCompletionRequestToJson(ChatCompletionRequest request) {

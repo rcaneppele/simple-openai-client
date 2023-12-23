@@ -1,6 +1,6 @@
 package br.com.rcaneppele.openai.error;
 
-import br.com.rcaneppele.openai.common.JsonConverter;
+import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.error.exception.APIKeyException;
 import br.com.rcaneppele.openai.error.exception.BadRequestException;
 import br.com.rcaneppele.openai.error.exception.RateLimitException;

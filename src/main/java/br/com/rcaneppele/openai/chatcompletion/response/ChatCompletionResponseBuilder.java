@@ -1,6 +1,6 @@
 package br.com.rcaneppele.openai.chatcompletion.response;
 
-import br.com.rcaneppele.openai.common.JsonConverter;
+import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.error.APIErrorHandler;
 import okhttp3.Response;
 
