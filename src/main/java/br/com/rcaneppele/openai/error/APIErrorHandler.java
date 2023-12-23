@@ -2,7 +2,9 @@ package br.com.rcaneppele.openai.error;
 
 import br.com.rcaneppele.openai.common.JsonConverter;
 import br.com.rcaneppele.openai.error.exception.APIKeyException;
+import br.com.rcaneppele.openai.error.exception.BadRequestException;
 import br.com.rcaneppele.openai.error.exception.RateLimitException;
+import br.com.rcaneppele.openai.error.exception.ServiceUnavailableException;
 import okhttp3.Response;
 
 public class APIErrorHandler {
@@ -17,13 +19,13 @@ public class APIErrorHandler {
         var error = getApiErrorOfResponse(response);
         switch (response.code()) {
             case 400:
-                throw new APIKeyException("Bad Request: " + error.message());
+                throw new BadRequestException("Bad Request error: " + error.message());
             case 401:
-                throw new APIKeyException("API KEY Error: " + error.message());
+                throw new APIKeyException("API Key error: " + error.message());
             case 429:
-                throw new RateLimitException("Rate Limit Error: " + error.message());
+                throw new RateLimitException("Rate Limit error: " + error.message());
             case 503:
-                throw new APIKeyException("Service Unavailable Error: " + error.message());
+                throw new ServiceUnavailableException("Service Unavailable error: " + error.message());
             default:
                 throw new RuntimeException("Unknown error: " + error.message());
         }
