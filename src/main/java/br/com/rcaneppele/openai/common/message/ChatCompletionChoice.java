@@ -9,5 +9,11 @@ public record ChatCompletionChoice(
         LogProbability logProbs,
         @JsonProperty("finish_reason")
         String finishReason
+
 ) {
+
+    public String messageContent() {
+        return message.content();
+    }
+
 }

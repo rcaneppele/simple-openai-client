@@ -35,7 +35,7 @@ System.out.println(response.firstChoiceMessageContent());
 System.out.println(response.lastChoiceMessageContent());
 
 // All choices
-response.choices().forEach(c -> System.out.println(c.message().content()));
+response.choices().forEach(c -> System.out.println(c.messageContent()));
 ```
 
 ### Chat Completion Parameters
@@ -51,11 +51,13 @@ var request = new ChatCompletionRequestBuilder()
     .maxTokens(2048)
     .temperature(1.3)
     .frequencyPenalty(1.4)
+    .seed(123)
+    .user("user-id")
     .build();
 
 var response = client.sendChatCompletionRequest(request);
 
-response.choices().forEach(c -> System.out.println(c.message().content()));
+response.choices().forEach(c -> System.out.println(c.messageContent()));
 ```
 
 ### Timeout
