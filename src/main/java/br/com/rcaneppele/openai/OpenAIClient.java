@@ -15,7 +15,6 @@ public class OpenAIClient {
 
     private final String apiKey;
     private final OkHttpClient httpClient;
-    private final JsonConverter jsonConverter;
 
     public OpenAIClient(String apiKey, int timeoutInSeconds) {
         if (apiKey == null || apiKey.isBlank()) {
@@ -24,7 +23,6 @@ public class OpenAIClient {
 
         this.apiKey = apiKey;
         this.httpClient = new HttpClientBuilder().build(Duration.ofSeconds(timeoutInSeconds));
-        this.jsonConverter = new JsonConverter();
     }
 
     public OpenAIClient(String apiKey) {
@@ -33,7 +31,7 @@ public class OpenAIClient {
 
     public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
         var chatCompletionUri = "chat/completions";
-        var requestJson = jsonConverter.convertChatCompletionRequestToJson(request);
+        var requestJson = new JsonConverter().convertChatCompletionRequestToJson(request);
         var httpRequest = new HttpRequestBuilder().buildPost(chatCompletionUri, this.apiKey, requestJson);
 
         try {
