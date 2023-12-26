@@ -1,20 +1,17 @@
 package br.com.rcaneppele.openai;
 
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
+import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponseBuilder;
-import br.com.rcaneppele.openai.common.json.JsonConverter;
-import br.com.rcaneppele.openai.http.HttpClientBuilder;
-import br.com.rcaneppele.openai.http.HttpRequestBuilder;
-import okhttp3.OkHttpClient;
 
-import java.io.IOException;
 import java.time.Duration;
 
 public class OpenAIClient {
 
+    private static final String OPENAI_API_URL = "https://api.openai.com/v1/";
+
     private final String apiKey;
-    private final OkHttpClient httpClient;
+    private final Duration timeout;
 
     public OpenAIClient(String apiKey, int timeoutInSeconds) {
         if (apiKey == null || apiKey.isBlank()) {
@@ -22,7 +19,7 @@ public class OpenAIClient {
         }
 
         this.apiKey = apiKey;
-        this.httpClient = new HttpClientBuilder().build(Duration.ofSeconds(timeoutInSeconds));
+        this.timeout = Duration.ofSeconds(timeoutInSeconds);
     }
 
     public OpenAIClient(String apiKey) {
@@ -30,16 +27,8 @@ public class OpenAIClient {
     }
 
     public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
-        var chatCompletionUri = "chat/completions";
-        var requestJson = new JsonConverter().convertChatCompletionRequestToJson(request);
-        var httpRequest = new HttpRequestBuilder().buildPost(chatCompletionUri, this.apiKey, requestJson);
-
-        try {
-            var response = httpClient.newCall(httpRequest).execute();
-            return new ChatCompletionResponseBuilder().build(response);
-        } catch (IOException e) {
-            throw new RuntimeException("Error sending chat completion request", e);
-        }
+        var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
+        return sender.sendRequest(request);
     }
 
 }
