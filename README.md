@@ -5,6 +5,22 @@ A simple Java library for seamless integration of your Java applications with Op
 ## Supported Endpoints
 - [Chat Completion](https://platform.openai.com/docs/api-reference/chat/create)
 
+## Installation
+
+### Maven
+
+```xml
+   <dependency>
+    <groupId>br.com.rcaneppele</groupId>
+    <artifactId>simple-openai-client</artifactId>
+    <version>1.0.0</version>
+   </dependency>
+```
+
+### Gradle
+
+`implementation 'br.com.rcaneppele:simple-openai-client:1.0.0'`
+
 ## Usage
 
 ### Chat Completion
