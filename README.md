@@ -13,13 +13,13 @@ A simple Java library for seamless integration of your Java applications with Op
 <dependency>
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 ### Gradle
 
-`implementation 'br.com.rcaneppele:simple-openai-client:1.0.0'`
+`implementation 'br.com.rcaneppele:simple-openai-client:1.0.1'`
 
 ## Usage
 
