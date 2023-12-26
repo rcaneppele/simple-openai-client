@@ -10,11 +10,11 @@ A simple Java library for seamless integration of your Java applications with Op
 ### Maven
 
 ```xml
-   <dependency>
+<dependency>
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
     <version>1.0.0</version>
-   </dependency>
+</dependency>
 ```
 
 ### Gradle
