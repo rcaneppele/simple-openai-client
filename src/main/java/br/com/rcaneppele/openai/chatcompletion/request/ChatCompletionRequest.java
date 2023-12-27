@@ -19,7 +19,6 @@ public record ChatCompletionRequest(
         @JsonProperty("top_p")
         Double topP,
         String[] stop,
-        //Boolean stream,
         List<ChatMessage> messages,
         Boolean logprobs,
         @JsonProperty("top_logprobs")

@@ -27,6 +27,10 @@ public class OpenAIClient {
     }
 
     public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request object is required!");
+        }
+
         var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }

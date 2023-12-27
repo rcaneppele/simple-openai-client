@@ -17,7 +17,6 @@ public class ChatCompletionRequestBuilder {
     private Double temperature = 1.0;
     private Double topP = 1.0;
     private String[] stop;
-    //private Boolean stream = false;
     private String userMessage;
     private String systemMessage;
     private Boolean logprobs = false;
@@ -90,11 +89,6 @@ public class ChatCompletionRequestBuilder {
         return this;
     }
 
-//    public ChatCompletionRequestBuilder stream() {
-//        this.stream = true;
-//        return this;
-//    }
-
     public ChatCompletionRequestBuilder userMessage(String userMessage) {
         this.userMessage = userMessage;
         return this;
@@ -151,7 +145,6 @@ public class ChatCompletionRequestBuilder {
                 this.temperature,
                 this.topP,
                 this.stop,
-                //this.stream,
                 createOpenAIMessages(),
                 this.logprobs,
                 this.topLogprobs,
