@@ -150,7 +150,8 @@ public class ChatCompletionRequestBuilder {
                 this.topLogprobs,
                 this.user,
                 this.seed,
-                this.logitBias
+                this.logitBias,
+                false
         );
     }
 

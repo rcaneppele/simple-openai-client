@@ -26,6 +26,27 @@ public record ChatCompletionRequest(
         String user,
         Integer seed,
         @JsonProperty("logit_bias")
-        Map<Integer, Integer> logitBias
+        Map<Integer, Integer> logitBias,
+        Boolean stream
 ) {
+
+    public ChatCompletionRequest withStream() {
+        return new ChatCompletionRequest(
+                model,
+                n,
+                maxTokens,
+                frequencyPenalty,
+                presencePenalty,
+                temperature,
+                topP,
+                stop,
+                messages,
+                logprobs,
+                topLogprobs,
+                user,
+                seed,
+                logitBias,
+                true);
+    }
+
 }

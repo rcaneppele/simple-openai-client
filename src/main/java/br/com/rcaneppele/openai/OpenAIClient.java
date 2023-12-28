@@ -3,6 +3,7 @@ package br.com.rcaneppele.openai;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
+import io.reactivex.rxjava3.core.Observable;
 
 import java.time.Duration;
 
@@ -14,10 +15,7 @@ public class OpenAIClient {
     private final Duration timeout;
 
     public OpenAIClient(String apiKey, int timeoutInSeconds) {
-        if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalArgumentException("API Key is required!");
-        }
-
+        validateApiKey(apiKey);
         this.apiKey = apiKey;
         this.timeout = Duration.ofSeconds(timeoutInSeconds);
     }
@@ -27,12 +25,28 @@ public class OpenAIClient {
     }
 
     public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
+        validateChatCompletionRequest(request);
+        var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
+        return sender.sendRequest(request);
+    }
+
+    public Observable<ChatCompletionResponse> sendStreamChatCompletionRequest(ChatCompletionRequest request) {
+        validateChatCompletionRequest(request);
+        request = request.withStream();
+        var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
+        return sender.sendStreamRequest(request);
+    }
+
+    private void validateApiKey(String apiKey) {
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new IllegalArgumentException("API Key is required!");
+        }
+    }
+
+    private void validateChatCompletionRequest(ChatCompletionRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("Request object is required!");
         }
-
-        var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
-        return sender.sendRequest(request);
     }
 
 }

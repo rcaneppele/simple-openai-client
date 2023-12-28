@@ -13,13 +13,13 @@ A simple Java library for seamless integration of your Java applications with Op
 <dependency>
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
 ### Gradle
 
-`implementation 'br.com.rcaneppele:simple-openai-client:1.0.1'`
+`implementation 'br.com.rcaneppele:simple-openai-client:1.0.3'`
 
 ## Usage
 
@@ -29,10 +29,10 @@ A simple Java library for seamless integration of your Java applications with Op
 var client = new OpenAIClient("YOUR_API_KEY");
 
 var request = new ChatCompletionRequestBuilder()
-        .model(OpenAIModel.GPT_4_1106_PREVIEW)
-        .systemMessage("You are a sustainable product generator")
-        .userMessage("Generate 5 product names")
-        .build();
+    .model(OpenAIModel.GPT_4_1106_PREVIEW)
+    .systemMessage("You are a Sustainable product name generator")
+    .userMessage("Generate 2 products name")
+    .build();
 
 var response = client.sendChatCompletionRequest(request);
 
@@ -61,8 +61,8 @@ The [`ChatCompletionRequestBuilder`](src/main/java/br/com/rcaneppele/openai/chat
 ```java
 var request = new ChatCompletionRequestBuilder()
     .model(OpenAIModel.GPT_4_1106_PREVIEW)
-    .userMessage("Generate 5 product name")
     .systemMessage("You are a Sustainable product name generator")
+    .userMessage("Generate 2 products name")
     .n(3)
     .maxTokens(2048)
     .temperature(1.3)
@@ -98,4 +98,40 @@ To send requests, generate an [API KEY](https://platform.openai.com/api-keys)
 // Assuming you have an environment variable named OPENAI_API_KEY
 var apiKey = System.getenv("OPENAI_API_KEY");
 var client = new OpenAIClient(apiKey);
+```
+
+### Streaming
+
+If you require [Streaming support](https://platform.openai.com/docs/api-reference/streaming), you can use the library as shown below:
+
+```java
+var request = new ChatCompletionRequestBuilder()
+    .model(OpenAIModel.GPT_4_1106_PREVIEW)
+    .systemMessage("You are a Sustainable product name generator")
+    .userMessage("Generate 2 products name")
+    .build();
+
+client.sendStreamChatCompletionRequest(request).subscribe(response ->
+    {
+        var message = response.firstChoiceMessageContent();
+        if (message != null) {
+            System.out.println(message);
+        }
+    });
+```
+
+Optionally, you can listen to events such as **errors** and **completion** during streaming:
+
+```java
+client.sendStreamChatCompletionRequest(request).subscribe(response ->
+    {
+        var message = response.firstChoiceMessageContent();
+        if (message != null) {
+            System.out.println(message);
+        }
+    }, error -> {
+        System.out.println("Error during streaming: " +error.getMessage());
+    }, () -> {
+        System.out.println("Streaming completed");
+    });
 ```

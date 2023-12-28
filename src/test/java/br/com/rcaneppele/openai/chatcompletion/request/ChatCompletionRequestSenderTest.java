@@ -68,4 +68,34 @@ class ChatCompletionRequestSenderTest {
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
     }
 
+    @Test
+    public void shouldSendStreamChatCompletionRequest() throws InterruptedException {
+        var mockHttpResponse = new MockResponse()
+                .setBody("data: {}")
+                .setHeader("Content-Type", "text/event-stream");
+
+        server.enqueue(mockHttpResponse);
+
+        var chatCompletionRequest = new ChatCompletionRequestBuilder()
+                .model(OpenAIModel.GPT_4_1106_PREVIEW)
+                .userMessage("the user message")
+                .build();
+
+        var testObserver = sender.sendStreamRequest(chatCompletionRequest).test();
+
+        assertNotNull(testObserver.values());
+        testObserver.assertNotComplete();
+
+        var httpRequest = server.takeRequest();
+        assertEquals(1, server.getRequestCount());
+        assertEquals("POST", httpRequest.getMethod());
+        assertEquals(CHAT_COMPLETION_URL, httpRequest.getPath());
+        assertEquals(MEDIA_TYPE.toString(), httpRequest.getHeader("Content-Type"));
+        assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
+        assertEquals("text/event-stream", httpRequest.getHeader("Accept"));
+        var actualHttpRequestBody = httpRequest.getBody().readUtf8();
+        String expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
+        assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
+    }
+
 }
