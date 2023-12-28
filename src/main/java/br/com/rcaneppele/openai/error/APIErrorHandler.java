@@ -18,16 +18,11 @@ public class APIErrorHandler {
     public void handleError(Response response) {
         var error = getApiErrorOfResponse(response);
         switch (response.code()) {
-            case 400:
-                throw new BadRequestException("Bad Request error: " + error.message());
-            case 401:
-                throw new APIKeyException("API Key error: " + error.message());
-            case 429:
-                throw new RateLimitException("Rate Limit error: " + error.message());
-            case 503:
-                throw new ServiceUnavailableException("Service Unavailable error: " + error.message());
-            default:
-                throw new RuntimeException("Unknown error: " + error.message());
+            case 400 -> throw new BadRequestException("Bad Request error: " + error.message());
+            case 401 -> throw new APIKeyException("API Key error: " + error.message());
+            case 429 -> throw new RateLimitException("Rate Limit error: " + error.message());
+            case 503 -> throw new ServiceUnavailableException("Service Unavailable error: " + error.message());
+            default -> throw new RuntimeException("Unknown error: " + error.message());
         }
     }
 
