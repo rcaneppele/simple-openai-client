@@ -17,8 +17,8 @@ public class ChatCompletionRequestBuilder {
     private Double temperature = 1.0;
     private Double topP = 1.0;
     private String[] stop;
-    private String userMessage;
-    private String systemMessage;
+    private List<String> userMessages = new ArrayList<>();
+    private List<String> systemMessages = new ArrayList<>();
     private Boolean logprobs = false;
     private Integer topLogprobs;
     private String user;
@@ -90,12 +90,12 @@ public class ChatCompletionRequestBuilder {
     }
 
     public ChatCompletionRequestBuilder userMessage(String userMessage) {
-        this.userMessage = userMessage;
+        this.userMessages.add(userMessage);
         return this;
     }
 
     public ChatCompletionRequestBuilder systemMessage(String systemMessage) {
-        this.systemMessage = systemMessage;
+        this.systemMessages.add(systemMessage);
         return this;
     }
 
@@ -176,22 +176,26 @@ public class ChatCompletionRequestBuilder {
     }
 
     private boolean isUserMessageProvided() {
-        return this.userMessage != null && !this.userMessage.isBlank();
+        return !this.userMessages.isEmpty();
     }
 
     private boolean isSystemMessageProvided() {
-        return this.systemMessage != null && !this.systemMessage.isBlank();
+        return !this.systemMessages.isEmpty();
     }
 
     private List<ChatMessage> createOpenAIMessages() {
         var messages = new ArrayList<ChatMessage>();
 
         if (isUserMessageProvided()) {
-            messages.add(new ChatMessage("user", this.userMessage));
+            this.userMessages.forEach(message -> {
+                messages.add(new ChatMessage("user", message));
+            });
         }
 
         if (isSystemMessageProvided()) {
-            messages.add(new ChatMessage("system", this.systemMessage));
+            this.systemMessages.forEach(message -> {
+                messages.add(new ChatMessage("system", message));
+            });
         }
 
         return messages;

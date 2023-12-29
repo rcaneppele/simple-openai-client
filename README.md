@@ -13,7 +13,7 @@ A simple Java library for seamless integration of your Java applications with Op
 <dependency>
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 

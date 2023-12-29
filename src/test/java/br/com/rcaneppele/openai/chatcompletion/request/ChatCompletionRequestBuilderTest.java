@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -109,7 +110,17 @@ class ChatCompletionRequestBuilderTest {
     }
 
     @Test
-    void shouldBuild() {
+    void shouldBuildWithMultipleMessages() {
+        builder.model(OpenAIModel.GPT_4_1106_PREVIEW).userMessage("user message 1").userMessage("user message 2").systemMessage("system message 1").systemMessage("system message 2");
+        var request = builder.build();
+        var messages = request.messages();
+        assertEquals(4, messages.size());
+        assertEquals(2, messages.stream().filter(m -> m.role().equals("user")).collect(Collectors.toList()).size());
+        assertEquals(2, messages.stream().filter(m -> m.role().equals("system")).collect(Collectors.toList()).size());
+    }
+
+    @Test
+    void shouldBuildWithAllParameters() {
         var userMessage = "the user message";
         var systemMessage = "the system message";
         String[] stopSequences = {"stop 1", "stop 2", "stop 3", "stop 4"};
