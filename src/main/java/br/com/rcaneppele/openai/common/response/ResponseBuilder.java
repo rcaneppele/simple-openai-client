@@ -1,12 +1,9 @@
 package br.com.rcaneppele.openai.common.response;
 
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.error.APIErrorHandler;
-import io.reactivex.rxjava3.core.ObservableEmitter;
 import okhttp3.Response;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ResponseBuilder<T> {
@@ -32,30 +29,6 @@ public class ResponseBuilder<T> {
             throw new RuntimeException("Error converting json to response", e);
         }
 
-    }
-
-    public void buildForChatcompletionStream(Response response, ObservableEmitter<ChatCompletionResponse> emitter) throws IOException {
-        if (!response.isSuccessful()) {
-            errorHandler.handleError(response);
-        }
-
-        var jsonConverterForStream = new JsonConverter<>(ChatCompletionResponse.class);
-        var reader = new BufferedReader(response.body().charStream());
-        String line;
-        while ((line = reader.readLine()) != null && !emitter.isDisposed()) {
-            if (line.equals("data: [DONE]")) {
-                emitter.onComplete();
-                break;
-            }
-
-            if (line.startsWith("data: ")) {
-                var json = line.substring(6).trim();
-                if (!json.isEmpty()) {
-                    var partialResponse = jsonConverterForStream.convertJsonToResponse(json);
-                    emitter.onNext(partialResponse);
-                }
-            }
-        }
     }
 
 }
