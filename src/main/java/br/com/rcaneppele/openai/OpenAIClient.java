@@ -5,6 +5,7 @@ import br.com.rcaneppele.openai.assistant.request.CreateAssistantRequestSender;
 import br.com.rcaneppele.openai.assistant.response.CreateAssistantResponse;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
+import br.com.rcaneppele.openai.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import io.reactivex.rxjava3.core.Observable;
 
@@ -28,20 +29,17 @@ public class OpenAIClient {
     }
 
     public ChatCompletionResponse sendChatCompletionRequest(ChatCompletionRequest request) {
-        validateChatCompletionRequest(request);
         var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }
 
     public Observable<ChatCompletionResponse> sendStreamChatCompletionRequest(ChatCompletionRequest request) {
-        validateChatCompletionRequest(request);
         request = request.withStream();
-        var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
+        var sender = new ChatCompletionStreamRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendStreamRequest(request);
     }
 
     public CreateAssistantResponse sendCreateAssistantRequest(CreateAssistantRequest request) {
-        validateCreateAssistantRequest(request);
         var sender = new CreateAssistantRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }
@@ -49,18 +47,6 @@ public class OpenAIClient {
     private void validateApiKey(String apiKey) {
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalArgumentException("API Key is required!");
-        }
-    }
-
-    private void validateChatCompletionRequest(ChatCompletionRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Request object is required!");
-        }
-    }
-
-    private void validateCreateAssistantRequest(CreateAssistantRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Request object is required!");
         }
     }
 

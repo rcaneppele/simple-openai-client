@@ -1,5 +1,7 @@
-package br.com.rcaneppele.openai.chatcompletion.request;
+package br.com.rcaneppele.openai.chatcompletion.request.stream;
 
+import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
+import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestBuilder;
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
 import okhttp3.MediaType;
@@ -15,7 +17,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class ChatCompletionRequestSenderTest {
+class ChatCompletionStreamRequestSenderTest {
 
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
     private static final String API_KEY = "fake-api-key";
@@ -25,7 +27,7 @@ class ChatCompletionRequestSenderTest {
     private static final String AUTH_HEADER = "Bearer " +API_KEY;
 
     private MockWebServer server;
-    private ChatCompletionRequestSender sender;
+    private ChatCompletionStreamRequestSender sender;
     private JsonConverter jsonConverter;
 
     @BeforeEach
@@ -33,7 +35,7 @@ class ChatCompletionRequestSenderTest {
         this.server = new MockWebServer();
         this.server.start();
         var url = this.server.url(TEST_API_URL).url().toString();
-        this.sender = new ChatCompletionRequestSender(url, TIMEOUT, API_KEY);
+        this.sender = new ChatCompletionStreamRequestSender(url, TIMEOUT, API_KEY);
         this.jsonConverter = new JsonConverter(ChatCompletionRequest.class);
     }
 
@@ -43,10 +45,10 @@ class ChatCompletionRequestSenderTest {
     }
 
     @Test
-    public void shouldSendChatCompletionRequest() throws InterruptedException {
+    public void shouldSendStreamChatCompletionRequest() throws InterruptedException {
         var mockHttpResponse = new MockResponse()
-                .setBody("{}}")
-                .setResponseCode(200);
+                .setBody("data: {}")
+                .setHeader("Content-Type", "text/event-stream");
 
         server.enqueue(mockHttpResponse);
 
@@ -55,9 +57,10 @@ class ChatCompletionRequestSenderTest {
                 .userMessage("the user message")
                 .build();
 
-        var response = sender.sendRequest(chatCompletionRequest);
+        var testObserver = sender.sendStreamRequest(chatCompletionRequest).test();
 
-        assertNotNull(response);
+        assertNotNull(testObserver.values());
+        testObserver.assertNotComplete();
 
         var httpRequest = server.takeRequest();
         assertEquals(1, server.getRequestCount());
@@ -65,6 +68,7 @@ class ChatCompletionRequestSenderTest {
         assertEquals(CHAT_COMPLETION_URL, httpRequest.getPath());
         assertEquals(MEDIA_TYPE.toString(), httpRequest.getHeader("Content-Type"));
         assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
+        assertEquals("text/event-stream", httpRequest.getHeader("Accept"));
         var actualHttpRequestBody = httpRequest.getBody().readUtf8();
         var expectedHttpRequestBody = jsonConverter.convertRequestToJson(chatCompletionRequest);
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);

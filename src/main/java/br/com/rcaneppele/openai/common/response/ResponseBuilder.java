@@ -1,5 +1,6 @@
-package br.com.rcaneppele.openai.chatcompletion.response;
+package br.com.rcaneppele.openai.common.response;
 
+import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.error.APIErrorHandler;
 import io.reactivex.rxjava3.core.ObservableEmitter;
@@ -8,17 +9,17 @@ import okhttp3.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class ChatCompletionResponseBuilder {
+public class ResponseBuilder<T> {
 
-    private final JsonConverter<ChatCompletionResponse> jsonConverter;
+    private final JsonConverter<T> jsonConverter;
     private final APIErrorHandler errorHandler;
 
-    public ChatCompletionResponseBuilder() {
-        this.jsonConverter = new JsonConverter(ChatCompletionResponse.class);
+    public ResponseBuilder(Class<T> responseType) {
+        this.jsonConverter = new JsonConverter(responseType);
         this.errorHandler = new APIErrorHandler();
     }
 
-    public ChatCompletionResponse build(Response response) {
+    public T build(Response response) {
         if (!response.isSuccessful()) {
             errorHandler.handleError(response);
             return null;
@@ -28,16 +29,17 @@ public class ChatCompletionResponseBuilder {
             var json = response.body().string();
             return jsonConverter.convertJsonToResponse(json);
         } catch (IOException e) {
-            throw new RuntimeException("Error reading json from Chat Completion Response", e);
+            throw new RuntimeException("Error converting json to response", e);
         }
 
     }
 
-    public void buildForStream(Response response, ObservableEmitter<ChatCompletionResponse> emitter) throws IOException {
+    public void buildForChatcompletionStream(Response response, ObservableEmitter<ChatCompletionResponse> emitter) throws IOException {
         if (!response.isSuccessful()) {
             errorHandler.handleError(response);
         }
 
+        var jsonConverterForStream = new JsonConverter<>(ChatCompletionResponse.class);
         var reader = new BufferedReader(response.body().charStream());
         String line;
         while ((line = reader.readLine()) != null && !emitter.isDisposed()) {
@@ -49,7 +51,7 @@ public class ChatCompletionResponseBuilder {
             if (line.startsWith("data: ")) {
                 var json = line.substring(6).trim();
                 if (!json.isEmpty()) {
-                    var partialResponse = jsonConverter.convertJsonToResponse(json);
+                    var partialResponse = jsonConverterForStream.convertJsonToResponse(json);
                     emitter.onNext(partialResponse);
                 }
             }
