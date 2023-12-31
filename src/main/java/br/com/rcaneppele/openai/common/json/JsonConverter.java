@@ -1,5 +1,7 @@
 package br.com.rcaneppele.openai.common.json;
 
+import br.com.rcaneppele.openai.assistant.request.CreateAssistantRequest;
+import br.com.rcaneppele.openai.assistant.response.CreateAssistantResponse;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.error.APIError;
@@ -23,11 +25,27 @@ public class JsonConverter {
         }
     }
 
+    public String convertCreateAssistantRequestToJson(CreateAssistantRequest request) {
+        try {
+            return this.mapper.writeValueAsString(request);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error during serialization of CreateAssistantRequest to json", e);
+        }
+    }
+
     public ChatCompletionResponse convertJsonToChatCompletionResponse(String json) {
         try {
             return this.mapper.readValue(json, ChatCompletionResponse.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error during deserialization of json to ChatCompletionResponse", e);
+        }
+    }
+
+    public CreateAssistantResponse convertJsonToCreateAssistantResponse(String json) {
+        try {
+            return this.mapper.readValue(json, CreateAssistantResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error during deserialization of json to CreateAssistantResponse", e);
         }
     }
 

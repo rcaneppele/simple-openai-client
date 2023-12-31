@@ -4,17 +4,14 @@ import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.message.ChatMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class ChatCompletionRequestBuilderTest {
 
     private ChatCompletionRequestBuilder builder;
@@ -123,7 +120,7 @@ class ChatCompletionRequestBuilderTest {
     void shouldBuildWithAllParameters() {
         var userMessage = "the user message";
         var systemMessage = "the system message";
-        String[] stopSequences = {"stop 1", "stop 2", "stop 3", "stop 4"};
+        var stopSequences = new String[]{"stop 1", "stop 2", "stop 3", "stop 4"};
         var logitBias = Map.of(100, 30, 200, 40, 300, 50);
         var user = "user-12345";
 

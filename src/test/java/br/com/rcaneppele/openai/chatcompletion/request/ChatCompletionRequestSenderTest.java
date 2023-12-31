@@ -64,7 +64,7 @@ class ChatCompletionRequestSenderTest {
         assertEquals(MEDIA_TYPE.toString(), httpRequest.getHeader("Content-Type"));
         assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
         var actualHttpRequestBody = httpRequest.getBody().readUtf8();
-        String expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
+        var expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
     }
 
@@ -94,7 +94,7 @@ class ChatCompletionRequestSenderTest {
         assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
         assertEquals("text/event-stream", httpRequest.getHeader("Accept"));
         var actualHttpRequestBody = httpRequest.getBody().readUtf8();
-        String expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
+        var expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
     }
 

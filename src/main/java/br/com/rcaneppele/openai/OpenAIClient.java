@@ -1,5 +1,8 @@
 package br.com.rcaneppele.openai;
 
+import br.com.rcaneppele.openai.assistant.request.CreateAssistantRequest;
+import br.com.rcaneppele.openai.assistant.request.CreateAssistantRequestSender;
+import br.com.rcaneppele.openai.assistant.response.CreateAssistantResponse;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
@@ -37,6 +40,12 @@ public class OpenAIClient {
         return sender.sendStreamRequest(request);
     }
 
+    public CreateAssistantResponse sendCreateAssistantRequest(CreateAssistantRequest request) {
+        validateCreateAssistantRequest(request);
+        var sender = new CreateAssistantRequestSender(OPENAI_API_URL, timeout, apiKey);
+        return sender.sendRequest(request);
+    }
+
     private void validateApiKey(String apiKey) {
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalArgumentException("API Key is required!");
@@ -44,6 +53,12 @@ public class OpenAIClient {
     }
 
     private void validateChatCompletionRequest(ChatCompletionRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request object is required!");
+        }
+    }
+
+    private void validateCreateAssistantRequest(CreateAssistantRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("Request object is required!");
         }
