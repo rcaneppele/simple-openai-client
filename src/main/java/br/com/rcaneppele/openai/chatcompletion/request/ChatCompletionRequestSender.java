@@ -21,17 +21,17 @@ public class ChatCompletionRequestSender {
     private final OkHttpClient http;
     private final String apiKey;
     private final String chatCompletionUrl;
-    private final JsonConverter jsonConverter;
+    private final JsonConverter<ChatCompletionRequest> jsonConverter;
 
     public ChatCompletionRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         this.chatCompletionUrl = apiBaseUrl + CHAT_COMPLETION_URI;
         this.http = new HttpClientBuilder().build(timeout);
         this.apiKey = apiKey;
-        this.jsonConverter = new JsonConverter();
+        this.jsonConverter = new JsonConverter(ChatCompletionRequest.class);
     }
 
     public ChatCompletionResponse sendRequest(ChatCompletionRequest request) {
-        var json = jsonConverter.convertChatCompletionRequestToJson(request);
+        var json = jsonConverter.convertRequestToJson(request);
         var httpRequest =  new Request.Builder()
                 .url(chatCompletionUrl)
                 .header("Authorization", "Bearer " +this.apiKey)
@@ -48,7 +48,7 @@ public class ChatCompletionRequestSender {
 
     public Observable<ChatCompletionResponse> sendStreamRequest(final ChatCompletionRequest request) {
         return Observable.create(emitter -> {
-            var json = jsonConverter.convertChatCompletionRequestToJson(request);
+            var json = jsonConverter.convertRequestToJson(request);
             var httpRequest = new Request.Builder()
                     .url(chatCompletionUrl)
                     .header("Authorization", "Bearer " + apiKey)

@@ -26,6 +26,7 @@ class ChatCompletionRequestSenderTest {
 
     private MockWebServer server;
     private ChatCompletionRequestSender sender;
+    private JsonConverter jsonConverter;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -33,6 +34,7 @@ class ChatCompletionRequestSenderTest {
         this.server.start();
         var url = this.server.url(TEST_API_URL).url().toString();
         this.sender = new ChatCompletionRequestSender(url, TIMEOUT, API_KEY);
+        this.jsonConverter = new JsonConverter(ChatCompletionRequest.class);
     }
 
     @AfterEach
@@ -64,7 +66,7 @@ class ChatCompletionRequestSenderTest {
         assertEquals(MEDIA_TYPE.toString(), httpRequest.getHeader("Content-Type"));
         assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
         var actualHttpRequestBody = httpRequest.getBody().readUtf8();
-        var expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
+        var expectedHttpRequestBody = jsonConverter.convertRequestToJson(chatCompletionRequest);
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
     }
 
@@ -94,7 +96,7 @@ class ChatCompletionRequestSenderTest {
         assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
         assertEquals("text/event-stream", httpRequest.getHeader("Accept"));
         var actualHttpRequestBody = httpRequest.getBody().readUtf8();
-        var expectedHttpRequestBody = new JsonConverter().convertChatCompletionRequestToJson(chatCompletionRequest);
+        var expectedHttpRequestBody = jsonConverter.convertRequestToJson(chatCompletionRequest);
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
     }
 

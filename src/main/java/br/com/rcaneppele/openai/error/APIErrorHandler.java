@@ -9,10 +9,10 @@ import okhttp3.Response;
 
 public class APIErrorHandler {
 
-    private final JsonConverter jsonConverter;
+    private final JsonConverter<APIError> jsonConverter;
 
     public APIErrorHandler() {
-        this.jsonConverter = new JsonConverter();
+        this.jsonConverter = new JsonConverter(APIError.class);
     }
 
     public void handleError(Response response) {

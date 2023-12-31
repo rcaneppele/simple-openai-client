@@ -1,51 +1,33 @@
 package br.com.rcaneppele.openai.common.json;
 
-import br.com.rcaneppele.openai.assistant.request.CreateAssistantRequest;
-import br.com.rcaneppele.openai.assistant.response.CreateAssistantResponse;
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.error.APIError;
 import br.com.rcaneppele.openai.error.APIErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonConverter {
+public class JsonConverter<T> {
 
     private final ObjectMapper mapper;
+    private final Class<T> targetType;
 
-    public JsonConverter() {
+    public JsonConverter(Class<T> targetType) {
         this.mapper = new ObjectMapperCreator().create();
+        this.targetType = targetType;
     }
 
-    public String convertChatCompletionRequestToJson(ChatCompletionRequest request) {
+    public String convertRequestToJson(T request) {
         try {
             return this.mapper.writeValueAsString(request);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error during serialization of ChatCompletionRequest to json", e);
+            throw new RuntimeException("Error during serialization to json", e);
         }
     }
 
-    public String convertCreateAssistantRequestToJson(CreateAssistantRequest request) {
+    public T convertJsonToResponse(String json) {
         try {
-            return this.mapper.writeValueAsString(request);
+            return this.mapper.readValue(json, targetType);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error during serialization of CreateAssistantRequest to json", e);
-        }
-    }
-
-    public ChatCompletionResponse convertJsonToChatCompletionResponse(String json) {
-        try {
-            return this.mapper.readValue(json, ChatCompletionResponse.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error during deserialization of json to ChatCompletionResponse", e);
-        }
-    }
-
-    public CreateAssistantResponse convertJsonToCreateAssistantResponse(String json) {
-        try {
-            return this.mapper.readValue(json, CreateAssistantResponse.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error during deserialization of json to CreateAssistantResponse", e);
+            throw new RuntimeException("Error during deserialization of json to response", e);
         }
     }
 

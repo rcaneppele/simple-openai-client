@@ -8,11 +8,11 @@ import java.io.IOException;
 
 public class CreateAssistantResponseBuilder {
 
-    private final JsonConverter jsonConverter;
+    private final JsonConverter<CreateAssistantResponse> jsonConverter;
     private final APIErrorHandler errorHandler;
 
     public CreateAssistantResponseBuilder() {
-        this.jsonConverter = new JsonConverter();
+        this.jsonConverter = new JsonConverter(CreateAssistantResponse.class);
         this.errorHandler = new APIErrorHandler();
     }
 
@@ -24,7 +24,7 @@ public class CreateAssistantResponseBuilder {
 
         try {
             var json = response.body().string();
-            return jsonConverter.convertJsonToCreateAssistantResponse(json);
+            return jsonConverter.convertJsonToResponse(json);
         } catch (IOException e) {
             throw new RuntimeException("Error reading json from Chat Completion Response", e);
         }

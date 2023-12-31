@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class ChatCompletionResponseBuilder {
 
-    private final JsonConverter jsonConverter;
+    private final JsonConverter<ChatCompletionResponse> jsonConverter;
     private final APIErrorHandler errorHandler;
 
     public ChatCompletionResponseBuilder() {
-        this.jsonConverter = new JsonConverter();
+        this.jsonConverter = new JsonConverter(ChatCompletionResponse.class);
         this.errorHandler = new APIErrorHandler();
     }
 
@@ -26,7 +26,7 @@ public class ChatCompletionResponseBuilder {
 
         try {
             var json = response.body().string();
-            return jsonConverter.convertJsonToChatCompletionResponse(json);
+            return jsonConverter.convertJsonToResponse(json);
         } catch (IOException e) {
             throw new RuntimeException("Error reading json from Chat Completion Response", e);
         }
@@ -49,7 +49,7 @@ public class ChatCompletionResponseBuilder {
             if (line.startsWith("data: ")) {
                 var json = line.substring(6).trim();
                 if (!json.isEmpty()) {
-                    var partialResponse = jsonConverter.convertJsonToChatCompletionResponse(json);
+                    var partialResponse = jsonConverter.convertJsonToResponse(json);
                     emitter.onNext(partialResponse);
                 }
             }

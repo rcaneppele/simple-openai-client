@@ -20,17 +20,17 @@ public class CreateAssistantRequestSender {
     private final OkHttpClient http;
     private final String apiKey;
     private final String createAssistantUrl;
-    private final JsonConverter jsonConverter;
+    private final JsonConverter<CreateAssistantRequest> jsonConverter;
 
     public CreateAssistantRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         this.createAssistantUrl = apiBaseUrl + CHAT_COMPLETION_URI;
         this.http = new HttpClientBuilder().build(timeout);
         this.apiKey = apiKey;
-        this.jsonConverter = new JsonConverter();
+        this.jsonConverter = new JsonConverter(CreateAssistantRequest.class);
     }
 
     public CreateAssistantResponse sendRequest(CreateAssistantRequest request) {
-        var json = jsonConverter.convertCreateAssistantRequestToJson(request);
+        var json = jsonConverter.convertRequestToJson(request);
         var httpRequest =  new Request.Builder()
                 .url(createAssistantUrl)
                 .header("Authorization", "Bearer " +this.apiKey)

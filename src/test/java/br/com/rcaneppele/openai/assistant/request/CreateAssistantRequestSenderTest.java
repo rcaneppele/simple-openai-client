@@ -70,7 +70,7 @@ class CreateAssistantRequestSenderTest {
         assertEquals(AUTH_HEADER, httpRequest.getHeader("Authorization"));
         assertEquals(ASSISTANT_HEADER, httpRequest.getHeader("OpenAI-Beta"));
         var actualHttpRequestBody = httpRequest.getBody().readUtf8();
-        var expectedHttpRequestBody = new JsonConverter().convertCreateAssistantRequestToJson(request);
+        var expectedHttpRequestBody = new JsonConverter(CreateAssistantRequest.class).convertRequestToJson(request);
         assertEquals(expectedHttpRequestBody, actualHttpRequestBody);
     }
 
