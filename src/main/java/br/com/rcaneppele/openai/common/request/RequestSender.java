@@ -15,14 +15,14 @@ import java.util.Map;
 public abstract class RequestSender<I, O> {
 
     protected final OkHttpClient httpClient;
-    protected final String requestUrl;
+    protected final String apiBaseUrl;
     protected final String apiKey;
     protected final JsonConverter<I> jsonConverter;
     protected final ResponseBuilder<O> responseBuilder;
 
     public RequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         this.httpClient = new HttpClientBuilder().build(timeout);
-        this.requestUrl = apiBaseUrl + endpointUri();
+        this.apiBaseUrl = apiBaseUrl;
         this.apiKey = apiKey;
         this.jsonConverter = new JsonConverter<I>(requestType());
         this.responseBuilder = new ResponseBuilder<O>(responseType());
@@ -35,7 +35,7 @@ public abstract class RequestSender<I, O> {
 
         var json = jsonConverter.convertRequestToJson(request);
         var builder = new Request.Builder()
-                .url(requestUrl)
+                .url(this.apiBaseUrl + endpointUri())
                 .header("Authorization", "Bearer " + this.apiKey)
                 .post(RequestBody.create(json, MediaType.parse("application/json")));
 

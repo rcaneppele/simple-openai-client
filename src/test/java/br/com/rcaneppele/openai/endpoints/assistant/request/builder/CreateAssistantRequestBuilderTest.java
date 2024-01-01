@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.endpoints.assistant.request;
+package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;

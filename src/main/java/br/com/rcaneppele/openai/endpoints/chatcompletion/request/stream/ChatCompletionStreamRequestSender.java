@@ -24,7 +24,7 @@ public class ChatCompletionStreamRequestSender extends ChatCompletionRequestSend
         return Observable.create(emitter -> {
             var json = jsonConverter.convertRequestToJson(request);
             var httpRequest = new Request.Builder()
-                    .url(requestUrl)
+                    .url(this.apiBaseUrl + endpointUri())
                     .header("Authorization", "Bearer " + apiKey)
                     .header("Accept", "text/event-stream")
                     .post(RequestBody.create(json, MediaType.parse("application/json")))
