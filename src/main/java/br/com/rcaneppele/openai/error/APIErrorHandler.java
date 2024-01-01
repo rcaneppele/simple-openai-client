@@ -9,10 +9,10 @@ import okhttp3.Response;
 
 public class APIErrorHandler {
 
-    private final JsonConverter<APIError> jsonConverter;
+    private final JsonConverter<APIErrorResponse> jsonConverter;
 
     public APIErrorHandler() {
-        this.jsonConverter = new JsonConverter<>(APIError.class);
+        this.jsonConverter = new JsonConverter<>(APIErrorResponse.class);
     }
 
     public void handleError(Response response) {
@@ -29,7 +29,7 @@ public class APIErrorHandler {
     private APIError getApiErrorOfResponse(Response response) {
         try {
             var json = response.body().string();
-            return jsonConverter.convertJsonToResponse(json);
+            return jsonConverter.convertJsonToResponse(json).getError();
         } catch (Exception e) {
             throw new RuntimeException("Error during deserialization of response", e);
         }
