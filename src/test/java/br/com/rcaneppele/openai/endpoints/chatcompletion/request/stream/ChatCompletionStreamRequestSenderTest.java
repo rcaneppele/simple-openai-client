@@ -1,9 +1,9 @@
-package br.com.rcaneppele.openai.chatcompletion.request.stream;
+package br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream;
 
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestBuilder;
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestBuilder;
 import okhttp3.MediaType;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;

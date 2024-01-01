@@ -1,7 +1,7 @@
-package br.com.rcaneppele.openai.chatcompletion.request;
+package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.common.request.RequestSender;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
 
 import java.time.Duration;
 

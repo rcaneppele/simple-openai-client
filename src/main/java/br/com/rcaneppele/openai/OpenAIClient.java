@@ -1,12 +1,12 @@
 package br.com.rcaneppele.openai;
 
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
-import br.com.rcaneppele.openai.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.request.CreateAssistantRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.request.CreateAssistantRequestSender;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.response.CreateAssistantResponse;
+import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequestSender;
+import br.com.rcaneppele.openai.endpoints.assistant.response.CreateAssistantResponse;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
 import io.reactivex.rxjava3.core.Observable;
 
 import java.time.Duration;

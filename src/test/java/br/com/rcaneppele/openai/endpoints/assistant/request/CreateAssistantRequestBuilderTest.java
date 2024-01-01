@@ -1,10 +1,9 @@
-package br.com.rcaneppele.openai.assistant.request;
+package br.com.rcaneppele.openai.endpoints.assistant.request;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.request.CreateAssistantRequestBuilder;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.Function;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.Tool;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.ToolType;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.ToolType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

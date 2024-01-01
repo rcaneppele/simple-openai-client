@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.chatcompletion.request;
+package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
 import br.com.rcaneppele.openai.common.message.ChatMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,7 +1,7 @@
 package br.com.rcaneppele.openai.common.response.stream;
 
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.error.APIErrorHandler;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import okhttp3.Response;

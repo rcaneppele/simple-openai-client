@@ -1,9 +1,9 @@
-package br.com.rcaneppele.openai.endpoints.assistant.assistant.request;
+package br.com.rcaneppele.openai.endpoints.assistant.request;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.Function;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.Tool;
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.ToolType;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.ToolType;
 
 import java.util.HashSet;
 import java.util.List;

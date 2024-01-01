@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.chatcompletion.response;
+package br.com.rcaneppele.openai.endpoints.chatcompletion.response;
 
 import br.com.rcaneppele.openai.common.message.ChatCompletionChoice;
 import br.com.rcaneppele.openai.common.message.TokenUsage;

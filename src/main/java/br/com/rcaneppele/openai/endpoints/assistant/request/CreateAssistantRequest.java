@@ -1,6 +1,6 @@
-package br.com.rcaneppele.openai.endpoints.assistant.assistant.request;
+package br.com.rcaneppele.openai.endpoints.assistant.request;
 
-import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.Tool;
+import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;

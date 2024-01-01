@@ -1,9 +1,9 @@
-package br.com.rcaneppele.openai.chatcompletion.request.stream;
+package br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream;
 
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequest;
-import br.com.rcaneppele.openai.chatcompletion.request.ChatCompletionRequestSender;
-import br.com.rcaneppele.openai.chatcompletion.response.ChatCompletionResponse;
 import br.com.rcaneppele.openai.common.response.stream.StreamResponseBuilder;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.MediaType;
 import okhttp3.Request;
