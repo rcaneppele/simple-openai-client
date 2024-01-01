@@ -1,7 +1,7 @@
 package br.com.rcaneppele.openai.chatcompletion.response;
 
-import br.com.rcaneppele.openai.common.TokenUsage;
 import br.com.rcaneppele.openai.common.message.ChatCompletionChoice;
+import br.com.rcaneppele.openai.common.message.TokenUsage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;

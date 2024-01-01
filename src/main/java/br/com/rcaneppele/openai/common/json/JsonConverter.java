@@ -1,7 +1,5 @@
 package br.com.rcaneppele.openai.common.json;
 
-import br.com.rcaneppele.openai.error.APIError;
-import br.com.rcaneppele.openai.error.APIErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,14 +26,6 @@ public class JsonConverter<T> {
             return this.mapper.readValue(json, targetType);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error during deserialization of json to response", e);
-        }
-    }
-
-    public APIError convertJsonToApiError(String json) {
-        try {
-            return this.mapper.readValue(json, APIErrorResponse.class).getError();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error during deserialization of json to APIErrorResponse", e);
         }
     }
 

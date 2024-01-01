@@ -12,7 +12,7 @@ public class APIErrorHandler {
     private final JsonConverter<APIError> jsonConverter;
 
     public APIErrorHandler() {
-        this.jsonConverter = new JsonConverter(APIError.class);
+        this.jsonConverter = new JsonConverter<>(APIError.class);
     }
 
     public void handleError(Response response) {
@@ -29,7 +29,7 @@ public class APIErrorHandler {
     private APIError getApiErrorOfResponse(Response response) {
         try {
             var json = response.body().string();
-            return jsonConverter.convertJsonToApiError(json);
+            return jsonConverter.convertJsonToResponse(json);
         } catch (Exception e) {
             throw new RuntimeException("Error during deserialization of response", e);
         }

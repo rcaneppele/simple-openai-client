@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.common;
+package br.com.rcaneppele.openai.common.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

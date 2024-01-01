@@ -10,5 +10,5 @@ public record LogProbabilityContent(
         List<Integer> bytes,
         @JsonProperty("top_logprobs")
         List<LogProbabilityContent> topLogProbability
-        ) {
+) {
 }

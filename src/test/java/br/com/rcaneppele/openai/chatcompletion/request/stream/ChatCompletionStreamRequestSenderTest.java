@@ -28,7 +28,7 @@ class ChatCompletionStreamRequestSenderTest {
 
     private MockWebServer server;
     private ChatCompletionStreamRequestSender sender;
-    private JsonConverter jsonConverter;
+    private JsonConverter<ChatCompletionRequest> jsonConverter;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -36,7 +36,7 @@ class ChatCompletionStreamRequestSenderTest {
         this.server.start();
         var url = this.server.url(TEST_API_URL).url().toString();
         this.sender = new ChatCompletionStreamRequestSender(url, TIMEOUT, API_KEY);
-        this.jsonConverter = new JsonConverter(ChatCompletionRequest.class);
+        this.jsonConverter = new JsonConverter<>(ChatCompletionRequest.class);
     }
 
     @AfterEach

@@ -12,7 +12,7 @@ public class ResponseBuilder<T> {
     private final APIErrorHandler errorHandler;
 
     public ResponseBuilder(Class<T> responseType) {
-        this.jsonConverter = new JsonConverter(responseType);
+        this.jsonConverter = new JsonConverter<>(responseType);
         this.errorHandler = new APIErrorHandler();
     }
 
@@ -28,7 +28,6 @@ public class ResponseBuilder<T> {
         } catch (IOException e) {
             throw new RuntimeException("Error converting json to response", e);
         }
-
     }
 
 }
