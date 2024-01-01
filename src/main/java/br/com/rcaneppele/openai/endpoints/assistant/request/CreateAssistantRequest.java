@@ -1,20 +1,15 @@
-package br.com.rcaneppele.openai.assistant.response;
+package br.com.rcaneppele.openai.endpoints.assistant.assistant.request;
 
-import br.com.rcaneppele.openai.assistant.tools.Tool;
+import br.com.rcaneppele.openai.endpoints.assistant.assistant.tools.Tool;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
-public record CreateAssistantResponse(
-        String id,
-        String object,
-        @JsonProperty("created_at")
-        Instant createdAt,
+public record CreateAssistantRequest(
+        String model,
         String name,
         String description,
-        String model,
         String instructions,
         Set<Tool> tools,
         @JsonProperty("file_ids")

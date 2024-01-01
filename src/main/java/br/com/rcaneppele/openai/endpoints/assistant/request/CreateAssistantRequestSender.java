@@ -1,7 +1,7 @@
-package br.com.rcaneppele.openai.assistant.request;
+package br.com.rcaneppele.openai.endpoints.assistant.assistant.request;
 
-import br.com.rcaneppele.openai.assistant.response.CreateAssistantResponse;
 import br.com.rcaneppele.openai.common.request.RequestSender;
+import br.com.rcaneppele.openai.endpoints.assistant.assistant.response.CreateAssistantResponse;
 
 import java.time.Duration;
 import java.util.Map;

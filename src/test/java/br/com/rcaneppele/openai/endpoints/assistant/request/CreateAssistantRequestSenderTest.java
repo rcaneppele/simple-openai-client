@@ -2,6 +2,9 @@ package br.com.rcaneppele.openai.assistant.request;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.endpoints.assistant.assistant.request.CreateAssistantRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.assistant.request.CreateAssistantRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.assistant.assistant.request.CreateAssistantRequestSender;
 import okhttp3.MediaType;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;

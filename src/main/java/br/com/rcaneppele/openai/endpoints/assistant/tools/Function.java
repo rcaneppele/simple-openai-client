@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.assistant.tools;
+package br.com.rcaneppele.openai.endpoints.assistant.assistant.tools;
 
 import java.util.Map;
 
