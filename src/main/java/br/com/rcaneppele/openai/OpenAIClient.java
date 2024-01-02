@@ -68,32 +68,43 @@ public class OpenAIClient {
     }
 
     public Assistant sendRetrieveAssistantRequest(String assistantId) {
-        if (assistantId == null || assistantId.isBlank()) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
+        validateAssistantId(assistantId);
         var sender = new RetrieveAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(null);
     }
 
     public AssistantFile sendRetrieveAssistantFileRequest(String assistantId, String fileId) {
-        if (assistantId == null || assistantId.isBlank()) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
-
-        if (fileId == null || fileId.isBlank()) {
-            throw new IllegalArgumentException("file id is required!");
-        }
+        validateAssistantId(assistantId);
+        validateFileId(fileId);
 
         var sender = new RetrieveAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
         return sender.sendRequest(null);
     }
 
     public DeletionStatus sendDeleteAssistantRequest(String assistantId) {
+        validateAssistantId(assistantId);
+        var sender = new DeleteAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
+        return sender.sendRequest(null);
+    }
+
+    public DeletionStatus sendDeleteAssistantFileRequest(String assistantId, String fileId) {
+        validateAssistantId(assistantId);
+        validateFileId(fileId);
+
+        var sender = new DeleteAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
+        return sender.sendRequest(null);
+    }
+
+    private static void validateAssistantId(String assistantId) {
         if (assistantId == null || assistantId.isBlank()) {
             throw new IllegalArgumentException("Assistant id is required!");
         }
-        var sender = new DeleteAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
-        return sender.sendRequest(null);
+    }
+
+    private static void validateFileId(String fileId) {
+        if (fileId == null || fileId.isBlank()) {
+            throw new IllegalArgumentException("file id is required!");
+        }
     }
 
 }
