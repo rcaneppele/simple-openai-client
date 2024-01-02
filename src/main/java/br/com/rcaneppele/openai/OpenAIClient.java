@@ -4,10 +4,7 @@ import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileR
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.sender.CreateAssistantFileRequestSender;
-import br.com.rcaneppele.openai.endpoints.assistant.request.sender.CreateAssistantRequestSender;
-import br.com.rcaneppele.openai.endpoints.assistant.request.sender.ListAssistantFilesRequestSender;
-import br.com.rcaneppele.openai.endpoints.assistant.request.sender.ListAssistantsRequestSender;
+import br.com.rcaneppele.openai.endpoints.assistant.request.sender.*;
 import br.com.rcaneppele.openai.endpoints.assistant.response.Assistant;
 import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
@@ -28,7 +25,10 @@ public class OpenAIClient {
     private final Duration timeout;
 
     public OpenAIClient(String apiKey, int timeoutInSeconds) {
-        validateApiKey(apiKey);
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new IllegalArgumentException("API Key is required!");
+        }
+
         this.apiKey = apiKey;
         this.timeout = Duration.ofSeconds(timeoutInSeconds);
     }
@@ -70,10 +70,12 @@ public class OpenAIClient {
         return sender.sendRequest(request);
     }
 
-    private void validateApiKey(String apiKey) {
-        if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalArgumentException("API Key is required!");
+    public Assistant sendRetrieveAssistantRequest(String assistantId) {
+        if (assistantId == null || assistantId.isBlank()) {
+            throw new IllegalArgumentException("Assistant id is required!");
         }
+        var sender = new RetrieveAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
+        return sender.sendRequest(null);
     }
 
 }

@@ -40,10 +40,6 @@ public abstract class RequestSender<I, O> {
     protected abstract HttpMethod httpMethod();
 
     public O sendRequest(I request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Request is required!");
-        }
-
         var url = this.apiBaseUrl + endpointUri();
         var builder = new Request.Builder().header("Authorization", "Bearer " + this.apiKey);
 
@@ -54,6 +50,9 @@ public abstract class RequestSender<I, O> {
             }
 
             case POST -> {
+                if (request == null) {
+                    throw new IllegalArgumentException("Request is required!");
+                }
                 var json = jsonConverter.convertRequestToJson(request);
                 builder.post(RequestBody.create(json, MediaType.parse("application/json")));
             }
