@@ -1,6 +1,7 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.builder.ListAssistantsRequestBuilder;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +67,7 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
 
     @Test
     public void shouldSendListAssistantsRequest() throws InterruptedException {
-        var request = new ListAssistantsRequestBuilder()
+        var request = (ListAssistantsRequest) new ListAssistantsRequestBuilder()
                 .limit(2)
                 .ascOrder()
                 .after("after_id")

@@ -1,13 +1,14 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.ListQueryParameters;
 
 public class ListAssistantsRequestBuilder {
 
-    private int limit = 20;
-    private String order = "desc";
-    private String before;
-    private String after;
+    protected int limit = 20;
+    protected String order = "desc";
+    protected String before;
+    protected String after;
 
     public ListAssistantsRequestBuilder limit(int limit) {
         if (limit < 1 || limit > 100) {
@@ -32,7 +33,7 @@ public class ListAssistantsRequestBuilder {
         return this;
     }
 
-    public ListAssistantsRequest build() {
+    public ListQueryParameters build() {
         return new ListAssistantsRequest(
                 this.limit,
                 this.order,

@@ -2,12 +2,15 @@ package br.com.rcaneppele.openai;
 
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.CreateAssistantFileRequestSender;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.CreateAssistantRequestSender;
+import br.com.rcaneppele.openai.endpoints.assistant.request.sender.ListAssistantFilesRequestSender;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.ListAssistantsRequestSender;
 import br.com.rcaneppele.openai.endpoints.assistant.response.Assistant;
 import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
+import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
@@ -58,6 +61,12 @@ public class OpenAIClient {
 
     public ListOfAssistants sendListAssistantsRequest(ListAssistantsRequest request) {
         var sender = new ListAssistantsRequestSender(OPENAI_API_URL, timeout, apiKey);
+        return sender.sendRequest(request);
+    }
+
+    public ListOfAssistantFiles sendListAssistantFilesRequest(ListAssistantFilesRequest request) {
+        var assistantId = request.assistantId();
+        var sender = new ListAssistantFilesRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
 
