@@ -22,7 +22,6 @@ class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
     private CreateAssistantRequestSender sender;
     private JsonConverter<CreateAssistantRequest> jsonConverter;
 
-
     @Override
     protected String expectedURI() {
         return "assistants";

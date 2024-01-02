@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.response.CreateAssistantFileResponse;
 
@@ -17,6 +18,11 @@ public class CreateAssistantFileRequestSender extends AssistantRequestSender<Cre
     @Override
     protected String endpointUri() {
         return super.endpointUri() + "/" + this.assistantId + "/files";
+    }
+
+    @Override
+    protected HttpMethod httpMethod() {
+        return HttpMethod.POST;
     }
 
     @Override

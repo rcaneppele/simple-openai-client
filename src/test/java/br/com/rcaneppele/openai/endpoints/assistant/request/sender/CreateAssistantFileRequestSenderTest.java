@@ -21,7 +21,6 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     private CreateAssistantFileRequestSender sender;
     private JsonConverter<CreateAssistantFileRequest> jsonConverter;
 
-
     @Override
     protected String expectedURI() {
         return "assistants/" + ASSISTANT_ID +"/files";

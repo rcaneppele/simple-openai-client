@@ -12,7 +12,7 @@ abstract class AssistantRequestSender<I, O> extends RequestSender<I, O> {
     }
 
     @Override
-    protected Map<String, String> optionalHeaders() {
+    protected Map<String, String> additionalHeaders() {
         return Map.of("OpenAI-Beta", "assistants=v1");
     }
 

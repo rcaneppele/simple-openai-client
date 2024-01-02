@@ -28,19 +28,39 @@ public abstract class RequestSender<I, O> {
         this.responseBuilder = new ResponseBuilder<O>(responseType());
     }
 
+    protected Map<String, String> additionalHeaders() {
+        return Map.of();
+    }
+    protected Map<String, Object> queryParams() {
+        return Map.of();
+    }
+    protected abstract String endpointUri();
+    protected abstract Class<I> requestType();
+    protected abstract Class<O> responseType();
+    protected abstract HttpMethod httpMethod();
+
     public O sendRequest(I request) {
         if (request == null) {
-            throw new IllegalArgumentException("Request object is required!");
+            throw new IllegalArgumentException("Request is required!");
         }
 
-        var json = jsonConverter.convertRequestToJson(request);
-        var builder = new Request.Builder()
-                .url(this.apiBaseUrl + endpointUri())
-                .header("Authorization", "Bearer " + this.apiKey)
-                .post(RequestBody.create(json, MediaType.parse("application/json")));
+        var url = this.apiBaseUrl + endpointUri();
+        var builder = new Request.Builder().header("Authorization", "Bearer " + this.apiKey);
 
-        optionalHeaders().forEach(builder::header);
-        var httpRequest = builder.build();
+        switch (httpMethod()) {
+            case GET -> {
+                url = appendQueryParams(url);
+                builder.get();
+            }
+
+            case POST -> {
+                var json = jsonConverter.convertRequestToJson(request);
+                builder.post(RequestBody.create(json, MediaType.parse("application/json")));
+            }
+        }
+
+        additionalHeaders().forEach(builder::header);
+        var httpRequest = builder.url(url).build();
 
         try {
             var response = httpClient.newCall(httpRequest).execute();
@@ -50,12 +70,20 @@ public abstract class RequestSender<I, O> {
         }
     }
 
-    protected Map<String, String> optionalHeaders() {
-        return Map.of();
-    }
+    private String appendQueryParams(String url) {
+        var builder = new StringBuilder(url);
 
-    protected abstract String endpointUri();
-    protected abstract Class<I> requestType();
-    protected abstract Class<O> responseType();
+        var params = queryParams();
+        if (!params.isEmpty()) {
+            builder.append("?");
+
+            params.forEach((key, value) -> builder.append(key).append("=").append(value).append("&"));
+
+            // Remove the trailing "&"
+            builder.setLength(builder.length() - 1);
+        }
+
+        return builder.toString();
+    }
 
 }

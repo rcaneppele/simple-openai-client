@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.response.CreateAssistantResponse;
 
@@ -9,6 +10,11 @@ public class CreateAssistantRequestSender extends AssistantRequestSender<CreateA
 
     public CreateAssistantRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         super(apiBaseUrl, timeout, apiKey);
+    }
+
+    @Override
+    protected HttpMethod httpMethod() {
+        return HttpMethod.POST;
     }
 
     @Override

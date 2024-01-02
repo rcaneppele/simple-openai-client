@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
 
@@ -14,6 +15,11 @@ public class ChatCompletionRequestSender extends RequestSender<ChatCompletionReq
     @Override
     protected String endpointUri() {
         return "chat/completions";
+    }
+
+    @Override
+    protected HttpMethod httpMethod() {
+        return HttpMethod.POST;
     }
 
     @Override
