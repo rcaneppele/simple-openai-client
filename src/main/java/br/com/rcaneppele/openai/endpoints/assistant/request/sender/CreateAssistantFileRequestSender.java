@@ -2,11 +2,11 @@ package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.response.CreateAssistantFileResponse;
+import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
 
 import java.time.Duration;
 
-public class CreateAssistantFileRequestSender extends AssistantRequestSender<CreateAssistantFileRequest, CreateAssistantFileResponse> {
+public class CreateAssistantFileRequestSender extends AssistantRequestSender<CreateAssistantFileRequest, AssistantFile> {
 
     private final String assistantId;
 
@@ -31,8 +31,8 @@ public class CreateAssistantFileRequestSender extends AssistantRequestSender<Cre
     }
 
     @Override
-    protected Class<CreateAssistantFileResponse> responseType() {
-        return CreateAssistantFileResponse.class;
+    protected Class<AssistantFile> responseType() {
+        return AssistantFile.class;
     }
 
 }

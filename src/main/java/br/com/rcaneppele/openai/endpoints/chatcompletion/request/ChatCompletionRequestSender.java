@@ -2,11 +2,11 @@ package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
-import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
 
 import java.time.Duration;
 
-public class ChatCompletionRequestSender extends RequestSender<ChatCompletionRequest, ChatCompletionResponse> {
+public class ChatCompletionRequestSender extends RequestSender<ChatCompletionRequest, ChatCompletion> {
 
     public ChatCompletionRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
         super(apiBaseUrl, timeout, apiKey);
@@ -28,8 +28,8 @@ public class ChatCompletionRequestSender extends RequestSender<ChatCompletionReq
     }
 
     @Override
-    protected Class<ChatCompletionResponse> responseType() {
-        return ChatCompletionResponse.class;
+    protected Class<ChatCompletion> responseType() {
+        return ChatCompletion.class;
     }
 
 }

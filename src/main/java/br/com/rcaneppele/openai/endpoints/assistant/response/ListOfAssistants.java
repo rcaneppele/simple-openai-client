@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public record ListAssistantsResponse(
+public record ListOfAssistants(
         String object,
         @JsonProperty("first_id")
         String firstId,
@@ -12,5 +12,5 @@ public record ListAssistantsResponse(
         String lastId,
         @JsonProperty("has_more")
         boolean hasMore,
-        List<CreateAssistantResponse> data
+        List<Assistant> data
 ) {}

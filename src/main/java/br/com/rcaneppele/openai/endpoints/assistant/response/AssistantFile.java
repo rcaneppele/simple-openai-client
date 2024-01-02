@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
-public record CreateAssistantFileResponse(
+public record AssistantFile(
         String id,
         String object,
         @JsonProperty("created_at")

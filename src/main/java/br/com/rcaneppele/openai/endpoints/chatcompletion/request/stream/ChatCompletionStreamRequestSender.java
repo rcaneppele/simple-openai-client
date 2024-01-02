@@ -3,7 +3,7 @@ package br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream;
 import br.com.rcaneppele.openai.common.response.stream.StreamResponseBuilder;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
-import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletionResponse;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -20,7 +20,7 @@ public class ChatCompletionStreamRequestSender extends ChatCompletionRequestSend
         this.builder = new StreamResponseBuilder();
     }
 
-    public Observable<ChatCompletionResponse> sendStreamRequest(ChatCompletionRequest request) {
+    public Observable<ChatCompletion> sendStreamRequest(ChatCompletionRequest request) {
         return Observable.create(emitter -> {
             var json = jsonConverter.convertRequestToJson(request);
             var httpRequest = new Request.Builder()

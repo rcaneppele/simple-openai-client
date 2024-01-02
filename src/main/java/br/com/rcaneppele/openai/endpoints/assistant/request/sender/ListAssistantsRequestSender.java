@@ -2,13 +2,13 @@ package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.response.ListAssistantsResponse;
+import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
 
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssistantsRequest, ListAssistantsResponse> {
+public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssistantsRequest, ListOfAssistants> {
 
     private final Map<String, Object> queryParam = new LinkedHashMap<>();
 
@@ -17,7 +17,7 @@ public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssi
     }
 
     @Override
-    public ListAssistantsResponse sendRequest(ListAssistantsRequest request) {
+    public ListOfAssistants sendRequest(ListAssistantsRequest request) {
         addQueryParamIfNotNull("limit", request.limit());
         addQueryParamIfNotNull("order", request.order());
         addQueryParamIfNotNull("after", request.after());
@@ -37,8 +37,8 @@ public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssi
     }
 
     @Override
-    protected Class<ListAssistantsResponse> responseType() {
-        return ListAssistantsResponse.class;
+    protected Class<ListOfAssistants> responseType() {
+        return ListOfAssistants.class;
     }
 
     @Override

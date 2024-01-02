@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
-public record CreateAssistantResponse(
+public record Assistant(
         String id,
         String object,
         @JsonProperty("created_at")

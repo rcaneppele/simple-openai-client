@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.List;
 
-public record ChatCompletionResponse(
+public record ChatCompletion(
         String id,
         String object,
         Instant created,
