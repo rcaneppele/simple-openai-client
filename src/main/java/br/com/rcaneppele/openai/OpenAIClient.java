@@ -78,4 +78,17 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
+    public AssistantFile sendRetrieveAssistantFileRequest(String assistantId, String fileId) {
+        if (assistantId == null || assistantId.isBlank()) {
+            throw new IllegalArgumentException("Assistant id is required!");
+        }
+
+        if (fileId == null || fileId.isBlank()) {
+            throw new IllegalArgumentException("file id is required!");
+        }
+
+        var sender = new RetrieveAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
+        return sender.sendRequest(null);
+    }
+
 }
