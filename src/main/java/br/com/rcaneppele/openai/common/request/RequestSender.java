@@ -56,6 +56,10 @@ public abstract class RequestSender<I, O> {
                 var json = jsonConverter.convertRequestToJson(request);
                 builder.post(RequestBody.create(json, MediaType.parse("application/json")));
             }
+
+            case DELETE -> {
+                builder.delete();
+            }
         }
 
         additionalHeaders().forEach(builder::header);

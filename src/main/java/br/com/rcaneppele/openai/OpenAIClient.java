@@ -5,10 +5,7 @@ import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantReque
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.*;
-import br.com.rcaneppele.openai.endpoints.assistant.response.Assistant;
-import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
-import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
-import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
+import br.com.rcaneppele.openai.endpoints.assistant.response.*;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
@@ -88,6 +85,14 @@ public class OpenAIClient {
         }
 
         var sender = new RetrieveAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
+        return sender.sendRequest(null);
+    }
+
+    public DeletionStatus sendDeleteAssistantRequest(String assistantId) {
+        if (assistantId == null || assistantId.isBlank()) {
+            throw new IllegalArgumentException("Assistant id is required!");
+        }
+        var sender = new DeleteAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(null);
     }
 
