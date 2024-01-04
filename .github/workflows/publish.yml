@@ -18,6 +18,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_TOKEN
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
 
       - name: Run Tests
         run: mvn test
@@ -25,8 +30,8 @@ jobs:
       - name: Build and Deploy
         if: success()
         run: |
-          mvn clean deploy -P prod -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" -DskipTests
+          mvn clean deploy -P prod -DskipTests
         env:
-          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
