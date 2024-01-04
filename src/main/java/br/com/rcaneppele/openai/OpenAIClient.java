@@ -1,9 +1,6 @@
 package br.com.rcaneppele.openai;
 
-import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.*;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.*;
 import br.com.rcaneppele.openai.endpoints.assistant.response.*;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
@@ -52,6 +49,7 @@ public class OpenAIClient {
 
     public AssistantFile sendCreateAssistantFileRequest(CreateAssistantFileRequest request) {
         var assistantId = request.assistantId();
+        validateAssistantId(assistantId);
         var sender = new CreateAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
@@ -63,6 +61,7 @@ public class OpenAIClient {
 
     public ListOfAssistantFiles sendListAssistantFilesRequest(ListAssistantFilesRequest request) {
         var assistantId = request.assistantId();
+        validateAssistantId(assistantId);
         var sender = new ListAssistantFilesRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
@@ -79,6 +78,13 @@ public class OpenAIClient {
 
         var sender = new RetrieveAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
         return sender.sendRequest(null);
+    }
+
+    public Assistant sendModifyAssistantRequest(ModifyAssistantRequest request) {
+        var assistantId = request.assistantId();
+        validateAssistantId(assistantId);
+        var sender = new ModifyAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
+        return sender.sendRequest(request);
     }
 
     public DeletionStatus sendDeleteAssistantRequest(String assistantId) {

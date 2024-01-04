@@ -3,8 +3,8 @@ package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.builder.CreateAssistantRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.assistant.request.ModifyAssistantRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.builder.ModifyAssistantRequestBuilder;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.ToolType;
 import okhttp3.mockwebserver.MockResponse;
@@ -15,16 +15,17 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
+class ModifyAssistantRequestSenderTest extends BaseRequestSenderTest {
 
     private static final String ASSISTANT_HEADER = "assistants=v1";
+    private static final String ASSISTANT_ID = "asst_123";
 
-    private CreateAssistantRequestSender sender;
-    private JsonConverter<CreateAssistantRequest> jsonConverter;
+    private ModifyAssistantRequestSender sender;
+    private JsonConverter<ModifyAssistantRequest> jsonConverter;
 
     @Override
     protected String expectedURI() {
-        return "assistants";
+        return "assistants/" + ASSISTANT_ID;
     }
 
     @Override
@@ -53,17 +54,18 @@ class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
 
     @BeforeEach
     void setUp() {
-        this.sender = new CreateAssistantRequestSender(url, TIMEOUT, API_KEY);
-        this.jsonConverter = new JsonConverter<>(CreateAssistantRequest.class);
+        this.sender = new ModifyAssistantRequestSender(url, TIMEOUT, API_KEY, ASSISTANT_ID);
+        this.jsonConverter = new JsonConverter<>(ModifyAssistantRequest.class);
     }
 
     @Test
-    public void shouldSendCreateAssistantRequest() throws InterruptedException {
+    public void shouldSendModifyAssistantRequest() throws InterruptedException {
         var name = "Math Tutor";
         var description = "Math Tutor description";
         var instructions = "You are a personal math tutor.";
         var model = OpenAIModel.GPT_4_1106_PREVIEW;
-        var request = (CreateAssistantRequest) new CreateAssistantRequestBuilder()
+        var request = (ModifyAssistantRequest) new ModifyAssistantRequestBuilder()
+                .assistantId(ASSISTANT_ID)
                 .model(model)
                 .name(name)
                 .description(description)

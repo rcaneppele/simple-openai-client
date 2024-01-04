@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.Set;
 
-public record CreateAssistantRequest(
+public record ModifyAssistantRequest(
+        String assistantId,
         String model,
         String name,
         String description,

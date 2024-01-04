@@ -1,6 +1,7 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
+import br.com.rcaneppele.openai.endpoints.assistant.request.AssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
@@ -13,13 +14,13 @@ import java.util.Set;
 
 public class CreateAssistantRequestBuilder {
 
-    private OpenAIModel model;
-    private String name;
-    private String description;
-    private String instructions;
-    private Set<Tool> tools = new HashSet<>();
-    private Set<String> fileIds = new HashSet<>();
-    private Map<String, String> metadata;
+    protected OpenAIModel model;
+    protected String name;
+    protected String description;
+    protected String instructions;
+    protected Set<Tool> tools = new HashSet<>();
+    protected Set<String> fileIds = new HashSet<>();
+    protected Map<String, String> metadata;
 
     public CreateAssistantRequestBuilder model(OpenAIModel model) {
         if (model == null) {
@@ -109,7 +110,7 @@ public class CreateAssistantRequestBuilder {
         return this;
     }
 
-    public CreateAssistantRequest build() {
+    public AssistantRequest build() {
         validateRequiredFields();
 
         return new CreateAssistantRequest(
