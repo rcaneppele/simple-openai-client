@@ -1,6 +1,6 @@
 # Simple OpenAI Client
 
-A simple Java library for seamless integration of your Java applications with OpenAI API.
+A **simple** Java library for seamless integration of your Java applications with OpenAI API.
 
 ## Supported Endpoints
 - [Chat Completion](https://platform.openai.com/docs/api-reference/chat/create)
@@ -19,7 +19,11 @@ A simple Java library for seamless integration of your Java applications with Op
 
 ### Gradle
 
-`implementation 'br.com.rcaneppele:simple-openai-client:1.0.3'`
+`implementation 'br.com.rcaneppele:simple-openai-client:1.0.4'`
+
+### Java version support
+
+To utilize the library, your project needs to be built with Java 17 or a later version.
 
 ## Usage
 
@@ -30,8 +34,8 @@ var client = new OpenAIClient("YOUR_API_KEY");
 
 var request = new ChatCompletionRequestBuilder()
     .model(OpenAIModel.GPT_4_1106_PREVIEW)
-    .systemMessage("You are a Sustainable product name generator")
-    .userMessage("Generate 2 products name")
+    .systemMessage("You are a sustainable product name generator")
+    .userMessage("Please generate two product names")
     .build();
 
 var response = client.sendChatCompletionRequest(request);
@@ -41,7 +45,7 @@ System.out.println(response);
 
 The response is an object of type [`ChatCompletionResponse`](src/main/java/br/com/rcaneppele/openai/chatcompletion/response/ChatCompletionResponse.java).
 
-If you only need to print the generated message content:
+If you only need to get the generated message content:
 
 ```java
 // First choice
@@ -56,13 +60,13 @@ response.choices().forEach(c -> System.out.println(c.messageContent()));
 
 ### Chat Completion Parameters
 
-The [`ChatCompletionRequestBuilder`](src/main/java/br/com/rcaneppele/openai/chatcompletion/request/ChatCompletionRequestBuilder.java) object has methods to set API Parameters:
+The [`ChatCompletionRequestBuilder`](src/main/java/br/com/rcaneppele/openai/chatcompletion/request/ChatCompletionRequestBuilder.java) object has methods to set API parameters:
 
 ```java
 var request = new ChatCompletionRequestBuilder()
     .model(OpenAIModel.GPT_4_1106_PREVIEW)
-    .systemMessage("You are a Sustainable product name generator")
-    .userMessage("Generate 2 products name")
+    .systemMessage("You are a sustainable product name generator")
+    .userMessage("Please generate two product names")
     .n(3)
     .maxTokens(2048)
     .temperature(1.3)
@@ -102,36 +106,34 @@ var client = new OpenAIClient(apiKey);
 
 ### Streaming
 
-If you require [Streaming support](https://platform.openai.com/docs/api-reference/streaming), you can use the library as shown below:
+If you require Chat Completion [Streaming support](https://platform.openai.com/docs/api-reference/streaming), you can use the library as shown below:
 
 ```java
 var request = new ChatCompletionRequestBuilder()
     .model(OpenAIModel.GPT_4_1106_PREVIEW)
-    .systemMessage("You are a Sustainable product name generator")
-    .userMessage("Generate 2 products name")
+    .systemMessage("You are a sustainable product name generator")
+    .userMessage("Please generate two product names")
     .build();
 
-client.sendStreamChatCompletionRequest(request).subscribe(response ->
-    {
-        var message = response.firstChoiceMessageContent();
-        if (message != null) {
-            System.out.println(message);
-        }
-    });
+client.sendStreamChatCompletionRequest(request).subscribe(response -> {
+    var message = response.firstChoiceMessageContent();
+    if (message != null) {
+        System.out.println(message);
+    }
+});
 ```
 
 Optionally, you can listen to events such as **errors** and **completion** during streaming:
 
 ```java
-client.sendStreamChatCompletionRequest(request).subscribe(response ->
-    {
-        var message = response.firstChoiceMessageContent();
-        if (message != null) {
-            System.out.println(message);
-        }
-    }, error -> {
-        System.out.println("Error during streaming: " +error.getMessage());
-    }, () -> {
-        System.out.println("Streaming completed");
-    });
+client.sendStreamChatCompletionRequest(request).subscribe(response -> {
+    var message = response.firstChoiceMessageContent();
+    if (message != null) {
+        System.out.println(message);
+    }
+}, error -> {
+    System.out.println("Error during streaming: " +error.getMessage());
+}, () -> {
+    System.out.println("Streaming completed");
+});
 ```
