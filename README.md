@@ -3,7 +3,13 @@
 A **simple** Java library for seamless integration of your Java applications with OpenAI API.
 
 ## Supported Endpoints
-- [Chat Completion](https://platform.openai.com/docs/api-reference/chat/create)
+- [Chat](https://platform.openai.com/docs/api-reference/chat)
+- [Assistant](https://platform.openai.com/docs/api-reference/assistants)
+
+In development:
+- [Threads](https://platform.openai.com/docs/api-reference/threads)
+- [Messages](https://platform.openai.com/docs/api-reference/messages)
+- [Runs](https://platform.openai.com/docs/api-reference/runs)
 
 ## Installation
 
@@ -43,7 +49,7 @@ var response = client.sendChatCompletionRequest(request);
 System.out.println(response);
 ```
 
-The response is an object of type [`ChatCompletionResponse`](src/main/java/br/com/rcaneppele/openai/chatcompletion/response/ChatCompletionResponse.java).
+The response is an object of type [`ChatCompletion`](src/main/java/br/com/rcaneppele/openai/endpoints/chatcompletion/response/ChatCompletion.java).
 
 If you only need to get the generated message content:
 
@@ -58,9 +64,9 @@ System.out.println(response.lastChoiceMessageContent());
 response.choices().forEach(c -> System.out.println(c.messageContent()));
 ```
 
-### Chat Completion Parameters
+#### Chat Completion Parameters
 
-The [`ChatCompletionRequestBuilder`](src/main/java/br/com/rcaneppele/openai/chatcompletion/request/ChatCompletionRequestBuilder.java) object has methods to set API parameters:
+The [`ChatCompletionRequestBuilder`](src/main/java/br/com/rcaneppele/openai/endpoints/chatcompletion/request/ChatCompletionRequestBuilder.java) object has methods to set API parameters:
 
 ```java
 var request = new ChatCompletionRequestBuilder()
@@ -80,31 +86,7 @@ var response = client.sendChatCompletionRequest(request);
 response.choices().forEach(c -> System.out.println(c.messageContent()));
 ```
 
-### Timeout
-
-The default OpenAI API response timeout is **15 seconds**. If you need to change it:
-
-```java
-// 30 seconds timeout
-var client = new OpenAIClient("YOUR_API_KEY", 30);
-
-// No timeout
-var client = new OpenAIClient("YOUR_API_KEY", 0);
-```
-
-### API Key
-
-To send requests, generate an [API KEY](https://platform.openai.com/api-keys)
-
-**ATTENTION!** The API key is sensitive and confidential information; do not use it directly in your code. Instead, use **Environment Variables** to protect your key:
-
-```java
-// Assuming you have an environment variable named OPENAI_API_KEY
-var apiKey = System.getenv("OPENAI_API_KEY");
-var client = new OpenAIClient(apiKey);
-```
-
-### Streaming
+#### Streaming
 
 If you require Chat Completion [Streaming support](https://platform.openai.com/docs/api-reference/streaming), you can use the library as shown below:
 
@@ -137,3 +119,105 @@ client.sendStreamChatCompletionRequest(request).subscribe(response -> {
     System.out.println("Streaming completed");
 });
 ```
+
+### Timeout
+
+The default OpenAI API response timeout is **15 seconds**. If you need to change it:
+
+```java
+// 30 seconds timeout
+var client = new OpenAIClient("YOUR_API_KEY", 30);
+
+// No timeout
+var client = new OpenAIClient("YOUR_API_KEY", 0);
+```
+
+### API Key
+
+To send requests, generate an [API KEY](https://platform.openai.com/api-keys)
+
+**ATTENTION!** The API key is sensitive and confidential information; do not use it directly in your code. Instead, use **Environment Variables** to protect your key:
+
+```java
+// Assuming you have an environment variable named OPENAI_API_KEY
+var apiKey = System.getenv("OPENAI_API_KEY");
+var client = new OpenAIClient(apiKey);
+```
+
+### Assistants
+
+#### Create Assistant
+
+```java
+var request = new CreateAssistantRequestBuilder()
+    .model(OpenAIModel.GPT_4_1106_PREVIEW)
+    .name("Assistant name")
+    .description("Assistant description")
+    .instructions("Assistant instructions")
+    .retrieval()
+    .codeInterpreter()
+    .fileIds("fileId-1", "fileId-2", "fileId-3")
+    .metadata(Map.of("metadata-key-1", "metadata-value-1", "metadata-key-2", "metadata-value-2"))
+    .build();
+
+var response = client.sendCreateAssistantRequest(request);
+
+System.out.println(response);
+```
+
+The response is an object of type [`Assistant`](src/main/java/br/com/rcaneppele/openai/endpoints/assistant/response/Assistant.java).
+
+If you need to create an Assistant with [Function Calling](https://platform.openai.com/docs/guides/function-calling) support:
+
+```java
+//the third parameter is a `Map<String, Object>` representing the function parameters
+var myFunction = new Function("function-name", "function description", Map.of("name", "string", "age", "number"));
+
+var request = new CreateAssistantRequestBuilder()
+    .model(OpenAIModel.GPT_4_1106_PREVIEW)
+    .name("Assistant name")
+    .description("Assistant description")
+    .instructions("Assistant instructions")
+    .function(myFunction)
+    .build();
+```
+
+#### List Assistants
+
+```java
+var request = new ListAssistantsRequestBuilder().build();
+var response = client.sendListAssistantsRequest(request);
+
+System.out.println(response);
+```
+
+The response is an object of type [`ListOfAssistants`](src/main/java/br/com/rcaneppele/openai/endpoints/assistant/response/ListOfAssistants.java).
+
+Optionally, you can change the default pagination/filter parameters:
+
+```java
+var request = new ListAssistantsRequestBuilder()
+    .limit(5)
+    .after("after-assistant-id")
+    .before("before-assistant-id)
+    .ascOrder()
+    .build();
+```
+
+#### Retrieve Assistant
+
+```java
+var assistant = client.sendRetrieveAssistantRequest("assistant_id");
+
+System.out.println(assistant);
+```
+
+#### Delete Assistant
+
+```java
+var status = client.sendDeleteAssistantRequest("assistant_id");
+
+System.out.println(status);
+```
+
+The response is an object of type [`DeletionStatus`](src/main/java/br/com/rcaneppele/openai/endpoints/assistant/response/DeletionStatus.java).
