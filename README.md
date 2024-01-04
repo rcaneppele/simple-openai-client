@@ -170,7 +170,7 @@ The response is an object of type [`Assistant`](src/main/java/br/com/rcaneppele/
 If you need to create an Assistant with [Function Calling](https://platform.openai.com/docs/guides/function-calling) support:
 
 ```java
-//the third parameter is a `Map<String, Object>` representing the function parameters
+// The third parameter is a Map<String, Object> representing the function parameters
 var myFunction = new Function("function-name", "function description", Map.of("name", "string", "age", "number"));
 
 var request = new CreateAssistantRequestBuilder()
@@ -199,7 +199,7 @@ Optionally, you can change the default pagination/filter parameters:
 var request = new ListAssistantsRequestBuilder()
     .limit(5)
     .after("after-assistant-id")
-    .before("before-assistant-id)
+    .before("before-assistant-id")
     .ascOrder()
     .build();
 ```
