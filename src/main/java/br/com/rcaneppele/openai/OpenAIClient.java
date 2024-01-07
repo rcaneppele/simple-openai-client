@@ -7,6 +7,9 @@ import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionR
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
+import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
+import br.com.rcaneppele.openai.endpoints.threads.request.sender.CreateThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
 import io.reactivex.rxjava3.core.Observable;
 
 import java.time.Duration;
@@ -99,6 +102,11 @@ public class OpenAIClient {
 
         var sender = new DeleteAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
         return sender.sendRequest(null);
+    }
+
+    public Thread sendCreateThreadRequest(CreateThreadRequest request) {
+        var sender = new CreateThreadRequestSender(OPENAI_API_URL, timeout, apiKey);
+        return sender.sendRequest(request);
     }
 
     private static void validateAssistantId(String assistantId) {

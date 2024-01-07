@@ -1,0 +1,14 @@
+package br.com.rcaneppele.openai.endpoints.threads.messages.request;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
+import java.util.Set;
+
+public record CreateMessageRequest(
+        String role,
+        String content,
+        @JsonProperty("file_ids")
+        Set<String> fileIds,
+        Map<String, String> metadata
+) {}

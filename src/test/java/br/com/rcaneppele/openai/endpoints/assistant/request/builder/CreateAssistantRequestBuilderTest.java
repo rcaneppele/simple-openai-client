@@ -1,28 +1,32 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
+import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.ToolType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class CreateAssistantRequestBuilderTest {
 
+    @InjectMocks
     private CreateAssistantRequestBuilder builder;
 
-    @BeforeEach
-    void beforeEach() {
-        this. builder = new CreateAssistantRequestBuilder();
-    }
+    @Mock
+    private MetadataValidator metadataValidator;
 
     @Test
     void shouldValidateModel() {
@@ -123,29 +127,10 @@ class CreateAssistantRequestBuilderTest {
     }
 
     @Test
-    void shouldNotAddMoreThan16Metadata() {
-        var metadata = new HashMap<String, String>();
-        for (int i = 1; i <= 17; i++) {
-            var actual = String.valueOf(i);
-            metadata.put(actual, actual);
-        }
-
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.metadata(metadata));
-        assertEquals("There can be a maximum of 16 key-value pairs that can be attached to the assistant!", exception.getMessage());
-    }
-
-    @Test
-    void shouldNotAddMetadataWithInvalidKey() {
-        var invalidKey = "a".repeat(65);
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.metadata(Map.of(invalidKey, "value")));
-        assertEquals("Metadata Keys can be a maximum of 64 characters long!", exception.getMessage());
-    }
-
-    @Test
-    void shouldNotAddMetadataWithInvalidValue() {
-        var invalidValue = "a".repeat(513);
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.metadata(Map.of("key", invalidValue)));
-        assertEquals("Metadata Values can be a maximum of 512 characters long!", exception.getMessage());
+    void shouldCallMetadataValidator() {
+        var metadata = Map.of("key", "value");
+        builder.metadata(metadata);
+        verify(metadataValidator).validate(metadata);
     }
 
     @Test

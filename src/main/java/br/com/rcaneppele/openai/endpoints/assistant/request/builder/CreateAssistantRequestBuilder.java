@@ -1,6 +1,7 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
+import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.AssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;
@@ -21,6 +22,8 @@ public class CreateAssistantRequestBuilder {
     protected Set<Tool> tools = new HashSet<>();
     protected Set<String> fileIds = new HashSet<>();
     protected Map<String, String> metadata;
+
+    private MetadataValidator metadataValidator = new MetadataValidator();
 
     public CreateAssistantRequestBuilder model(OpenAIModel model) {
         if (model == null) {
@@ -92,20 +95,7 @@ public class CreateAssistantRequestBuilder {
     }
 
     public CreateAssistantRequestBuilder metadata(Map<String, String> metadata) {
-        if (metadata.size() > 16) {
-            throw new IllegalArgumentException("There can be a maximum of 16 key-value pairs that can be attached to the assistant!");
-        }
-
-        var keysValid = metadata.keySet().stream().allMatch(key -> key.length() <= 64);
-        if (!keysValid) {
-            throw new IllegalArgumentException("Metadata Keys can be a maximum of 64 characters long!");
-        }
-
-        var valuesValid = metadata.values().stream().allMatch(key -> key.length() <= 512);
-        if (!valuesValid) {
-            throw new IllegalArgumentException("Metadata Values can be a maximum of 512 characters long!");
-        }
-
+        this.metadataValidator.validate(metadata);
         this.metadata = metadata;
         return this;
     }
