@@ -9,6 +9,7 @@ import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatComp
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
 import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
 import br.com.rcaneppele.openai.endpoints.threads.request.sender.CreateThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.threads.request.sender.RetrieveThreadRequestSender;
 import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
 import io.reactivex.rxjava3.core.Observable;
 
@@ -109,16 +110,32 @@ public class OpenAIClient {
         return sender.sendRequest(request);
     }
 
-    private static void validateAssistantId(String assistantId) {
-        if (assistantId == null || assistantId.isBlank()) {
+    public Thread sendRetrieveThreadRequest(String threadId) {
+        validateThreadId(threadId);
+        var sender = new RetrieveThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
+        return sender.sendRequest(null);
+    }
+
+    private void validateAssistantId(String assistantId) {
+        if (!isValid(assistantId)) {
             throw new IllegalArgumentException("Assistant id is required!");
         }
     }
 
-    private static void validateFileId(String fileId) {
-        if (fileId == null || fileId.isBlank()) {
+    private void validateThreadId(String threadId) {
+        if (!isValid(threadId)) {
+            throw new IllegalArgumentException("Thread id is required!");
+        }
+    }
+
+    private void validateFileId(String fileId) {
+        if (!isValid(fileId)) {
             throw new IllegalArgumentException("file id is required!");
         }
+    }
+
+    private boolean isValid(String id) {
+        return id != null && !id.isBlank();
     }
 
 }
