@@ -47,5 +47,6 @@ public abstract class BaseRequestSenderTest {
 
     protected abstract String expectedURI();
     protected abstract MockResponse mockResponse();
+    protected abstract void shouldSendRequest() throws InterruptedException;
 
 }

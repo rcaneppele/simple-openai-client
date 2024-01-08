@@ -22,6 +22,7 @@ class CreateThreadRequestSenderTest extends BaseRequestSenderTest {
 
     private RequestSender<CreateThreadRequest, Thread> sender;
     private JsonConverter<CreateThreadRequest> jsonConverter;
+    private CreateThreadRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -46,15 +47,16 @@ class CreateThreadRequestSenderTest extends BaseRequestSenderTest {
     void setUp() {
         this.sender = new CreateThreadRequestSender(url, TIMEOUT, API_KEY);
         this.jsonConverter = new JsonConverter<>(CreateThreadRequest.class);
+        this.builder = new CreateThreadRequestBuilder();
     }
 
     @Test
-    public void shouldSendCreateThreadRequest() throws InterruptedException {
+    public void shouldSendRequest() throws InterruptedException {
         var message = "My message";
         var metadata = Map.of("key", "value");
         var fileIds = Set.of("file-1", "file-2");
 
-        var request = new CreateThreadRequestBuilder()
+        var request = builder
                 .metadata(metadata)
                 .addUserMessage(message, fileIds, metadata)
                 .build();

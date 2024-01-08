@@ -17,6 +17,7 @@ class ListAssistantFilesRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_ID = "asst_123";
 
     private RequestSender<ListAssistantFilesRequest, ListOfAssistantFiles> sender;
+    private ListAssistantFilesRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -54,11 +55,12 @@ class ListAssistantFilesRequestSenderTest extends BaseRequestSenderTest {
     @BeforeEach
     void setUp() {
         this.sender = new ListAssistantFilesRequestSender(this.url, TIMEOUT, API_KEY, ASSISTANT_ID);
+        this.builder = new ListAssistantFilesRequestBuilder();
     }
 
     @Test
-    public void shouldSendListAssistantFilesRequest() throws InterruptedException {
-        var request = (ListAssistantFilesRequest) new ListAssistantFilesRequestBuilder()
+    public void shouldSendRequest() throws InterruptedException {
+        var request = (ListAssistantFilesRequest) builder
                 .assistantId(ASSISTANT_ID)
                 .limit(2)
                 .ascOrder()

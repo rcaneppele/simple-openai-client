@@ -16,6 +16,7 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_HEADER = "assistants=v1";
 
     private RequestSender<ListAssistantsRequest, ListOfAssistants> sender;
+    private ListAssistantsRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -65,11 +66,12 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
     @BeforeEach
     void setUp() {
         this.sender = new ListAssistantsRequestSender(this.url, TIMEOUT, API_KEY);
+        this.builder = new ListAssistantsRequestBuilder();
     }
 
     @Test
-    public void shouldSendListAssistantsRequest() throws InterruptedException {
-        var request = (ListAssistantsRequest) new ListAssistantsRequestBuilder()
+    public void shouldSendRequest() throws InterruptedException {
+        var request = (ListAssistantsRequest) builder
                 .limit(2)
                 .ascOrder()
                 .after("after_id")

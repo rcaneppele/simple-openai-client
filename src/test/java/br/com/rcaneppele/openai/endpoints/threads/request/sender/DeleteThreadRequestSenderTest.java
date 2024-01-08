@@ -40,7 +40,7 @@ class DeleteThreadRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendDeleteThreadRequest() throws InterruptedException {
+    public void shouldSendRequest() throws InterruptedException {
         var response = sender.sendRequest(null);
         var httpRequest = server.takeRequest();
         executeCommonAssertions(httpRequest, "", 1, "DELETE");

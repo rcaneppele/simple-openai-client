@@ -17,6 +17,7 @@ class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
 
     private RequestSender<ChatCompletionRequest, ChatCompletion> sender;
     private JsonConverter<ChatCompletionRequest> jsonConverter;
+    private ChatCompletionRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -56,11 +57,12 @@ class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
     void setUp() {
         this.sender = new ChatCompletionRequestSender(url, TIMEOUT, API_KEY);
         this.jsonConverter = new JsonConverter<>(ChatCompletionRequest.class);
+        this.builder = new ChatCompletionRequestBuilder();
     }
 
     @Test
-    public void shouldSendChatCompletionRequest() throws InterruptedException {
-        var request = new ChatCompletionRequestBuilder()
+    public void shouldSendRequest() throws InterruptedException {
+        var request = builder
                 .model(OpenAIModel.GPT_4_1106_PREVIEW)
                 .userMessage("the user message")
                 .build();

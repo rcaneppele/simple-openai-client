@@ -23,6 +23,7 @@ class ModifyThreadRequestSenderTest extends BaseRequestSenderTest {
 
     private RequestSender<ModifyThreadRequest, Thread> sender;
     private JsonConverter<ModifyThreadRequest> jsonConverter;
+    private ModifyThreadRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -50,11 +51,12 @@ class ModifyThreadRequestSenderTest extends BaseRequestSenderTest {
     void setUp() {
         this.sender = new ModifyThreadRequestSender(this.url, TIMEOUT, API_KEY, THREAD_ID);
         this.jsonConverter = new JsonConverter<>(ModifyThreadRequest.class);
+        this.builder = new ModifyThreadRequestBuilder();
     }
 
     @Test
-    public void shouldSendModifyThreadRequest() throws InterruptedException {
-        var request = (ModifyThreadRequest) new ModifyThreadRequestBuilder()
+    public void shouldSendRequest() throws InterruptedException {
+        var request = (ModifyThreadRequest) builder
                 .threadId(THREAD_ID)
                 .metadata(Map.of("modified", "true", "user", "user-123"))
                 .build();

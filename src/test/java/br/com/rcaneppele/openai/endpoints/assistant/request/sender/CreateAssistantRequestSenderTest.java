@@ -23,6 +23,7 @@ class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
 
     private RequestSender<CreateAssistantRequest, Assistant> sender;
     private JsonConverter<CreateAssistantRequest> jsonConverter;
+    private CreateAssistantRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -57,15 +58,16 @@ class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
     void setUp() {
         this.sender = new CreateAssistantRequestSender(url, TIMEOUT, API_KEY);
         this.jsonConverter = new JsonConverter<>(CreateAssistantRequest.class);
+        this.builder = new CreateAssistantRequestBuilder();
     }
 
     @Test
-    public void shouldSendCreateAssistantRequest() throws InterruptedException {
+    public void shouldSendRequest() throws InterruptedException {
         var name = "Math Tutor";
         var description = "Math Tutor description";
         var instructions = "You are a personal math tutor.";
         var model = OpenAIModel.GPT_4_1106_PREVIEW;
-        var request = (CreateAssistantRequest) new CreateAssistantRequestBuilder()
+        var request = (CreateAssistantRequest) builder
                 .model(model)
                 .name(name)
                 .description(description)

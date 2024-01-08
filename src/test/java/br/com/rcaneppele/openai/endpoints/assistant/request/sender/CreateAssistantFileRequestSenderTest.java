@@ -22,6 +22,7 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
 
     private RequestSender<CreateAssistantFileRequest, AssistantFile> sender;
     private JsonConverter<CreateAssistantFileRequest> jsonConverter;
+    private CreateAssistantFileRequestBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -46,12 +47,13 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     void setUp() {
         this.sender = new CreateAssistantFileRequestSender(this.url, TIMEOUT, API_KEY, ASSISTANT_ID);
         this.jsonConverter = new JsonConverter<>(CreateAssistantFileRequest.class);
+        this.builder = new CreateAssistantFileRequestBuilder();
     }
 
     @Test
-    public void shouldSendCreateAssistantFileRequest() throws InterruptedException {
+    public void shouldSendRequest() throws InterruptedException {
         var fileId = "file-123";
-        var request = new CreateAssistantFileRequestBuilder()
+        var request = builder
                 .assistantId(ASSISTANT_ID)
                 .fileId(fileId)
                 .build();
