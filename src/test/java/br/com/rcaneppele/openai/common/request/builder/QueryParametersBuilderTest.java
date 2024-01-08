@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
+package br.com.rcaneppele.openai.common.request.builder;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,13 +7,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ListAssistantsRequestBuilderTest {
+class QueryParametersBuilderTest {
 
-    private ListAssistantsRequestBuilder builder;
+    private QueryParametersBuilder builder;
 
     @BeforeEach
     void beforeEach() {
-        this. builder = new ListAssistantsRequestBuilder();
+        this. builder = new QueryParametersBuilder();
     }
 
     @ParameterizedTest

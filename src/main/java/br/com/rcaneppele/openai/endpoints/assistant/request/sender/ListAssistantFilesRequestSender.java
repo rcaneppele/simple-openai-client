@@ -1,14 +1,14 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
-import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
+import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
 
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ListAssistantFilesRequestSender extends AssistantRequestSender<ListAssistantFilesRequest, ListOfAssistantFiles> {
+public class ListAssistantFilesRequestSender extends AssistantRequestSender<QueryParameters, ListOfAssistantFiles> {
 
     private final Map<String, Object> queryParam = new LinkedHashMap<>();
     private final String assistantId;
@@ -24,13 +24,15 @@ public class ListAssistantFilesRequestSender extends AssistantRequestSender<List
     }
 
     @Override
-    public ListOfAssistantFiles sendRequest(ListAssistantFilesRequest request) {
-        addQueryParamIfNotNull("limit", request.limit());
-        addQueryParamIfNotNull("order", request.order());
-        addQueryParamIfNotNull("after", request.after());
-        addQueryParamIfNotNull("before", request.before());
+    public ListOfAssistantFiles sendRequest(QueryParameters parameters) {
+        if (parameters != null) {
+            addQueryParamIfNotNull("limit", parameters.limit());
+            addQueryParamIfNotNull("order", parameters.order());
+            addQueryParamIfNotNull("after", parameters.after());
+            addQueryParamIfNotNull("before", parameters.before());
+        }
 
-        return super.sendRequest(request);
+        return super.sendRequest(parameters);
     }
 
     @Override
@@ -39,8 +41,8 @@ public class ListAssistantFilesRequestSender extends AssistantRequestSender<List
     }
 
     @Override
-    protected Class<ListAssistantFilesRequest> requestType() {
-        return ListAssistantFilesRequest.class;
+    protected Class<QueryParameters> requestType() {
+        return QueryParameters.class;
     }
 
     @Override

@@ -185,8 +185,7 @@ var request = new CreateAssistantRequestBuilder()
 #### List Assistants
 
 ```java
-var request = new ListAssistantsRequestBuilder().build();
-var response = client.sendListAssistantsRequest(request);
+var response = client.sendListAssistantsRequest();
 
 System.out.println(response);
 ```
@@ -196,12 +195,16 @@ The response is an object of type [`ListOfAssistants`](src/main/java/br/com/rcan
 Optionally, you can change the default pagination/filter parameters:
 
 ```java
-var request = new ListAssistantsRequestBuilder()
+var parameters = new QueryParametersBuilder()
     .limit(5)
     .after("after-assistant-id")
     .before("before-assistant-id")
     .ascOrder()
     .build();
+
+var response = client.sendListAssistantsRequest(parameters);
+
+System.out.println(response);
 ```
 
 #### Retrieve Assistant

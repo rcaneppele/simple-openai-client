@@ -1,7 +1,10 @@
 package br.com.rcaneppele.openai;
 
+import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.common.validation.IdValidator;
-import br.com.rcaneppele.openai.endpoints.assistant.request.*;
+import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
+import br.com.rcaneppele.openai.endpoints.assistant.request.ModifyAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.*;
 import br.com.rcaneppele.openai.endpoints.assistant.response.*;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
@@ -64,16 +67,23 @@ public class OpenAIClient {
         return sender.sendRequest(request);
     }
 
-    public ListOfAssistants sendListAssistantsRequest(ListAssistantsRequest request) {
+    public ListOfAssistants sendListAssistantsRequest(QueryParameters parameters) {
         var sender = new ListAssistantsRequestSender(OPENAI_API_URL, timeout, apiKey);
-        return sender.sendRequest(request);
+        return sender.sendRequest(parameters);
     }
 
-    public ListOfAssistantFiles sendListAssistantFilesRequest(ListAssistantFilesRequest request) {
-        var assistantId = request.assistantId();
+    public ListOfAssistants sendListAssistantsRequest() {
+        return this.sendListAssistantsRequest(null);
+    }
+
+    public ListOfAssistantFiles sendListAssistantFilesRequest(String assistantId, QueryParameters parameters) {
         idValidator.validateAssistantId(assistantId);
         var sender = new ListAssistantFilesRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
-        return sender.sendRequest(request);
+        return sender.sendRequest(parameters);
+    }
+
+    public ListOfAssistantFiles sendListAssistantFilesRequest(String assistantId) {
+        return this.sendListAssistantFilesRequest(assistantId, null);
     }
 
     public Assistant sendRetrieveAssistantRequest(String assistantId) {

@@ -1,9 +1,9 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.common.request.RequestSender;
+import br.com.rcaneppele.openai.common.request.builder.QueryParametersBuilder;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.builder.ListAssistantsRequestBuilder;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +15,8 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
 
     private static final String ASSISTANT_HEADER = "assistants=v1";
 
-    private RequestSender<ListAssistantsRequest, ListOfAssistants> sender;
-    private ListAssistantsRequestBuilder builder;
+    private RequestSender<QueryParameters, ListOfAssistants> sender;
+    private QueryParametersBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -66,12 +66,12 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
     @BeforeEach
     void setUp() {
         this.sender = new ListAssistantsRequestSender(this.url, TIMEOUT, API_KEY);
-        this.builder = new ListAssistantsRequestBuilder();
+        this.builder = new QueryParametersBuilder();
     }
 
     @Test
     public void shouldSendRequest() throws InterruptedException {
-        var request = (ListAssistantsRequest) builder
+        var request = builder
                 .limit(2)
                 .ascOrder()
                 .after("after_id")

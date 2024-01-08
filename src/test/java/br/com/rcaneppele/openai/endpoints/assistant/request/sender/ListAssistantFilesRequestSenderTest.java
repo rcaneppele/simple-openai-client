@@ -1,9 +1,9 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.common.request.RequestSender;
+import br.com.rcaneppele.openai.common.request.builder.QueryParametersBuilder;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
-import br.com.rcaneppele.openai.endpoints.assistant.request.builder.ListAssistantFilesRequestBuilder;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +16,8 @@ class ListAssistantFilesRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String ASSISTANT_ID = "asst_123";
 
-    private RequestSender<ListAssistantFilesRequest, ListOfAssistantFiles> sender;
-    private ListAssistantFilesRequestBuilder builder;
+    private RequestSender<QueryParameters, ListOfAssistantFiles> sender;
+    private QueryParametersBuilder builder;
 
     @Override
     protected String expectedURI() {
@@ -55,13 +55,12 @@ class ListAssistantFilesRequestSenderTest extends BaseRequestSenderTest {
     @BeforeEach
     void setUp() {
         this.sender = new ListAssistantFilesRequestSender(this.url, TIMEOUT, API_KEY, ASSISTANT_ID);
-        this.builder = new ListAssistantFilesRequestBuilder();
+        this.builder = new QueryParametersBuilder();
     }
 
     @Test
     public void shouldSendRequest() throws InterruptedException {
-        var request = (ListAssistantFilesRequest) builder
-                .assistantId(ASSISTANT_ID)
+        var request = builder
                 .limit(2)
                 .ascOrder()
                 .after("after_id")

@@ -1,14 +1,14 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
-import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
+import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
 
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssistantsRequest, ListOfAssistants> {
+public class ListAssistantsRequestSender extends AssistantRequestSender<QueryParameters, ListOfAssistants> {
 
     private final Map<String, Object> queryParam = new LinkedHashMap<>();
 
@@ -17,13 +17,15 @@ public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssi
     }
 
     @Override
-    public ListOfAssistants sendRequest(ListAssistantsRequest request) {
-        addQueryParamIfNotNull("limit", request.limit());
-        addQueryParamIfNotNull("order", request.order());
-        addQueryParamIfNotNull("after", request.after());
-        addQueryParamIfNotNull("before", request.before());
+    public ListOfAssistants sendRequest(QueryParameters parameters) {
+        if (parameters != null) {
+            addQueryParamIfNotNull("limit", parameters.limit());
+            addQueryParamIfNotNull("order", parameters.order());
+            addQueryParamIfNotNull("after", parameters.after());
+            addQueryParamIfNotNull("before", parameters.before());
+        }
 
-        return super.sendRequest(request);
+        return super.sendRequest(parameters);
     }
 
     @Override
@@ -32,8 +34,8 @@ public class ListAssistantsRequestSender extends AssistantRequestSender<ListAssi
     }
 
     @Override
-    protected Class<ListAssistantsRequest> requestType() {
-        return ListAssistantsRequest.class;
+    protected Class<QueryParameters> requestType() {
+        return QueryParameters.class;
     }
 
     @Override
