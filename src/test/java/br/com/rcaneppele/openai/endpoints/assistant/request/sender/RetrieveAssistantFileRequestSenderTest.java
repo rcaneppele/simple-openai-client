@@ -1,6 +1,8 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
+import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,7 @@ class RetrieveAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_ID = "asst_123";
     private static final String FILE_ID = "file-123";
 
-    private RetrieveAssistantFileRequestSender sender;
+    private RequestSender<Void, AssistantFile> sender;
 
     @Override
     protected String expectedURI() {

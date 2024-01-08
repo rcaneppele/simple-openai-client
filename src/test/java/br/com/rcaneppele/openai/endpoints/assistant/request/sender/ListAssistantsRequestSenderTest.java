@@ -1,8 +1,10 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantsRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.builder.ListAssistantsRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,7 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
 
     private static final String ASSISTANT_HEADER = "assistants=v1";
 
-    private ListAssistantsRequestSender sender;
+    private RequestSender<ListAssistantsRequest, ListOfAssistants> sender;
 
     @Override
     protected String expectedURI() {

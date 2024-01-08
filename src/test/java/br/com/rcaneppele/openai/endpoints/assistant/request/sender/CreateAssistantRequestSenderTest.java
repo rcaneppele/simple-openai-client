@@ -2,9 +2,11 @@ package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.builder.CreateAssistantRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.assistant.response.Assistant;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.ToolType;
 import okhttp3.mockwebserver.MockResponse;
@@ -19,7 +21,7 @@ class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
 
     private static final String ASSISTANT_HEADER = "assistants=v1";
 
-    private CreateAssistantRequestSender sender;
+    private RequestSender<CreateAssistantRequest, Assistant> sender;
     private JsonConverter<CreateAssistantRequest> jsonConverter;
 
     @Override

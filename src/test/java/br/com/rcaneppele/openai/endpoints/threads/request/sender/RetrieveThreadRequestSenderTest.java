@@ -1,6 +1,8 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.sender;
 
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
+import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,7 @@ class RetrieveThreadRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String THREAD_ID = "thread_123";
 
-    private RetrieveThreadRequestSender sender;
+    private RequestSender<Void, Thread> sender;
 
     @Override
     protected String expectedURI() {

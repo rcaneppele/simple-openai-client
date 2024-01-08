@@ -1,9 +1,11 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.sender;
 
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
 import br.com.rcaneppele.openai.endpoints.threads.request.builder.CreateThreadRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,7 @@ class CreateThreadRequestSenderTest extends BaseRequestSenderTest {
 
     private static final String ASSISTANT_HEADER = "assistants=v1";
 
-    private CreateThreadRequestSender sender;
+    private RequestSender<CreateThreadRequest, Thread> sender;
     private JsonConverter<CreateThreadRequest> jsonConverter;
 
     @Override

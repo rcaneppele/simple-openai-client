@@ -1,9 +1,11 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.builder.CreateAssistantFileRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,7 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String ASSISTANT_ID = "asst_123";
 
-    private CreateAssistantFileRequestSender sender;
+    private RequestSender<CreateAssistantFileRequest, AssistantFile> sender;
     private JsonConverter<CreateAssistantFileRequest> jsonConverter;
 
     @Override

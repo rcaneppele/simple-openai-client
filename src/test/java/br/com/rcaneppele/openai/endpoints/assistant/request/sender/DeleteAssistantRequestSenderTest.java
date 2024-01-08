@@ -1,6 +1,8 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
+import br.com.rcaneppele.openai.endpoints.assistant.response.DeletionStatus;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ class DeleteAssistantRequestSenderTest extends BaseRequestSenderTest {
     private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String ASSISTANT_ID = "asst_123";
 
-    private DeleteAssistantRequestSender sender;
+    private RequestSender<Void, DeletionStatus> sender;
 
     @Override
     protected String expectedURI() {

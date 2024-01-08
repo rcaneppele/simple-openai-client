@@ -2,7 +2,9 @@ package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
+import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
 
-    private ChatCompletionRequestSender sender;
+    private RequestSender<ChatCompletionRequest, ChatCompletion> sender;
     private JsonConverter<ChatCompletionRequest> jsonConverter;
 
     @Override
