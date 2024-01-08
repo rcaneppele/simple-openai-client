@@ -1,37 +1,39 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
+import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class ListAssistantFilesRequestBuilderTest {
 
+    @InjectMocks
     private ListAssistantFilesRequestBuilder builder;
 
-    @BeforeEach
-    void beforeEach() {
-        this. builder = new ListAssistantFilesRequestBuilder();
+    @Mock
+    private IdValidator idValidator;
+
+    @Test
+    void shouldCallAssistantIdValidator() {
+        var id = "assistant-id";
+        builder.assistantId(id);
+        verify(idValidator).validateAssistantId(id);
     }
 
     @Test
-    void shouldRejectNullAssistantId() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.assistantId(null));
-        assertEquals("Assistant id is required!", exception.getMessage());
-    }
-
-    @Test
-    void shouldRejectEmptyAssistantId() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.assistantId(""));
-        assertEquals("Assistant id is required!", exception.getMessage());
-    }
-
-    @Test
-    void shouldNotBuildWithoutRequiredFields() {
-        assertThrows(IllegalArgumentException.class, () -> builder.build());
+    void shouldCallValidatorsOnBuild() {
+        builder.build();
+        verify(idValidator).validateAssistantId(any());
     }
 
     @ParameterizedTest

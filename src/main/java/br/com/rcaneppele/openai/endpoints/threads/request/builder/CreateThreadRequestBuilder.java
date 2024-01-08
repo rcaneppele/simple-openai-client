@@ -13,6 +13,7 @@ public class CreateThreadRequestBuilder {
 
     private List<CreateMessageRequest> messages = new ArrayList<>();
     private Map<String, String> metadata;
+
     private MetadataValidator metadataValidator = new MetadataValidator();
 
     public CreateThreadRequestBuilder addUserMessage(String content, Set<String> fileIds, Map<String, String> metadata) {

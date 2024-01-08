@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai;
 
+import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.*;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.*;
 import br.com.rcaneppele.openai.endpoints.assistant.response.*;
@@ -24,6 +25,7 @@ public class OpenAIClient {
 
     private final String apiKey;
     private final Duration timeout;
+    private final IdValidator idValidator;
 
     public OpenAIClient(String apiKey, int timeoutInSeconds) {
         if (apiKey == null || apiKey.isBlank()) {
@@ -32,6 +34,7 @@ public class OpenAIClient {
 
         this.apiKey = apiKey;
         this.timeout = Duration.ofSeconds(timeoutInSeconds);
+        this.idValidator = new IdValidator();
     }
 
     public OpenAIClient(String apiKey) {
@@ -56,7 +59,7 @@ public class OpenAIClient {
 
     public AssistantFile sendCreateAssistantFileRequest(CreateAssistantFileRequest request) {
         var assistantId = request.assistantId();
-        validateAssistantId(assistantId);
+        idValidator.validateAssistantId(assistantId);
         var sender = new CreateAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
@@ -68,20 +71,20 @@ public class OpenAIClient {
 
     public ListOfAssistantFiles sendListAssistantFilesRequest(ListAssistantFilesRequest request) {
         var assistantId = request.assistantId();
-        validateAssistantId(assistantId);
+        idValidator.validateAssistantId(assistantId);
         var sender = new ListAssistantFilesRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
 
     public Assistant sendRetrieveAssistantRequest(String assistantId) {
-        validateAssistantId(assistantId);
+        idValidator.validateAssistantId(assistantId);
         var sender = new RetrieveAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(null);
     }
 
     public AssistantFile sendRetrieveAssistantFileRequest(String assistantId, String fileId) {
-        validateAssistantId(assistantId);
-        validateFileId(fileId);
+        idValidator.validateAssistantId(assistantId);
+        idValidator.validateFileId(fileId);
 
         var sender = new RetrieveAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
         return sender.sendRequest(null);
@@ -89,20 +92,20 @@ public class OpenAIClient {
 
     public Assistant sendModifyAssistantRequest(ModifyAssistantRequest request) {
         var assistantId = request.assistantId();
-        validateAssistantId(assistantId);
+        idValidator.validateAssistantId(assistantId);
         var sender = new ModifyAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
 
     public DeletionStatus sendDeleteAssistantRequest(String assistantId) {
-        validateAssistantId(assistantId);
+        idValidator.validateAssistantId(assistantId);
         var sender = new DeleteAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(null);
     }
 
     public DeletionStatus sendDeleteAssistantFileRequest(String assistantId, String fileId) {
-        validateAssistantId(assistantId);
-        validateFileId(fileId);
+        idValidator.validateAssistantId(assistantId);
+        idValidator.validateFileId(fileId);
 
         var sender = new DeleteAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId, fileId);
         return sender.sendRequest(null);
@@ -114,44 +117,22 @@ public class OpenAIClient {
     }
 
     public Thread sendRetrieveThreadRequest(String threadId) {
-        validateThreadId(threadId);
+        idValidator.validateThreadId(threadId);
         var sender = new RetrieveThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(null);
     }
 
     public Thread sendModifyThreadRequest(ModifyThreadRequest request) {
         var threadId = request.threadId();
-        validateThreadId(threadId);
+        idValidator.validateThreadId(threadId);
         var sender = new ModifyThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(request);
     }
 
     public DeletionStatus sendDeleteThreadRequest(String threadId) {
-        validateThreadId(threadId);
+        idValidator.validateThreadId(threadId);
         var sender = new DeleteThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(null);
-    }
-
-    private void validateAssistantId(String assistantId) {
-        if (!isValid(assistantId)) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
-    }
-
-    private void validateThreadId(String threadId) {
-        if (!isValid(threadId)) {
-            throw new IllegalArgumentException("Thread id is required!");
-        }
-    }
-
-    private void validateFileId(String fileId) {
-        if (!isValid(fileId)) {
-            throw new IllegalArgumentException("file id is required!");
-        }
-    }
-
-    private boolean isValid(String id) {
-        return id != null && !id.isBlank();
     }
 
 }

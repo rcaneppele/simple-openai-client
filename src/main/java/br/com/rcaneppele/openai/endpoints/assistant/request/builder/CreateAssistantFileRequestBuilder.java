@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
+import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
 
 public class CreateAssistantFileRequestBuilder {
@@ -7,18 +8,16 @@ public class CreateAssistantFileRequestBuilder {
     private String assistantId;
     private String fileId;
 
+    private IdValidator idValidator = new IdValidator();
+
     public CreateAssistantFileRequestBuilder assistantId(String assistantId) {
-        if (assistantId == null || assistantId.isBlank()) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
+        this.idValidator.validateAssistantId(assistantId);
         this.assistantId = assistantId;
         return this;
     }
 
     public CreateAssistantFileRequestBuilder fileId(String fileId) {
-        if (fileId == null || fileId.isBlank()) {
-            throw new IllegalArgumentException("File id is required!");
-        }
+        this.idValidator.validateFileId(fileId);
         this.fileId = fileId;
         return this;
     }
@@ -33,20 +32,8 @@ public class CreateAssistantFileRequestBuilder {
     }
 
     private void validateRequiredFields() {
-        validateAssistantId();
-        validateFileId();
-    }
-
-    private void validateAssistantId() {
-        if (this.assistantId == null) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
-    }
-
-    private void validateFileId() {
-        if (this.fileId == null) {
-            throw new IllegalArgumentException("File id is required!");
-        }
+        this.idValidator.validateAssistantId(this.assistantId);
+        this.idValidator.validateFileId(this.fileId);
     }
 
 }

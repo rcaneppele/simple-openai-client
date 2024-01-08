@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.builder;
 
+import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,16 +22,14 @@ class ModifyThreadRequestBuilderTest {
     @Mock
     private MetadataValidator metadataValidator;
 
-    @Test
-    void shouldValidateThreadId() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.threadId(null));
-        assertEquals("Thread id is required!", exception.getMessage());
-    }
+    @Mock
+    private IdValidator idValidator;
 
     @Test
-    void shouldNotBuildWithoutThreadId() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.build());
-        assertEquals("Thread id is required!", exception.getMessage());
+    void shouldCallThreadIdValidator() {
+        var threadId = "thread-id";
+        builder.threadId(threadId);
+        verify(idValidator).validateThreadId(threadId);
     }
 
     @Test

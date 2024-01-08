@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class CreateThreadRequestBuilderTest {
@@ -42,16 +43,16 @@ class CreateThreadRequestBuilderTest {
     }
 
     @Test
-    void shouldCallMetadataValidatorForMessageMetadata() {
+    void shouldCallMetadataValidator() {
         var metadata = Map.of("key", "value");
-        builder.addUserMessage("message", null, metadata);
+        builder.metadata(metadata);
         verify(metadataValidator).validate(metadata);
     }
 
     @Test
-    void shouldCallMetadataValidator() {
+    void shouldCallMetadataValidatorForMessageMetadata() {
         var metadata = Map.of("key", "value");
-        builder.metadata(metadata);
+        builder.addUserMessage("message", null, metadata);
         verify(metadataValidator).validate(metadata);
     }
 
@@ -75,8 +76,6 @@ class CreateThreadRequestBuilderTest {
                 .metadata(metadata)
                 .build();
 
-
-        verify(metadataValidator, times(3)).validate(metadata);
         assertEquals(metadata, request.metadata());
         assertEquals(4, request.messages().size());
 

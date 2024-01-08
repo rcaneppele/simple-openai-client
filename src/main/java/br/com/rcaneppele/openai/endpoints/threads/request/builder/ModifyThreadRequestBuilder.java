@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.builder;
 
+import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import br.com.rcaneppele.openai.endpoints.threads.request.ModifyThreadRequest;
 
@@ -9,12 +10,12 @@ public class ModifyThreadRequestBuilder {
 
     private String threadId;
     private Map<String, String> metadata;
+
     private MetadataValidator metadataValidator = new MetadataValidator();
+    private IdValidator idValidator = new IdValidator();
 
     public ModifyThreadRequestBuilder threadId(String threadId) {
-        if (threadId == null || threadId.isBlank()) {
-            throw new IllegalArgumentException("Thread id is required!");
-        }
+        this.idValidator.validateThreadId(threadId);
         this.threadId = threadId;
         return this;
     }
@@ -35,13 +36,7 @@ public class ModifyThreadRequestBuilder {
     }
 
     private void validateRequiredFields() {
-        validateThreadId();
-    }
-
-    private void validateThreadId() {
-        if (this.threadId == null) {
-            throw new IllegalArgumentException("Thread id is required!");
-        }
+        this.idValidator.validateThreadId(this.threadId);
     }
 
 }

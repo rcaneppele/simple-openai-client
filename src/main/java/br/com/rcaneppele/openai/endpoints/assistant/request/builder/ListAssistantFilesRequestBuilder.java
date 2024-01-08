@@ -1,15 +1,16 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
+import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ListAssistantFilesRequest;
 
 public class ListAssistantFilesRequestBuilder extends ListAssistantsRequestBuilder {
 
     private String assistantId;
 
+    private IdValidator idValidator = new IdValidator();;
+
     public ListAssistantFilesRequestBuilder assistantId(String assistantId) {
-        if (assistantId == null || assistantId.isBlank()) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
+        this.idValidator.validateAssistantId(assistantId);
         this.assistantId = assistantId;
         return this;
     }
@@ -27,13 +28,7 @@ public class ListAssistantFilesRequestBuilder extends ListAssistantsRequestBuild
     }
 
     private void validateRequiredFields() {
-        validateAssistantId();
-    }
-
-    private void validateAssistantId() {
-        if (this.assistantId == null) {
-            throw new IllegalArgumentException("Assistant id is required!");
-        }
+        this.idValidator.validateAssistantId(this.assistantId);
     }
 
 }
