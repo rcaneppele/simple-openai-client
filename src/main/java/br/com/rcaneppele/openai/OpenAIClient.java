@@ -8,8 +8,10 @@ import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionR
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
 import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
+import br.com.rcaneppele.openai.endpoints.threads.request.ModifyThreadRequest;
 import br.com.rcaneppele.openai.endpoints.threads.request.sender.CreateThreadRequestSender;
 import br.com.rcaneppele.openai.endpoints.threads.request.sender.DeleteThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.threads.request.sender.ModifyThreadRequestSender;
 import br.com.rcaneppele.openai.endpoints.threads.request.sender.RetrieveThreadRequestSender;
 import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
 import io.reactivex.rxjava3.core.Observable;
@@ -115,6 +117,13 @@ public class OpenAIClient {
         validateThreadId(threadId);
         var sender = new RetrieveThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(null);
+    }
+
+    public Thread sendModifyThreadRequest(ModifyThreadRequest request) {
+        var threadId = request.threadId();
+        validateThreadId(threadId);
+        var sender = new ModifyThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
+        return sender.sendRequest(request);
     }
 
     public DeletionStatus sendDeleteThreadRequest(String threadId) {

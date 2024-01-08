@@ -8,4 +8,4 @@ import java.util.Map;
 public record CreateThreadRequest(
         List<CreateMessageRequest> messages,
         Map<String, String> metadata
-) {}
+) implements ThreadRequest {}
