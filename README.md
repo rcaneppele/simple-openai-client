@@ -5,9 +5,9 @@ A **simple** Java library for seamless integration of your Java applications wit
 ## Supported Endpoints
 - [Chat](https://platform.openai.com/docs/api-reference/chat)
 - [Assistant](https://platform.openai.com/docs/api-reference/assistants)
+- [Threads](https://platform.openai.com/docs/api-reference/threads)
 
 In development:
-- [Threads](https://platform.openai.com/docs/api-reference/threads)
 - [Messages](https://platform.openai.com/docs/api-reference/messages)
 - [Runs](https://platform.openai.com/docs/api-reference/runs)
 
@@ -45,7 +45,6 @@ var request = new ChatCompletionRequestBuilder()
     .build();
 
 var response = client.sendChatCompletionRequest(request);
-
 System.out.println(response);
 ```
 
@@ -82,7 +81,6 @@ var request = new ChatCompletionRequestBuilder()
     .build();
 
 var response = client.sendChatCompletionRequest(request);
-
 response.choices().forEach(c -> System.out.println(c.messageContent()));
 ```
 
@@ -161,7 +159,6 @@ var request = new CreateAssistantRequestBuilder()
     .build();
 
 var response = client.sendCreateAssistantRequest(request);
-
 System.out.println(response);
 ```
 
@@ -186,7 +183,6 @@ var request = new CreateAssistantRequestBuilder()
 
 ```java
 var response = client.sendListAssistantsRequest();
-
 System.out.println(response);
 ```
 
@@ -203,7 +199,6 @@ var parameters = new QueryParametersBuilder()
     .build();
 
 var response = client.sendListAssistantsRequest(parameters);
-
 System.out.println(response);
 ```
 
@@ -211,16 +206,85 @@ System.out.println(response);
 
 ```java
 var assistant = client.sendRetrieveAssistantRequest("assistant_id");
-
 System.out.println(assistant);
+```
+
+#### Modify Assistant
+
+```java
+var request = new ModifyAssistantRequestBuilder()
+    .assistantId(assistantId)
+    .name("New Assistant name")
+    .description("New Assistant description")
+    .instructions("New Assistant instructions")
+    .build();
+
+var response = client.sendModifyAssistantRequest(request);
+System.out.println(response);
 ```
 
 #### Delete Assistant
 
 ```java
 var status = client.sendDeleteAssistantRequest("assistant_id");
-
 System.out.println(status);
 ```
 
-The response is an object of type [`DeletionStatus`](src/main/java/br/com/rcaneppele/openai/endpoints/assistant/response/DeletionStatus.java).
+The response is an object of type [`DeletionStatus`](src/main/java/br/com/rcaneppele/openai/common/response/DeletionStatus.java).
+
+### Threads
+
+#### Create Thread
+
+```java
+var request = new CreateThreadRequestBuilder().build();
+var response = client.sendCreateThreadRequest(request);
+System.out.println(response);
+```
+
+The response is an object of type [`Thread`](src/main/java/br/com/rcaneppele/openai/endpoints/threads/response/Thread.java).
+
+Optionally, you can create a Thread with metadata and a list of messages:
+
+```java
+var messageMetadata = Map.of("message-metadata-key", "message-metadata-value");
+var threadMetadata = Map.of("thread-metadata-key", "thread-metadata-value");
+var fileIds = Set.of("fileId-1", "fileId-2");
+
+var request = new CreateThreadRequestBuilder()
+    .addUserMessage("message 1", null, null)
+    .addUserMessage("message 2", fileIds, messageMetadata)
+    .metadata(threadMetadata)
+    .build();
+
+var response = client.sendCreateThreadRequest(request);
+System.out.println(response);
+```
+
+#### Retrieve Thread
+
+```java
+var thread = client.sendRetrieveThreadRequest("thread_id");
+System.out.println(thread);
+```
+
+#### Modify Thread
+
+```java
+var metadata = Map.of("metadata-key", "metadata-value");
+
+var request = new ModifyThreadRequestBuilder()
+    .threadId("thread_id")
+    .metadata(metadata)
+    .build();
+
+var response = client.sendModifyThreadRequest(request);
+System.out.println(response);
+```
+
+#### Delete Thread
+
+```java
+var status = client.sendDeleteThreadRequest("thread_id");
+System.out.println(status);
+```
