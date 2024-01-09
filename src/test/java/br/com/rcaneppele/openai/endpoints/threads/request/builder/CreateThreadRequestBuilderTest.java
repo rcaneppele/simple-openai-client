@@ -1,12 +1,15 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.builder;
 
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
+import br.com.rcaneppele.openai.endpoints.threads.messages.request.CreateMessageRequest;
+import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,34 +71,24 @@ class CreateThreadRequestBuilderTest {
     @Test
     void shouldBuildWithAllParameters() {
         var metadata = Map.of("key", "value");
-        var request = builder
-                .addUserMessage("message 1", null, null)
-                .addUserMessage("message 2", Set.of("file-1", "file-2"), null)
-                .addUserMessage("message 3", null, metadata)
-                .addUserMessage("message 4", Set.of("file-3"), metadata)
+        var role = "user";
+        var message1 = new CreateMessageRequest(role, "message 1", null, null);
+        var message2 = new CreateMessageRequest(role, "message 2", Set.of("file-1", "file-2"), null);
+        var message3 = new CreateMessageRequest(role, "message 3", null, metadata);
+        var message4 = new CreateMessageRequest(role, "message 4", Set.of("file-3"), metadata);
+
+        var actual = builder
+                .addUserMessage(message1.content(), null, null)
+                .addUserMessage(message2.content(), message2.fileIds(), null)
+                .addUserMessage(message3.content(), null, message3.metadata())
+                .addUserMessage(message4.content(), message4.fileIds(), message4.metadata())
                 .metadata(metadata)
                 .build();
 
-        assertEquals(metadata, request.metadata());
-        assertEquals(4, request.messages().size());
+        var expected = new CreateThreadRequest(List.of(message1, message2, message3, message4), metadata);
 
-        assertEquals("message 1", request.messages().get(0).content());
-        assertNull(request.messages().get(0).fileIds());
-        assertNull(request.messages().get(0).metadata());
-
-        assertEquals("message 2", request.messages().get(1).content());
-        assertEquals(2, request.messages().get(1).fileIds().size());
-        assertTrue(request.messages().get(1).fileIds().containsAll(Set.of("file-1", "file-2")));
-        assertNull(request.messages().get(1).metadata());
-
-        assertEquals("message 3", request.messages().get(2).content());
-        assertNull(request.messages().get(2).fileIds());
-        assertEquals(metadata, request.messages().get(2).metadata());
-
-        assertEquals("message 4", request.messages().get(3).content());
-        assertEquals(1, request.messages().get(3).fileIds().size());
-        assertTrue(request.messages().get(3).fileIds().containsAll(Set.of("file-3")));
-        assertEquals(metadata, request.messages().get(3).metadata());
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 
 }

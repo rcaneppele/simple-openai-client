@@ -32,17 +32,29 @@ class MetadataValidatorTest {
     }
 
     @Test
-    void shouldValidateKeyLength() {
+    void shouldRejectInvalidKey() {
         var invalidKey = "a".repeat(65);
         var exception = assertThrows(IllegalArgumentException.class, () -> validator.validate(Map.of(invalidKey, "value")));
         assertEquals("Metadata Keys can be a maximum of 64 characters long!", exception.getMessage());
     }
 
     @Test
-    void shouldValidateValueLength() {
+    void shouldNotRejectValidKey() {
+        var validKey = "valid-key";
+        assertDoesNotThrow(() -> validator.validate(Map.of(validKey, "valid-value")));
+    }
+
+    @Test
+    void shouldRejectInvalidValue() {
         var invalidValue = "a".repeat(513);
         var exception = assertThrows(IllegalArgumentException.class, () -> validator.validate(Map.of("key", invalidValue)));
         assertEquals("Metadata Values can be a maximum of 512 characters long!", exception.getMessage());
+    }
+
+    @Test
+    void shouldNotRejectValidValue() {
+        var validValue = "valid-value";
+        assertDoesNotThrow(() -> validator.validate(Map.of("valid-key", validValue)));
     }
 
 }

@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.common.request.builder;
 
+import br.com.rcaneppele.openai.common.request.QueryParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,23 +26,20 @@ class QueryParametersBuilderTest {
 
     @Test
     void shouldBuildWithDefaultParameterValues() {
-        var request = builder.build();
-
-        assertNotNull(request);
-        assertEquals(20, request.limit());
-        assertEquals("desc", request.order());
-        assertNull(request.after());
-        assertNull(request.before());
+        var actual = builder.build();
+        var expected = new QueryParameters(20, "desc", null, null);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldBuildWithAscOrder() {
-        var request = builder
+        var parameters = builder
                 .ascOrder()
                 .build();
 
-        assertNotNull(request);
-        assertEquals("asc", request.order());
+        assertNotNull(parameters);
+        assertEquals("asc", parameters.order());
     }
 
     @Test
@@ -50,18 +48,17 @@ class QueryParametersBuilderTest {
         var after = "after-id";
         var before = "before-id";
 
-        var request = builder
+        var actual = builder
                 .limit(limit)
                 .after(after)
                 .before(before)
                 .ascOrder()
                 .build();
 
-        assertNotNull(request);
-        assertEquals(limit, request.limit());
-        assertEquals(after, request.after());
-        assertEquals(before, request.before());
-        assertEquals("asc", request.order());
+        var expected = new QueryParameters(limit, "asc", after, before);
+
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 
 }

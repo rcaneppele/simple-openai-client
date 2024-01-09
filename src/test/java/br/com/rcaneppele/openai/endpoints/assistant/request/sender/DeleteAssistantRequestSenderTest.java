@@ -1,17 +1,14 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.common.response.DeletionStatus;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class DeleteAssistantRequestSenderTest extends BaseRequestSenderTest {
 
-    private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String ASSISTANT_ID = "asst_123";
 
     private RequestSender<Void, DeletionStatus> sender;
@@ -22,16 +19,14 @@ class DeleteAssistantRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setResponseCode(200)
-                .setBody("""
-                        {
-                           "id": "asst_123",
-                           "object": "assistant.deleted",
-                           "deleted": true
-                         }
-                        """);
+    protected String mockJsonResponse() {
+        return """
+                {
+                  "id": "asst_123",
+                  "object": "assistant.deleted",
+                  "deleted": true
+                }
+                """;
     }
 
     @BeforeEach
@@ -40,16 +35,12 @@ class DeleteAssistantRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
-        var response = sender.sendRequest(null);
-        var httpRequest = server.takeRequest();
-        executeCommonAssertions(httpRequest, "", 1, "DELETE");
+    public void shouldSendRequest() {
+        var actualResponse = sender.sendRequest(null);
+        var expectedResponse = new DeletionStatus(ASSISTANT_ID, "assistant.deleted", true);
 
-        assertEquals(ASSISTANT_HEADER, httpRequest.getHeader("OpenAI-Beta"));
-        assertNotNull(response);
-        assertEquals(ASSISTANT_ID, response.id());
-        assertEquals("assistant.deleted", response.object());
-        assertTrue(response.deleted());
+        executeRequestAssertions("", 1, HttpMethod.DELETE, true);
+        executeResponseAssertions(expectedResponse, actualResponse);
     }
 
 }

@@ -1,19 +1,17 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.sender;
 
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Map;
 
 class RetrieveThreadRequestSenderTest extends BaseRequestSenderTest {
 
-    private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String THREAD_ID = "thread_123";
 
     private RequestSender<Void, Thread> sender;
@@ -24,17 +22,15 @@ class RetrieveThreadRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setResponseCode(200)
-                .setBody("""
-                        {
-                          "id": "thread_123",
-                          "object": "thread",
-                          "created_at": 1699014083,
-                          "metadata": {}
-                        }
-                        """);
+    protected String mockJsonResponse() {
+        return """
+                {
+                  "id": "thread_123",
+                  "object": "thread",
+                  "created_at": 1699014083,
+                  "metadata": {}
+                }
+                """;
     }
 
     @BeforeEach
@@ -43,17 +39,12 @@ class RetrieveThreadRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
-        var response = sender.sendRequest(null);
-        var httpRequest = server.takeRequest();
-        executeCommonAssertions(httpRequest, "", 1, "GET");
+    public void shouldSendRequest() {
+        var actualResponse = sender.sendRequest(null);
+        var expectedResponse = new Thread(THREAD_ID, "thread", Instant.ofEpochSecond(1699014083), Map.of());
 
-        assertEquals(ASSISTANT_HEADER, httpRequest.getHeader("OpenAI-Beta"));
-        assertNotNull(response);
-        assertEquals(THREAD_ID, response.id());
-        assertEquals("thread", response.object());
-        assertEquals(Instant.ofEpochSecond(1699014083), response.createdAt());
-        assertTrue(response.metadata().isEmpty());
+        executeRequestAssertions("", 1, HttpMethod.GET, true);
+        executeResponseAssertions(expectedResponse, actualResponse);
     }
 
 }

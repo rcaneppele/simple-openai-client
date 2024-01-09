@@ -1,23 +1,19 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.builder.CreateAssistantFileRequestBuilder;
 import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
 
-    private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String ASSISTANT_ID = "asst_123";
 
     private RequestSender<CreateAssistantFileRequest, AssistantFile> sender;
@@ -30,17 +26,15 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setResponseCode(200)
-                .setBody("""
-                        {
-                          "id": "file-123",
-                          "object": "assistant.file",
-                          "created_at": 1699055364,
-                          "assistant_id": "%s"
-                        }
-                        """.formatted(ASSISTANT_ID));
+    protected String mockJsonResponse() {
+        return """
+                {
+                  "id": "file-123",
+                  "object": "assistant.file",
+                  "created_at": 1699055364,
+                  "assistant_id": "%s"
+                }
+                """.formatted(ASSISTANT_ID);
     }
 
     @BeforeEach
@@ -51,24 +45,18 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
-        var fileId = "file-123";
+    public void shouldSendRequest() {
         var request = builder
                 .assistantId(ASSISTANT_ID)
-                .fileId(fileId)
+                .fileId("file-123")
                 .build();
 
-        var response = sender.sendRequest(request);
-        var httpRequest = server.takeRequest();
+        var actualResponse = sender.sendRequest(request);
+        var expectedResponse = new AssistantFile("file-123", "assistant.file", Instant.ofEpochSecond(1699055364), ASSISTANT_ID);
         var expectedRequestBody = jsonConverter.convertRequestToJson(request);
-        executeCommonAssertions(httpRequest, expectedRequestBody, 1, "POST");
 
-        assertEquals(ASSISTANT_HEADER, httpRequest.getHeader("OpenAI-Beta"));
-        assertNotNull(response);
-        assertEquals(fileId, response.id());
-        assertEquals("assistant.file", response.object());
-        assertEquals(Instant.ofEpochSecond(1699055364), response.createdAt());
-        assertEquals(ASSISTANT_ID, response.assistantId());
+        executeRequestAssertions(expectedRequestBody, 1, HttpMethod.POST, true);
+        executeResponseAssertions(expectedResponse, actualResponse);
     }
 
 }

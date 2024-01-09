@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class IdValidatorTest {
 
@@ -58,6 +57,14 @@ class IdValidatorTest {
     void shouldRejectEmptyThreadId(String id) {
         var exception = assertThrows(IllegalArgumentException.class, () -> validator.validateThreadId(id));
         assertEquals(THREAD_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    void shouldNotRejectValidId() {
+        var validId = "id";
+        assertDoesNotThrow(() -> validator.validateAssistantId(validId));
+        assertDoesNotThrow(() -> validator.validateFileId(validId));
+        assertDoesNotThrow(() -> validator.validateThreadId(validId));
     }
 
 }

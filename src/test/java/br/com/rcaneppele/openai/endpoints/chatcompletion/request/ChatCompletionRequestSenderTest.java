@@ -2,16 +2,18 @@ package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.message.ChatCompletionChoice;
+import br.com.rcaneppele.openai.common.message.ChatMessage;
+import br.com.rcaneppele.openai.common.message.TokenUsage;
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
 
@@ -25,32 +27,30 @@ class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setResponseCode(200)
-                .setBody("""
-                           {
-                           "id": "chatcmpl-123",
-                           "object": "chat.completion",
-                           "created": 1677652288,
-                           "model": "gpt-3.5-turbo",
-                           "system_fingerprint": "fp_44709d6fcb",
-                           "choices": [{
-                             "index": 0,
-                             "message": {
-                               "role": "assistant",
-                               "content": "Hello there, how may I assist you today?"
-                             },
-                             "logprobs": null,
-                             "finish_reason": "stop"
-                           }],
-                           "usage": {
-                             "prompt_tokens": 9,
-                             "completion_tokens": 12,
-                             "total_tokens": 21
-                           }
-                         }
-                        """);
+    protected String mockJsonResponse() {
+        return """
+                {
+                  "id": "chatcmpl-123",
+                  "object": "chat.completion",
+                  "created": 1677652288,
+                  "model": "gpt-3.5-turbo",
+                  "system_fingerprint": "fp_44709d6fcb",
+                  "choices": [{
+                    "index": 0,
+                    "message": {
+                      "role": "assistant",
+                      "content": "Hello there, how may I assist you today?"
+                    },
+                    "logprobs": null,
+                    "finish_reason": "stop"
+                  }],
+                  "usage": {
+                    "prompt_tokens": 9,
+                    "completion_tokens": 12,
+                    "total_tokens": 21
+                  }
+                }
+                """;
     }
 
     @BeforeEach
@@ -61,31 +61,32 @@ class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
+    public void shouldSendRequest() {
         var request = builder
                 .model(OpenAIModel.GPT_4_1106_PREVIEW)
                 .userMessage("the user message")
                 .build();
 
-        var response = sender.sendRequest(request);
-        var httpRequest = server.takeRequest();
+        var actualResponse = sender.sendRequest(request);
+        var expectedResponse = new ChatCompletion(
+                "chatcmpl-123",
+                "chat.completion",
+                Instant.ofEpochSecond(1677652288),
+                OpenAIModel.GPT_3_5_TURBO.getName(),
+                "fp_44709d6fcb",
+                List.of(
+                        new ChatCompletionChoice(
+                                0l,
+                                new ChatMessage("assistant", "Hello there, how may I assist you today?"),
+                                null,
+                                "stop"
+                        )
+                ),
+                new TokenUsage(9, 12 ,21)
+        );
         var expectedRequestBody = jsonConverter.convertRequestToJson(request);
-        executeCommonAssertions(httpRequest, expectedRequestBody, 1, "POST");
-
-        assertNotNull(response);
-        assertEquals("chatcmpl-123", response.id());
-        assertEquals("chat.completion", response.object());
-        assertEquals(Instant.ofEpochSecond(1677652288), response.created());
-        assertEquals(OpenAIModel.GPT_3_5_TURBO.getName(), response.model());
-        assertEquals("fp_44709d6fcb", response.systemFingerprint());
-        assertEquals(1, response.choices().size());
-        assertEquals("Hello there, how may I assist you today?", response.firstChoiceMessageContent());
-        assertEquals("assistant", response.choices().get(0).message().role());
-        assertNull(response.choices().get(0).logProbs());
-        assertEquals("stop", response.choices().get(0).finishReason());
-        assertEquals(9, response.usage().promptTokens());
-        assertEquals(12, response.usage().completionTokens());
-        assertEquals(21, response.usage().totalTokens());
+        executeRequestAssertions(expectedRequestBody, 1, HttpMethod.POST, false);
+        executeResponseAssertions(expectedResponse, actualResponse);
     }
 
 }

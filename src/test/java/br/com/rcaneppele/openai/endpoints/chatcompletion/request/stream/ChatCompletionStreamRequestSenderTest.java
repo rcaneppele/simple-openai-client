@@ -2,14 +2,13 @@ package br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.json.JsonConverter;
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestBuilder;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ChatCompletionStreamRequestSenderTest extends BaseRequestSenderTest {
@@ -24,10 +23,8 @@ class ChatCompletionStreamRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setHeader("Content-Type", "text/event-stream")
-                .setBody("data: {}");
+    protected String mockJsonResponse() {
+        return "data: {}";
     }
 
     @BeforeEach
@@ -38,7 +35,7 @@ class ChatCompletionStreamRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
+    public void shouldSendRequest() {
         var request = builder
                 .model(OpenAIModel.GPT_4_1106_PREVIEW)
                 .userMessage("the user message")
@@ -49,10 +46,8 @@ class ChatCompletionStreamRequestSenderTest extends BaseRequestSenderTest {
         testObserver.assertNotComplete();
         assertNotNull(testObserver.values());
 
-        var httpRequest = server.takeRequest();
         var expectedRequestBody = jsonConverter.convertRequestToJson(request);
-        executeCommonAssertions(httpRequest, expectedRequestBody, 1, "POST");
-        assertEquals("text/event-stream", httpRequest.getHeader("Accept"));
+        executeRequestAssertions(expectedRequestBody, 1, HttpMethod.POST, false);
     }
 
 }

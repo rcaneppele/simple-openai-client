@@ -1,20 +1,16 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
 import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 class RetrieveAssistantFileRequestSenderTest extends BaseRequestSenderTest {
 
-    private static final String ASSISTANT_HEADER = "assistants=v1";
     private static final String ASSISTANT_ID = "asst_123";
     private static final String FILE_ID = "file-123";
 
@@ -26,17 +22,15 @@ class RetrieveAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setResponseCode(200)
-                .setBody("""
-                        {
-                          "id": "file-123",
-                          "object": "assistant.file",
-                          "created_at": 1699055364,
-                          "assistant_id": "asst_123"
-                        }
-                        """);
+    protected String mockJsonResponse() {
+        return """
+                {
+                  "id": "file-123",
+                  "object": "assistant.file",
+                  "created_at": 1699055364,
+                  "assistant_id": "asst_123"
+                }
+                """;
     }
 
     @BeforeEach
@@ -45,17 +39,12 @@ class RetrieveAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
-        var response = sender.sendRequest(null);
-        var httpRequest = server.takeRequest();
-        executeCommonAssertions(httpRequest, "", 1, "GET");
+    public void shouldSendRequest() {
+        var actualResponse = sender.sendRequest(null);
+        var expectedResponse = new AssistantFile(FILE_ID, "assistant.file", Instant.ofEpochSecond(1699055364), ASSISTANT_ID);
 
-        assertEquals(ASSISTANT_HEADER, httpRequest.getHeader("OpenAI-Beta"));
-        assertNotNull(response);
-        assertEquals(FILE_ID, response.id());
-        assertEquals("assistant.file", response.object());
-        assertEquals(Instant.ofEpochSecond(1699055364), response.createdAt());
-        assertEquals(ASSISTANT_ID, response.assistantId());
+        executeRequestAssertions("", 1, HttpMethod.GET, true);
+        executeResponseAssertions(expectedResponse, actualResponse);
     }
 
 }

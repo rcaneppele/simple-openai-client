@@ -1,66 +1,55 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
+import br.com.rcaneppele.openai.common.OpenAIModel;
+import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.common.request.builder.QueryParametersBuilder;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
+import br.com.rcaneppele.openai.endpoints.assistant.response.Assistant;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
-import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
-
-    private static final String ASSISTANT_HEADER = "assistants=v1";
 
     private RequestSender<QueryParameters, ListOfAssistants> sender;
     private QueryParametersBuilder builder;
 
     @Override
     protected String expectedURI() {
-        return "assistants?limit=2&order=asc&after=after_id&before=before_id";
+        return "assistants?limit=1&order=asc&after=after_id&before=before_id";
     }
 
     @Override
-    protected MockResponse mockResponse() {
-        return new MockResponse()
-                .setResponseCode(200)
-                .setBody("""
-                        {
-                          "object": "list",
-                          "data": [
-                            {
-                              "id": "asst_abc123",
-                              "object": "assistant",
-                              "created_at": 1698982736,
-                              "name": "Coding Tutor",
-                              "description": null,
-                              "model": "gpt-4",
-                              "instructions": "You are a helpful assistant designed to make me better at coding!",
-                              "tools": [],
-                              "file_ids": [],
-                              "metadata": {}
-                            },
-                            {
-                              "id": "asst_abc456",
-                              "object": "assistant",
-                              "created_at": 1698982718,
-                              "name": "My Assistant",
-                              "description": null,
-                              "model": "gpt-4",
-                              "instructions": "You are a helpful assistant designed to make me better at coding!",
-                              "tools": [],
-                              "file_ids": [],
-                              "metadata": {}
-                            }
-                          ],
-                          "first_id": "asst_abc123",
-                          "last_id": "asst_abc456",
-                          "has_more": true
-                        }
-                        """);
+    protected String mockJsonResponse() {
+        return """
+                {
+                  "object": "list",
+                  "data": [
+                    {
+                      "id": "asst_123",
+                      "object": "assistant",
+                      "created_at": 1698982736,
+                      "name": "Coding Tutor",
+                      "description": null,
+                      "model": "gpt-4",
+                      "instructions": "You are a helpful assistant designed to make me better at coding!",
+                      "tools": [],
+                      "file_ids": [],
+                      "metadata": {}
+                    }
+                  ],
+                  "first_id": "asst_123",
+                  "last_id": "asst_123",
+                  "has_more": true
+                }
+                """;
     }
 
     @BeforeEach
@@ -70,29 +59,36 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
     }
 
     @Test
-    public void shouldSendRequest() throws InterruptedException {
+    public void shouldSendRequest() {
         var request = builder
-                .limit(2)
+                .limit(1)
                 .ascOrder()
                 .after("after_id")
                 .before("before_id")
                 .build();
 
-        var response = sender.sendRequest(request);
-        var httpRequest = server.takeRequest();
-        executeCommonAssertions(httpRequest, "", 1, "GET");
+        var actualResponse = sender.sendRequest(request);
+        var expectedResponse = new ListOfAssistants(
+                "list",
+                "asst_123",
+                "asst_123",
+                true,
+                List.of(
+                        new Assistant(
+                                "asst_123",
+                                "assistant",
+                                Instant.ofEpochSecond(1698982736),
+                                "Coding Tutor",
+                                null,
+                                OpenAIModel.GPT_4.getName(),
+                                "You are a helpful assistant designed to make me better at coding!",
+                                Set.of(),
+                                Set.of(),
+                                Map.of())
+                ));
 
-        assertEquals(ASSISTANT_HEADER, httpRequest.getHeader("OpenAI-Beta"));
-        assertNotNull(response);
-        assertEquals("list", response.object());
-        assertEquals("asst_abc123", response.firstId());
-        assertEquals("asst_abc456", response.lastId());
-        assertTrue(response.hasMore());
-        assertEquals(2, response.data().size());
-        assertEquals("asst_abc123", response.data().get(0).id());
-        assertEquals("Coding Tutor", response.data().get(0).name());
-        assertEquals("asst_abc456", response.data().get(1).id());
-        assertEquals("My Assistant", response.data().get(1).name());
+        executeRequestAssertions("", 1, HttpMethod.GET, true);
+        executeResponseAssertions(expectedResponse, actualResponse);
     }
 
 }
