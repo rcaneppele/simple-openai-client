@@ -49,55 +49,55 @@ public class OpenAIClient {
         this(apiKey, 15);
     }
 
-    public ChatCompletion sendChatCompletionRequest(ChatCompletionRequest request) {
+    public ChatCompletion chatCompletion(ChatCompletionRequest request) {
         var sender = new ChatCompletionRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }
 
-    public Observable<ChatCompletion> sendStreamChatCompletionRequest(ChatCompletionRequest request) {
+    public Observable<ChatCompletion> streamChatCompletion(ChatCompletionRequest request) {
         request = request.withStream();
         var sender = new ChatCompletionStreamRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendStreamRequest(request);
     }
 
-    public Assistant sendCreateAssistantRequest(CreateAssistantRequest request) {
+    public Assistant createAssistant(CreateAssistantRequest request) {
         var sender = new CreateAssistantRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }
 
-    public AssistantFile sendCreateAssistantFileRequest(CreateAssistantFileRequest request) {
+    public AssistantFile createAssistantFile(CreateAssistantFileRequest request) {
         var assistantId = request.assistantId();
         idValidator.validateAssistantId(assistantId);
         var sender = new CreateAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
 
-    public ListOfAssistants sendListAssistantsRequest(QueryParameters parameters) {
+    public ListOfAssistants listAssistants(QueryParameters parameters) {
         var sender = new ListAssistantsRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(parameters);
     }
 
-    public ListOfAssistants sendListAssistantsRequest() {
-        return this.sendListAssistantsRequest(null);
+    public ListOfAssistants listAssistants() {
+        return this.listAssistants(null);
     }
 
-    public ListOfAssistantFiles sendListAssistantFilesRequest(String assistantId, QueryParameters parameters) {
+    public ListOfAssistantFiles listAssistantFiles(String assistantId, QueryParameters parameters) {
         idValidator.validateAssistantId(assistantId);
         var sender = new ListAssistantFilesRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(parameters);
     }
 
-    public ListOfAssistantFiles sendListAssistantFilesRequest(String assistantId) {
-        return this.sendListAssistantFilesRequest(assistantId, null);
+    public ListOfAssistantFiles listAssistantFiles(String assistantId) {
+        return this.listAssistantFiles(assistantId, null);
     }
 
-    public Assistant sendRetrieveAssistantRequest(String assistantId) {
+    public Assistant retrieveAssistant(String assistantId) {
         idValidator.validateAssistantId(assistantId);
         var sender = new RetrieveAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(null);
     }
 
-    public AssistantFile sendRetrieveAssistantFileRequest(String assistantId, String fileId) {
+    public AssistantFile retrieveAssistantFile(String assistantId, String fileId) {
         idValidator.validateAssistantId(assistantId);
         idValidator.validateFileId(fileId);
 
@@ -105,20 +105,20 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Assistant sendModifyAssistantRequest(ModifyAssistantRequest request) {
+    public Assistant modifyAssistant(ModifyAssistantRequest request) {
         var assistantId = request.assistantId();
         idValidator.validateAssistantId(assistantId);
         var sender = new ModifyAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
     }
 
-    public DeletionStatus sendDeleteAssistantRequest(String assistantId) {
+    public DeletionStatus deleteAssistant(String assistantId) {
         idValidator.validateAssistantId(assistantId);
         var sender = new DeleteAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(null);
     }
 
-    public DeletionStatus sendDeleteAssistantFileRequest(String assistantId, String fileId) {
+    public DeletionStatus deleteAssistantFile(String assistantId, String fileId) {
         idValidator.validateAssistantId(assistantId);
         idValidator.validateFileId(fileId);
 
@@ -126,30 +126,30 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Thread sendCreateThreadRequest(CreateThreadRequest request) {
+    public Thread createThread(CreateThreadRequest request) {
         var sender = new CreateThreadRequestSender(OPENAI_API_URL, timeout, apiKey);
         return sender.sendRequest(request);
     }
 
-    public Thread sendCreateThreadRequest() {
+    public Thread createThread() {
         var request = new CreateThreadRequestBuilder().build();
-        return this.sendCreateThreadRequest(request);
+        return this.createThread(request);
     }
 
-    public Thread sendRetrieveThreadRequest(String threadId) {
+    public Thread retrieveThread(String threadId) {
         idValidator.validateThreadId(threadId);
         var sender = new RetrieveThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(null);
     }
 
-    public Thread sendModifyThreadRequest(ModifyThreadRequest request) {
+    public Thread modifyThread(ModifyThreadRequest request) {
         var threadId = request.threadId();
         idValidator.validateThreadId(threadId);
         var sender = new ModifyThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(request);
     }
 
-    public DeletionStatus sendDeleteThreadRequest(String threadId) {
+    public DeletionStatus deleteThread(String threadId) {
         idValidator.validateThreadId(threadId);
         var sender = new DeleteThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(null);
