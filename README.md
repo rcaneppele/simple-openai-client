@@ -213,7 +213,7 @@ System.out.println(assistant);
 
 ```java
 var request = new ModifyAssistantRequestBuilder()
-    .assistantId(assistantId)
+    .assistantId("assistant_id")
     .name("New Assistant name")
     .description("New Assistant description")
     .instructions("New Assistant instructions")
