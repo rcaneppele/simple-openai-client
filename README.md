@@ -44,7 +44,7 @@ var request = new ChatCompletionRequestBuilder()
     .userMessage("Please generate two product names")
     .build();
 
-var response = client.sendChatCompletionRequest(request);
+var response = client.chatCompletion(request);
 System.out.println(response);
 ```
 
@@ -80,7 +80,7 @@ var request = new ChatCompletionRequestBuilder()
     .user("user-id")
     .build();
 
-var response = client.sendChatCompletionRequest(request);
+var response = client.chatCompletion(request);
 response.choices().forEach(c -> System.out.println(c.messageContent()));
 ```
 
@@ -95,7 +95,7 @@ var request = new ChatCompletionRequestBuilder()
     .userMessage("Please generate two product names")
     .build();
 
-client.sendStreamChatCompletionRequest(request).subscribe(response -> {
+client.streamChatCompletion(request).subscribe(response -> {
     var message = response.firstChoiceMessageContent();
     if (message != null) {
         System.out.println(message);
@@ -106,7 +106,7 @@ client.sendStreamChatCompletionRequest(request).subscribe(response -> {
 Optionally, you can listen to events such as **errors** and **completion** during streaming:
 
 ```java
-client.sendStreamChatCompletionRequest(request).subscribe(response -> {
+client.streamChatCompletion(request).subscribe(response -> {
     var message = response.firstChoiceMessageContent();
     if (message != null) {
         System.out.println(message);
@@ -158,7 +158,7 @@ var request = new CreateAssistantRequestBuilder()
     .metadata(Map.of("metadata-key-1", "metadata-value-1", "metadata-key-2", "metadata-value-2"))
     .build();
 
-var response = client.sendCreateAssistantRequest(request);
+var response = client.createAssistant(request);
 System.out.println(response);
 ```
 
@@ -182,7 +182,7 @@ var request = new CreateAssistantRequestBuilder()
 #### List Assistants
 
 ```java
-var response = client.sendListAssistantsRequest();
+var response = client.listAssistants();
 System.out.println(response);
 ```
 
@@ -198,14 +198,14 @@ var parameters = new QueryParametersBuilder()
     .ascOrder()
     .build();
 
-var response = client.sendListAssistantsRequest(parameters);
+var response = client.listAssistants(parameters);
 System.out.println(response);
 ```
 
 #### Retrieve Assistant
 
 ```java
-var assistant = client.sendRetrieveAssistantRequest("assistant_id");
+var assistant = client.retrieveAssistant("assistant_id");
 System.out.println(assistant);
 ```
 
@@ -219,14 +219,14 @@ var request = new ModifyAssistantRequestBuilder()
     .instructions("New Assistant instructions")
     .build();
 
-var response = client.sendModifyAssistantRequest(request);
+var response = client.modifyAssistant(request);
 System.out.println(response);
 ```
 
 #### Delete Assistant
 
 ```java
-var status = client.sendDeleteAssistantRequest("assistant_id");
+var status = client.deleteAssistant("assistant_id");
 System.out.println(status);
 ```
 
@@ -237,8 +237,7 @@ The response is an object of type [`DeletionStatus`](src/main/java/br/com/rcanep
 #### Create Thread
 
 ```java
-var request = new CreateThreadRequestBuilder().build();
-var response = client.sendCreateThreadRequest(request);
+var response = client.createThread();
 System.out.println(response);
 ```
 
@@ -257,14 +256,14 @@ var request = new CreateThreadRequestBuilder()
     .metadata(threadMetadata)
     .build();
 
-var response = client.sendCreateThreadRequest(request);
+var response = client.createThread(request);
 System.out.println(response);
 ```
 
 #### Retrieve Thread
 
 ```java
-var thread = client.sendRetrieveThreadRequest("thread_id");
+var thread = client.retrieveThread("thread_id");
 System.out.println(thread);
 ```
 
@@ -278,13 +277,13 @@ var request = new ModifyThreadRequestBuilder()
     .metadata(metadata)
     .build();
 
-var response = client.sendModifyThreadRequest(request);
+var response = client.modifyThread(request);
 System.out.println(response);
 ```
 
 #### Delete Thread
 
 ```java
-var status = client.sendDeleteThreadRequest("thread_id");
+var status = client.deleteThread("thread_id");
 System.out.println(status);
 ```
