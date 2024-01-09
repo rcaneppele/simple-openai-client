@@ -1,12 +1,12 @@
-package br.com.rcaneppele.openai.endpoints.threads.request.sender;
+package br.com.rcaneppele.openai.endpoints.thread.request.sender;
 
 import br.com.rcaneppele.openai.common.json.JsonConverter;
 import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.RequestSender;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
-import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
-import br.com.rcaneppele.openai.endpoints.threads.request.builder.CreateThreadRequestBuilder;
-import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
+import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
+import br.com.rcaneppele.openai.endpoints.thread.request.builder.CreateThreadRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.thread.response.Thread;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

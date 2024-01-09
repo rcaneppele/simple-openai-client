@@ -1,6 +1,6 @@
-package br.com.rcaneppele.openai.endpoints.threads.request;
+package br.com.rcaneppele.openai.endpoints.thread.request;
 
-import br.com.rcaneppele.openai.endpoints.threads.messages.request.CreateMessageRequest;
+import br.com.rcaneppele.openai.endpoints.message.request.CreateMessageRequest;
 
 import java.util.List;
 import java.util.Map;

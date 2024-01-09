@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.endpoints.threads.request;
+package br.com.rcaneppele.openai.endpoints.thread.request;
 
 import java.util.Map;
 

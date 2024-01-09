@@ -1,8 +1,8 @@
-package br.com.rcaneppele.openai.endpoints.threads.request.builder;
+package br.com.rcaneppele.openai.endpoints.thread.request.builder;
 
 import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
-import br.com.rcaneppele.openai.endpoints.threads.request.ModifyThreadRequest;
+import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.endpoints.threads.response;
+package br.com.rcaneppele.openai.endpoints.thread.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

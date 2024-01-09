@@ -15,14 +15,14 @@ import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionR
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
-import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
-import br.com.rcaneppele.openai.endpoints.threads.request.ModifyThreadRequest;
-import br.com.rcaneppele.openai.endpoints.threads.request.builder.CreateThreadRequestBuilder;
-import br.com.rcaneppele.openai.endpoints.threads.request.sender.CreateThreadRequestSender;
-import br.com.rcaneppele.openai.endpoints.threads.request.sender.DeleteThreadRequestSender;
-import br.com.rcaneppele.openai.endpoints.threads.request.sender.ModifyThreadRequestSender;
-import br.com.rcaneppele.openai.endpoints.threads.request.sender.RetrieveThreadRequestSender;
-import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
+import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
+import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
+import br.com.rcaneppele.openai.endpoints.thread.request.builder.CreateThreadRequestBuilder;
+import br.com.rcaneppele.openai.endpoints.thread.request.sender.CreateThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.thread.request.sender.DeleteThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.thread.request.sender.ModifyThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.thread.request.sender.RetrieveThreadRequestSender;
+import br.com.rcaneppele.openai.endpoints.thread.response.Thread;
 import io.reactivex.rxjava3.core.Observable;
 
 import java.time.Duration;

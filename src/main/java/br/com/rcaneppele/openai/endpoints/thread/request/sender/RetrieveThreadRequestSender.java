@@ -1,7 +1,7 @@
-package br.com.rcaneppele.openai.endpoints.threads.request.sender;
+package br.com.rcaneppele.openai.endpoints.thread.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
-import br.com.rcaneppele.openai.endpoints.threads.response.Thread;
+import br.com.rcaneppele.openai.endpoints.thread.response.Thread;
 
 import java.time.Duration;
 

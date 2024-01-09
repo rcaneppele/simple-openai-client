@@ -1,8 +1,8 @@
-package br.com.rcaneppele.openai.endpoints.threads.request.builder;
+package br.com.rcaneppele.openai.endpoints.thread.request.builder;
 
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
-import br.com.rcaneppele.openai.endpoints.threads.messages.request.CreateMessageRequest;
-import br.com.rcaneppele.openai.endpoints.threads.request.CreateThreadRequest;
+import br.com.rcaneppele.openai.endpoints.message.request.CreateMessageRequest;
+import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
 
 import java.util.ArrayList;
 import java.util.List;

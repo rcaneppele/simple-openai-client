@@ -241,7 +241,7 @@ var response = client.createThread();
 System.out.println(response);
 ```
 
-The response is an object of type [`Thread`](src/main/java/br/com/rcaneppele/openai/endpoints/threads/response/Thread.java).
+The response is an object of type [`Thread`](src/main/java/br/com/rcaneppele/openai/endpoints/thread/response/Thread.java).
 
 Optionally, you can create a Thread with metadata and a list of messages:
 
