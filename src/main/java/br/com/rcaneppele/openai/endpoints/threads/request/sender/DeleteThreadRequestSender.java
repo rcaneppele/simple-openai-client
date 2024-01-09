@@ -1,7 +1,7 @@
 package br.com.rcaneppele.openai.endpoints.threads.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
-import br.com.rcaneppele.openai.endpoints.assistant.response.DeletionStatus;
+import br.com.rcaneppele.openai.common.response.DeletionStatus;
 
 import java.time.Duration;
 

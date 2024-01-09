@@ -1,4 +1,4 @@
-package br.com.rcaneppele.openai.endpoints.assistant.response;
+package br.com.rcaneppele.openai.common.response;
 
 public record DeletionStatus(
         String id,

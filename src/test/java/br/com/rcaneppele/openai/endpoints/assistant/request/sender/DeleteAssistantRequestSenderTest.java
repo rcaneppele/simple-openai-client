@@ -1,8 +1,8 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
 
 import br.com.rcaneppele.openai.common.request.RequestSender;
+import br.com.rcaneppele.openai.common.response.DeletionStatus;
 import br.com.rcaneppele.openai.endpoints.BaseRequestSenderTest;
-import br.com.rcaneppele.openai.endpoints.assistant.response.DeletionStatus;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,16 @@
 package br.com.rcaneppele.openai;
 
 import br.com.rcaneppele.openai.common.request.QueryParameters;
+import br.com.rcaneppele.openai.common.response.DeletionStatus;
 import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantFileRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.CreateAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ModifyAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.request.sender.*;
-import br.com.rcaneppele.openai.endpoints.assistant.response.*;
+import br.com.rcaneppele.openai.endpoints.assistant.response.Assistant;
+import br.com.rcaneppele.openai.endpoints.assistant.response.AssistantFile;
+import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
+import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequest;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
