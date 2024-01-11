@@ -6,7 +6,7 @@
 
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <name>simple-openai-client</name>
     <description>A simple Java library for seamless integration of your Java applications with OpenAI API</description>
     <url>https://github.com/rcaneppele/simple-openai-client</url>

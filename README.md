@@ -19,13 +19,13 @@ In development:
 <dependency>
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
 ### Gradle
 
-`implementation 'br.com.rcaneppele:simple-openai-client:1.3.0'`
+`implementation 'br.com.rcaneppele:simple-openai-client:1.4.0'`
 
 ### Java version support
 
