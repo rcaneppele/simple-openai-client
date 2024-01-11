@@ -19,6 +19,7 @@ import br.com.rcaneppele.openai.endpoints.message.request.CreateMessageRequest;
 import br.com.rcaneppele.openai.endpoints.message.request.sender.CreateMessageRequestSender;
 import br.com.rcaneppele.openai.endpoints.message.request.sender.ListMessageFilesRequestSender;
 import br.com.rcaneppele.openai.endpoints.message.request.sender.ListMessagesRequestSender;
+import br.com.rcaneppele.openai.endpoints.message.request.sender.RetrieveMessageRequestSender;
 import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessageFiles;
 import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessages;
 import br.com.rcaneppele.openai.endpoints.message.response.Message;
@@ -188,6 +189,13 @@ public class OpenAIClient {
 
     public ListOfMessageFiles listMessageFiles(String threadId, String messageId) {
         return this.listMessageFiles(threadId, messageId, null);
+    }
+
+    public Message retrieveMessage(String threadId, String messageId) {
+        idValidator.validateThreadId(threadId);
+        idValidator.validateMessageId(messageId);
+        var sender = new RetrieveMessageRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, messageId);
+        return sender.sendRequest(null);
     }
 
 }
