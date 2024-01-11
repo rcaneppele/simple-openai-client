@@ -1,21 +1,21 @@
-package br.com.rcaneppele.openai.endpoints.assistant.request.sender;
+package br.com.rcaneppele.openai.endpoints.message.request.sender;
 
 import br.com.rcaneppele.openai.common.request.HttpMethod;
 import br.com.rcaneppele.openai.common.request.QueryParameters;
-import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistants;
+import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessages;
 
 import java.time.Duration;
 
-public class ListAssistantsRequestSender extends AssistantRequestSender<QueryParameters, ListOfAssistants> {
+public class ListMessagesRequestSender extends MessageRequestSender<QueryParameters, ListOfMessages> {
 
     private QueryParameters queryParameters;
 
-    public ListAssistantsRequestSender(String apiBaseUrl, Duration timeout, String apiKey) {
-        super(apiBaseUrl, timeout, apiKey);
+    public ListMessagesRequestSender(String apiBaseUrl, Duration timeout, String apiKey, String threadId) {
+        super(apiBaseUrl, timeout, apiKey, threadId);
     }
 
     @Override
-    public ListOfAssistants sendRequest(QueryParameters queryParameters) {
+    public ListOfMessages sendRequest(QueryParameters queryParameters) {
         this.queryParameters = queryParameters;
         return super.sendRequest(null);
     }
@@ -36,8 +36,8 @@ public class ListAssistantsRequestSender extends AssistantRequestSender<QueryPar
     }
 
     @Override
-    protected Class<ListOfAssistants> responseType() {
-        return ListOfAssistants.class;
+    protected Class<ListOfMessages> responseType() {
+        return ListOfMessages.class;
     }
 
 }

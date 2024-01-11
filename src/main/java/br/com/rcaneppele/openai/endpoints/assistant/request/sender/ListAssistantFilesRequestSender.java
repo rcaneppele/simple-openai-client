@@ -5,13 +5,11 @@ import br.com.rcaneppele.openai.common.request.QueryParameters;
 import br.com.rcaneppele.openai.endpoints.assistant.response.ListOfAssistantFiles;
 
 import java.time.Duration;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ListAssistantFilesRequestSender extends AssistantRequestSender<QueryParameters, ListOfAssistantFiles> {
 
-    private final Map<String, Object> queryParam = new LinkedHashMap<>();
     private final String assistantId;
+    private QueryParameters queryParameters;
 
     public ListAssistantFilesRequestSender(String apiBaseUrl, Duration timeout, String apiKey, String assistantId) {
         super(apiBaseUrl, timeout, apiKey);
@@ -24,15 +22,14 @@ public class ListAssistantFilesRequestSender extends AssistantRequestSender<Quer
     }
 
     @Override
-    public ListOfAssistantFiles sendRequest(QueryParameters parameters) {
-        if (parameters != null) {
-            addQueryParamIfNotNull("limit", parameters.limit());
-            addQueryParamIfNotNull("order", parameters.order());
-            addQueryParamIfNotNull("after", parameters.after());
-            addQueryParamIfNotNull("before", parameters.before());
-        }
+    public ListOfAssistantFiles sendRequest(QueryParameters queryParameters) {
+        this.queryParameters = queryParameters;
+        return super.sendRequest(null);
+    }
 
-        return super.sendRequest(parameters);
+    @Override
+    protected QueryParameters queryParameters() {
+        return this.queryParameters;
     }
 
     @Override
@@ -48,17 +45,6 @@ public class ListAssistantFilesRequestSender extends AssistantRequestSender<Quer
     @Override
     protected Class<ListOfAssistantFiles> responseType() {
         return ListOfAssistantFiles.class;
-    }
-
-    @Override
-    protected Map<String, Object> queryParams() {
-        return this.queryParam;
-    }
-
-    private void addQueryParamIfNotNull(String paramName, Object paramValue) {
-        if (paramValue != null) {
-            queryParam.put(paramName, paramValue);
-        }
     }
 
 }

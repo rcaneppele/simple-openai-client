@@ -31,8 +31,8 @@ public abstract class RequestSender<I, O> {
     protected Map<String, String> additionalHeaders() {
         return Map.of();
     }
-    protected Map<String, Object> queryParams() {
-        return Map.of();
+    protected QueryParameters queryParameters() {
+        return null;
     }
     protected abstract String endpointUri();
     protected abstract Class<I> requestType();
@@ -45,7 +45,7 @@ public abstract class RequestSender<I, O> {
 
         switch (httpMethod()) {
             case GET -> {
-                url = appendQueryParams(url);
+                url = appendQueryParameters(url);
                 builder.get();
             }
 
@@ -73,20 +73,30 @@ public abstract class RequestSender<I, O> {
         }
     }
 
-    private String appendQueryParams(String url) {
-        var builder = new StringBuilder(url);
-
-        var params = queryParams();
-        if (!params.isEmpty()) {
-            builder.append("?");
-
-            params.forEach((key, value) -> builder.append(key).append("=").append(value).append("&"));
-
-            // Remove the trailing "&"
-            builder.setLength(builder.length() - 1);
+    private String appendQueryParameters(String url) {
+        var parameters = queryParameters();
+        if (parameters == null) {
+            return url;
         }
 
+        var builder = new StringBuilder(url);
+        builder.append("?");
+
+        addQueryParamIfNotNull(builder,"limit", parameters.limit());
+        addQueryParamIfNotNull(builder,"order", parameters.order());
+        addQueryParamIfNotNull(builder,"after", parameters.after());
+        addQueryParamIfNotNull(builder,"before", parameters.before());
+
+        // Remove the trailing "&"
+        builder.setLength(builder.length() - 1);
+
         return builder.toString();
+    }
+
+    private void addQueryParamIfNotNull(StringBuilder builder, String paramName, Object paramValue) {
+        if (paramValue != null) {
+            builder.append(paramName).append("=").append(paramValue).append("&");
+        }
     }
 
 }

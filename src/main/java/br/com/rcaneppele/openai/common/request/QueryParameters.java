@@ -1,7 +1,7 @@
 package br.com.rcaneppele.openai.common.request;
 
 public record QueryParameters(
-        int limit,
+        Integer limit,
         String order,
         String after,
         String before) {
