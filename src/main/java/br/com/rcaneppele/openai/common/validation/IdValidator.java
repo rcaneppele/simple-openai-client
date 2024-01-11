@@ -20,6 +20,12 @@ public class IdValidator {
         }
     }
 
+    public void validateMessageId(String messageId) {
+        if (!isIdValid(messageId)) {
+            throw new IllegalArgumentException("Message id is required!");
+        }
+    }
+
     private boolean isIdValid(String id) {
         return id != null && !id.isBlank();
     }
