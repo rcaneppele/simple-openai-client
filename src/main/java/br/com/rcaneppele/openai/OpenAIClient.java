@@ -16,13 +16,11 @@ import br.com.rcaneppele.openai.endpoints.chatcompletion.request.ChatCompletionR
 import br.com.rcaneppele.openai.endpoints.chatcompletion.request.stream.ChatCompletionStreamRequestSender;
 import br.com.rcaneppele.openai.endpoints.chatcompletion.response.ChatCompletion;
 import br.com.rcaneppele.openai.endpoints.message.request.CreateMessageRequest;
-import br.com.rcaneppele.openai.endpoints.message.request.sender.CreateMessageRequestSender;
-import br.com.rcaneppele.openai.endpoints.message.request.sender.ListMessageFilesRequestSender;
-import br.com.rcaneppele.openai.endpoints.message.request.sender.ListMessagesRequestSender;
-import br.com.rcaneppele.openai.endpoints.message.request.sender.RetrieveMessageRequestSender;
+import br.com.rcaneppele.openai.endpoints.message.request.sender.*;
 import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessageFiles;
 import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessages;
 import br.com.rcaneppele.openai.endpoints.message.response.Message;
+import br.com.rcaneppele.openai.endpoints.message.response.MessageFile;
 import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.builder.CreateThreadRequestBuilder;
@@ -195,6 +193,14 @@ public class OpenAIClient {
         idValidator.validateThreadId(threadId);
         idValidator.validateMessageId(messageId);
         var sender = new RetrieveMessageRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, messageId);
+        return sender.sendRequest(null);
+    }
+
+    public MessageFile retrieveMessageFile(String threadId, String messageId, String fileId) {
+        idValidator.validateThreadId(threadId);
+        idValidator.validateMessageId(messageId);
+        idValidator.validateFileId(fileId);
+        var sender = new RetrieveMessageFileRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, messageId, fileId);
         return sender.sendRequest(null);
     }
 
