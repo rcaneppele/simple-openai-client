@@ -6,9 +6,9 @@ A **simple** Java library for seamless integration of your Java applications wit
 - [Chat](https://platform.openai.com/docs/api-reference/chat)
 - [Assistant](https://platform.openai.com/docs/api-reference/assistants)
 - [Threads](https://platform.openai.com/docs/api-reference/threads)
+- [Messages](https://platform.openai.com/docs/api-reference/messages)
 
 In development:
-- [Messages](https://platform.openai.com/docs/api-reference/messages)
 - [Runs](https://platform.openai.com/docs/api-reference/runs)
 
 ## Installation
@@ -286,4 +286,62 @@ System.out.println(response);
 ```java
 var status = client.deleteThread("thread_id");
 System.out.println(status);
+```
+
+### Messages
+
+#### Create Message
+
+```java
+var request = new CreateMessageRequestBuilder()
+    .threadId("thread-id")
+    .content("content")
+    .fileIds("fileId-1", "fileId-2")
+    .metadata(Map.of("key", "value"))
+    .build();
+
+var response = client.createMessage(request);
+System.out.println(response);
+```
+
+The response is an object of type [`Message`](src/main/java/br/com/rcaneppele/openai/endpoints/message/response/Message.java).
+
+#### List Messages
+
+```java
+var response = client.listMessages("thread-id");
+System.out.println(response);
+
+// You can use the QueryParameters object to filter/limit the result:
+response = client.listMessages("thread-id", queryParameters);
+```
+
+The response is an object of type [`ListOfMessages`](src/main/java/br/com/rcaneppele/openai/endpoints/message/response/ListOfMessages.java).
+
+#### Retrieve Message
+
+```java
+var message = client.retrieveMessage("thread-id", "message-id");
+System.out.println(message);
+
+// Text Message
+var firstMessage = message.firstMessageContentText();
+var lastMessage = message.lastMessageContentText();
+
+// Image Message
+var firstImageFileId = message.firstMessageContentImage();
+var lastImageFileId = message.lastMessageContentImage();
+```
+
+#### Modify Message
+
+```java
+var request = new ModifyMessageRequestBuilder()
+    .threadId("thread-id")
+    .messageId("message-id")
+    .metadata(Map.of("key", "value"))
+    .build();
+
+var response = client.modifyMessage(request);
+System.out.println(response);
 ```
