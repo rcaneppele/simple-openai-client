@@ -1,5 +1,10 @@
 package br.com.rcaneppele.openai.common;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Arrays;
+
 public enum OpenAIModel {
 
     GPT_3_5_TURBO_1106("gpt-3.5-turbo-1106"),
@@ -18,8 +23,17 @@ public enum OpenAIModel {
         this.name = name;
     }
 
+    @JsonValue
     public String getName() {
         return name;
+    }
+
+    @JsonCreator
+    public static OpenAIModel fromString(String value) {
+        return Arrays.stream(OpenAIModel.values())
+                .filter(model -> model.getName().equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown OpenAIModel enum constant: " + value));
     }
 
 }

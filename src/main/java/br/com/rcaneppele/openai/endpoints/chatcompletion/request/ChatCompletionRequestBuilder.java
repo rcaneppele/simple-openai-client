@@ -137,7 +137,7 @@ public class ChatCompletionRequestBuilder {
         validateRequiredFields();
 
         return new ChatCompletionRequest(
-                this.model.getName(),
+                this.model,
                 this.n,
                 this.maxTokens,
                 this.frequencyPenalty,

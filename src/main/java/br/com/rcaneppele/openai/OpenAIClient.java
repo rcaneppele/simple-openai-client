@@ -22,6 +22,9 @@ import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessageFiles;
 import br.com.rcaneppele.openai.endpoints.message.response.ListOfMessages;
 import br.com.rcaneppele.openai.endpoints.message.response.Message;
 import br.com.rcaneppele.openai.endpoints.message.response.MessageFile;
+import br.com.rcaneppele.openai.endpoints.run.request.CreateRunRequest;
+import br.com.rcaneppele.openai.endpoints.run.request.sender.CreateRunRequestSender;
+import br.com.rcaneppele.openai.endpoints.run.response.Run;
 import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.builder.CreateThreadRequestBuilder;
@@ -211,6 +214,15 @@ public class OpenAIClient {
         idValidator.validateThreadId(threadId);
         idValidator.validateMessageId(messageId);
         var sender = new ModifyMessageRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, messageId);
+        return sender.sendRequest(request);
+    }
+
+    public Run createRun(CreateRunRequest request) {
+        var threadId = request.threadId();
+        var assistantId = request.assistantId();
+        idValidator.validateThreadId(threadId);
+        idValidator.validateAssistantId(assistantId);
+        var sender = new CreateRunRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(request);
     }
 

@@ -20,7 +20,7 @@ public class ModifyAssistantRequestBuilder extends CreateAssistantRequestBuilder
 
         return new ModifyAssistantRequest(
                 this.assistantId,
-                this.model != null ? this.model.getName() : null,
+                this.model != null ? this.model : null,
                 this.name,
                 this.description,
                 this.instructions,

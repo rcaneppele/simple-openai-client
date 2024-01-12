@@ -74,7 +74,7 @@ class CreateAssistantRequestSenderTest extends BaseRequestSenderTest {
                 Instant.ofEpochSecond(1698984975),
                 "Math Tutor",
                 "Math Tutor description",
-                OpenAIModel.GPT_4_1106_PREVIEW.getName(),
+                OpenAIModel.GPT_4_1106_PREVIEW,
                 "You are a personal math tutor.",
                 Set.of(new Tool(ToolType.CODE_INTERPRETER.getName(), null)),
                 Set.of(),

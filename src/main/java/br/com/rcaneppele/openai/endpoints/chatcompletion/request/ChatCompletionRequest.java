@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.chatcompletion.request;
 
+import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.message.ChatMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public record ChatCompletionRequest(
-        String model,
+        OpenAIModel model,
         Integer n,
         @JsonProperty("max_tokens")
         Integer maxTokens,

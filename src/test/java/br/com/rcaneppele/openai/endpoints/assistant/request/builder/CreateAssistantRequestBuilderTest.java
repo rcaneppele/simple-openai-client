@@ -154,7 +154,7 @@ class CreateAssistantRequestBuilderTest {
                 .metadata(metadata)
                 .build();
 
-        assertEquals(OpenAIModel.GPT_3_5_TURBO.getName(), request.model());
+        assertEquals(OpenAIModel.GPT_3_5_TURBO, request.model());
         assertEquals(name, request.name());
         assertEquals(description, request.description());
         assertEquals(instructions, request.instructions());

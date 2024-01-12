@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request;
 
+import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Tool;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,7 +9,7 @@ import java.util.Set;
 
 public record ModifyAssistantRequest(
         String assistantId,
-        String model,
+        OpenAIModel model,
         String name,
         String description,
         String instructions,

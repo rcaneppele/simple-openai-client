@@ -72,7 +72,7 @@ class ChatCompletionRequestSenderTest extends BaseRequestSenderTest {
                 "chatcmpl-123",
                 "chat.completion",
                 Instant.ofEpochSecond(1677652288),
-                OpenAIModel.GPT_3_5_TURBO.getName(),
+                OpenAIModel.GPT_3_5_TURBO,
                 "fp_44709d6fcb",
                 List.of(
                         new ChatCompletionChoice(

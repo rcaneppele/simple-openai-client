@@ -63,7 +63,7 @@ class RetrieveAssistantRequestSenderTest extends BaseRequestSenderTest {
                 Instant.ofEpochSecond(1699009709),
                 "HR Helper",
                 "Description",
-                OpenAIModel.GPT_4.getName(),
+                OpenAIModel.GPT_4,
                 "You are an HR bot.",
                 Set.of(new Tool(ToolType.RETRIEVAL.getName(), null)),
                 Set.of("file-123"),

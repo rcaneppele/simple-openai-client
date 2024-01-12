@@ -141,7 +141,7 @@ class ChatCompletionRequestBuilderTest {
                 .logitBias(logitBias)
                 .build();
 
-        assertEquals(OpenAIModel.GPT_3_5_TURBO.getName(), request.model());
+        assertEquals(OpenAIModel.GPT_3_5_TURBO, request.model());
         assertEquals(3, request.n());
         assertEquals(999, request.maxTokens());
         assertEquals(1.3, request.frequencyPenalty());

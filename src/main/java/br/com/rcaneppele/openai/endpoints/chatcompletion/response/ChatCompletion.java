@@ -1,5 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.chatcompletion.response;
 
+import br.com.rcaneppele.openai.common.OpenAIModel;
 import br.com.rcaneppele.openai.common.message.ChatCompletionChoice;
 import br.com.rcaneppele.openai.common.message.TokenUsage;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +12,7 @@ public record ChatCompletion(
         String id,
         String object,
         Instant created,
-        String model,
+        OpenAIModel model,
         @JsonProperty("system_fingerprint")
         String systemFingerprint,
         List<ChatCompletionChoice> choices,

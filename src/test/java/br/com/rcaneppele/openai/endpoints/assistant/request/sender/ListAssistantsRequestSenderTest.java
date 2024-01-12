@@ -80,7 +80,7 @@ class ListAssistantsRequestSenderTest extends BaseRequestSenderTest {
                                 Instant.ofEpochSecond(1698982736),
                                 "Coding Tutor",
                                 null,
-                                OpenAIModel.GPT_4.getName(),
+                                OpenAIModel.GPT_4,
                                 "You are a helpful assistant designed to make me better at coding!",
                                 Set.of(),
                                 Set.of(),

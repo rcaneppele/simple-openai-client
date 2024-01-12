@@ -104,7 +104,7 @@ public class CreateAssistantRequestBuilder {
         validateRequiredFields();
 
         return new CreateAssistantRequest(
-                this.model.getName(),
+                this.model,
                 this.name,
                 this.description,
                 this.instructions,
