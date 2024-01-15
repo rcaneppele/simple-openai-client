@@ -50,11 +50,12 @@ public abstract class RequestSender<I, O> {
             }
 
             case POST -> {
-                if (request == null) {
-                    throw new IllegalArgumentException("Request is required!");
+                if (request != null) {
+                    var json = jsonConverter.convertRequestToJson(request);
+                    builder.post(RequestBody.create(json, MediaType.parse("application/json")));
+                } else {
+                    builder.post(RequestBody.create("", null));
                 }
-                var json = jsonConverter.convertRequestToJson(request);
-                builder.post(RequestBody.create(json, MediaType.parse("application/json")));
             }
 
             case DELETE -> {
