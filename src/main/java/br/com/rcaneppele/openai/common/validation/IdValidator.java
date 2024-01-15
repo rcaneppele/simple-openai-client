@@ -26,6 +26,12 @@ public class IdValidator {
         }
     }
 
+    public void validateRunId(String runId) {
+        if (!isIdValid(runId)) {
+            throw new IllegalArgumentException("Run id is required!");
+        }
+    }
+
     private boolean isIdValid(String id) {
         return id != null && !id.isBlank();
     }
