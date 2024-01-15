@@ -32,6 +32,12 @@ public class IdValidator {
         }
     }
 
+    public void validateRunStepId(String runStepId) {
+        if (!isIdValid(runStepId)) {
+            throw new IllegalArgumentException("Run Step id is required!");
+        }
+    }
+
     private boolean isIdValid(String id) {
         return id != null && !id.isBlank();
     }

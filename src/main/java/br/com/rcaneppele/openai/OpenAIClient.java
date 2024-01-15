@@ -28,6 +28,7 @@ import br.com.rcaneppele.openai.endpoints.run.request.sender.*;
 import br.com.rcaneppele.openai.endpoints.run.response.ListOfRunSteps;
 import br.com.rcaneppele.openai.endpoints.run.response.ListOfRuns;
 import br.com.rcaneppele.openai.endpoints.run.response.Run;
+import br.com.rcaneppele.openai.endpoints.run.response.RunStep;
 import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.builder.CreateThreadRequestBuilder;
@@ -271,6 +272,14 @@ public class OpenAIClient {
 
     public ListOfRunSteps listRunSteps(String threadId, String runId) {
         return this.listRunSteps(threadId, runId, null);
+    }
+
+    public RunStep retrieveRunStep(String threadId, String runId, String stepId) {
+        idValidator.validateThreadId(threadId);
+        idValidator.validateRunId(runId);
+        idValidator.validateRunStepId(stepId);
+        var sender = new RetrieveRunStepRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, runId, stepId);
+        return sender.sendRequest(null);
     }
 
 }

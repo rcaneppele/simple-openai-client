@@ -14,6 +14,7 @@ class IdValidatorTest {
     private static final String THREAD_ID_MESSAGE = "Thread id is required!";
     private static final String MESSAGE_ID_MESSAGE = "Message id is required!";
     private static final String RUN_ID_MESSAGE = "Run id is required!";
+    private static final String RUN_STEP_ID_MESSAGE = "Run Step id is required!";
 
     private IdValidator validator;
 
@@ -88,11 +89,27 @@ class IdValidatorTest {
     }
 
     @Test
+    void shouldRejectNullRunStepId() {
+        var exception = assertThrows(IllegalArgumentException.class, () -> validator.validateRunStepId(null));
+        assertEquals(RUN_STEP_ID_MESSAGE, exception.getMessage());
+    }
+
+    @ParameterizedTest(name = "Testing Run Step id with empty String")
+    @ValueSource(strings = {"", " "})
+    void shouldRejectEmptyRunStepId(String id) {
+        var exception = assertThrows(IllegalArgumentException.class, () -> validator.validateRunStepId(id));
+        assertEquals(RUN_STEP_ID_MESSAGE, exception.getMessage());
+    }
+
+    @Test
     void shouldNotRejectValidId() {
         var validId = "id";
         assertDoesNotThrow(() -> validator.validateAssistantId(validId));
         assertDoesNotThrow(() -> validator.validateFileId(validId));
         assertDoesNotThrow(() -> validator.validateThreadId(validId));
+        assertDoesNotThrow(() -> validator.validateAssistantId(validId));
+        assertDoesNotThrow(() -> validator.validateRunId(validId));
+        assertDoesNotThrow(() -> validator.validateRunStepId(validId));
     }
 
 }
