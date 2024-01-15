@@ -24,6 +24,8 @@ import br.com.rcaneppele.openai.endpoints.message.response.Message;
 import br.com.rcaneppele.openai.endpoints.message.response.MessageFile;
 import br.com.rcaneppele.openai.endpoints.run.request.CreateRunRequest;
 import br.com.rcaneppele.openai.endpoints.run.request.sender.CreateRunRequestSender;
+import br.com.rcaneppele.openai.endpoints.run.request.sender.ListRunsRequestSender;
+import br.com.rcaneppele.openai.endpoints.run.response.ListOfRuns;
 import br.com.rcaneppele.openai.endpoints.run.response.Run;
 import br.com.rcaneppele.openai.endpoints.thread.request.CreateThreadRequest;
 import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
@@ -224,6 +226,16 @@ public class OpenAIClient {
         idValidator.validateAssistantId(assistantId);
         var sender = new CreateRunRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(request);
+    }
+
+    public ListOfRuns listRuns(String threadId, QueryParameters parameters) {
+        idValidator.validateThreadId(threadId);
+        var sender = new ListRunsRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
+        return sender.sendRequest(parameters);
+    }
+
+    public ListOfRuns listRuns(String threadId) {
+        return this.listRuns(threadId, null);
     }
 
 }
