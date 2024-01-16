@@ -7,8 +7,6 @@ A **simple** Java library for seamless integration of your Java applications wit
 - [Assistant](https://platform.openai.com/docs/api-reference/assistants)
 - [Threads](https://platform.openai.com/docs/api-reference/threads)
 - [Messages](https://platform.openai.com/docs/api-reference/messages)
-
-In development:
 - [Runs](https://platform.openai.com/docs/api-reference/runs)
 
 ## Installation
@@ -343,5 +341,95 @@ var request = new ModifyMessageRequestBuilder()
     .build();
 
 var response = client.modifyMessage(request);
+System.out.println(response);
+```
+
+### Runs
+
+#### Create Run
+
+```java
+var request = new CreateRunRequestBuilder()
+    .threadId("thread-id")
+    .assistantId("assistant-id")
+    .additionalInstructions("additional instructions")
+    .build();
+
+var response = client.createRun(request);
+System.out.println(response);
+```
+
+The response is an object of type [`Run`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/Run.java).
+
+#### List Runs
+
+```java
+var response = client.listRuns("thread-id");
+System.out.println(response);
+
+// You can use the QueryParameters object to filter/limit the result:
+response = client.listRuns("thread-id", queryParameters);
+```
+
+The response is an object of type [`ListOfRuns`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/ListOfRuns.java).
+
+#### Retrieve Run
+
+```java
+var run = client.retrieveRun("thread-id", "run-id");
+System.out.println(run);
+```
+
+#### Modify Run
+
+```java
+var request = new ModifyRunRequestBuilder()
+    .threadId("thread-id")
+    .runId("run-id")
+    .metadata(Map.of("key", "value"))
+    .build();
+
+var response = client.modifyRun(request);
+System.out.println(response);
+```
+
+#### Cancel Run
+
+```java
+var run = client.cancelRun("thread-id", "run-id");
+System.out.println(run);
+```
+
+#### List Run Steps
+
+```java
+var response = client.listRunSteps("thread-id", "run-id");
+System.out.println(response);
+
+// You can use the QueryParameters object to filter/limit the result:
+response = client.listRunSteps("thread-id", "run-id", queryParameters);
+```
+
+The response is an object of type [`ListOfRunSteps`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/ListOfRunSteps.java).
+
+#### Retrieve Run Step
+
+```java
+var runStep = client.retrieveRunStep("thread-id", "run-id", "step-id");
+System.out.println(runStep);
+```
+
+The response is an object of type [`RunStep`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/RunStep.java).
+
+#### Submit Tool Outputs to Run
+
+```java
+var request = new SubmitToolOutputsToRunRequestBuilder()
+        .threadId("thread-id")
+        .runId("run-id")
+        .toolOutput("tool-call-id", "output")
+        .build();
+
+var response = client.submitToolOutputsToRun(request);
 System.out.println(response);
 ```
