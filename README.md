@@ -9,6 +9,10 @@ A **simple** Java library for seamless integration of your Java applications wit
 - [Messages](https://platform.openai.com/docs/api-reference/messages)
 - [Runs](https://platform.openai.com/docs/api-reference/runs)
 
+## Unofficial Community-Driven Library
+
+Kindly note that this library is not officially endorsed by OpenAI; rather, its development and maintenance are driven by the community.
+
 ## Installation
 
 ### Maven
