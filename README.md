@@ -21,13 +21,13 @@ Kindly note that this library is not officially endorsed by OpenAI; rather, its 
 <dependency>
     <groupId>br.com.rcaneppele</groupId>
     <artifactId>simple-openai-client</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 
 ### Gradle
 
-`implementation 'br.com.rcaneppele:simple-openai-client:1.5.0'`
+`implementation 'br.com.rcaneppele:simple-openai-client:1.5.1'`
 
 ### Java version support
 
