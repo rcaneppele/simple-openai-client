@@ -33,13 +33,6 @@ class CreateRunRequestBuilderTest {
     private IdValidator idValidator;
 
     @Test
-    void shouldCallThreadIdValidator() {
-        var threadId = "thread-id";
-        builder.threadId(threadId);
-        verify(idValidator).validateThreadId(threadId);
-    }
-
-    @Test
     void shouldCallAssistantIdValidator() {
         var asssistantId = "asssistant-id";
         builder.assistantId(asssistantId);
@@ -55,14 +48,8 @@ class CreateRunRequestBuilderTest {
 
     @Test
     void shouldCallAssistantIdValidatorOnBuild() {
-        builder.threadId("thread-id").build();
+        builder.build();
         verify(idValidator).validateAssistantId(null);
-    }
-
-    @Test
-    void shouldCallThreadIdValidatorOnBuild() {
-        builder.assistantId("assistant-id").build();
-        verify(idValidator).validateThreadId(null);
     }
 
     @Test
@@ -71,7 +58,6 @@ class CreateRunRequestBuilderTest {
         var function = new Function("function_name", "description", Map.of("name", "value"));
 
         var actual = builder
-                .threadId("thread-id")
                 .assistantId("assistant-id")
                 .instructions("instructions")
                 .additionalInstructions("additional instructions")
@@ -83,7 +69,6 @@ class CreateRunRequestBuilderTest {
                 .build();
 
         var expected = new CreateRunRequest(
-                "thread-id",
                 "assistant-id",
                 OpenAIModel.GPT_4_32K,
                 "instructions",

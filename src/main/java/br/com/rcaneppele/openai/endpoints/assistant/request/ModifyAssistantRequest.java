@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 public record ModifyAssistantRequest(
-        @JsonProperty("assistant_id")
-        String assistantId,
         OpenAIModel model,
         String name,
         String description,

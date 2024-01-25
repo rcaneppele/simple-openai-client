@@ -22,13 +22,6 @@ class CreateAssistantFileRequestBuilderTest {
     private IdValidator idValidator;
 
     @Test
-    void shouldCallAssistantIdValidator() {
-        var id = "assistant-id";
-        builder.assistantId(id);
-        verify(idValidator).validateAssistantId(id);
-    }
-
-    @Test
     void shouldCallFileIdValidator() {
         var id = "file-id";
         builder.fileId(id);
@@ -38,22 +31,18 @@ class CreateAssistantFileRequestBuilderTest {
     @Test
     void shouldCallValidatorsOnBuild() {
         builder.build();
-        verify(idValidator).validateAssistantId(any());
         verify(idValidator).validateFileId(any());
     }
 
     @Test
     void shouldBuildWithAllParameters() {
-        var assistantId = "asst_123";
         var fileId = "file-123";
 
         var request = builder
-                .assistantId(assistantId)
                 .fileId(fileId)
                 .build();
 
         assertNotNull(request);
-        assertEquals(assistantId, request.assistantId());
         assertEquals(fileId, request.fileId());
     }
 

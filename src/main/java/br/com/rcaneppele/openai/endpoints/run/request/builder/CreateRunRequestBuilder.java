@@ -14,7 +14,6 @@ import java.util.Set;
 
 public class CreateRunRequestBuilder {
 
-    private String threadId;
     private String assistantId;
     private OpenAIModel model;
     private String instructions;
@@ -24,12 +23,6 @@ public class CreateRunRequestBuilder {
 
     private IdValidator idValidator = new IdValidator();
     private MetadataValidator metadataValidator = new MetadataValidator();
-
-    public CreateRunRequestBuilder threadId(String threadId) {
-        this.validateThreadId(threadId);
-        this.threadId = threadId;
-        return this;
-    }
 
     public CreateRunRequestBuilder assistantId(String assistantId) {
         this.validateAssistantId(assistantId);
@@ -100,7 +93,6 @@ public class CreateRunRequestBuilder {
         validateRequiredFields();
 
         return new CreateRunRequest(
-                this.threadId,
                 this.assistantId,
                 this.model,
                 this.instructions,
@@ -111,12 +103,7 @@ public class CreateRunRequestBuilder {
     }
 
     private void validateRequiredFields() {
-        validateThreadId(this.threadId);
         validateAssistantId(this.assistantId);
-    }
-
-    private void validateThreadId(String threadId) {
-        this.idValidator.validateThreadId(threadId);
     }
 
     private void validateAssistantId(String assistantId) {

@@ -66,7 +66,6 @@ class CreateMessageRequestSenderTest extends BaseRequestSenderTest {
     @Test
     public void shouldSendRequest() {
         var request = builder
-                .threadId(THREAD_ID)
                 .content("How does AI work? Explain it in simple terms.")
                 .build();
 

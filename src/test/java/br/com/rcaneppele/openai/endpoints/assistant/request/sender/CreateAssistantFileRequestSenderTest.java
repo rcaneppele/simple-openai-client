@@ -47,7 +47,6 @@ class CreateAssistantFileRequestSenderTest extends BaseRequestSenderTest {
     @Test
     public void shouldSendRequest() {
         var request = builder
-                .assistantId(ASSISTANT_ID)
                 .fileId("file-123")
                 .build();
 

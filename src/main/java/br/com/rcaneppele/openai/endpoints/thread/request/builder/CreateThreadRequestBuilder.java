@@ -30,7 +30,6 @@ public class CreateThreadRequestBuilder {
         }
 
         var message = new CreateMessageRequest(
-                null,
                 "user",
                 content,
                 fileIds,

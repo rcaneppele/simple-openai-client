@@ -97,8 +97,6 @@ class SubmitToolOutputsToRunRequestSenderTest extends BaseRequestSenderTest {
     @Test
     public void shouldSendRequest() {
         var request = builder
-                .threadId(THREAD_ID)
-                .runId(RUN_ID)
                 .toolOutput("call_123", "28C")
                 .build();
 

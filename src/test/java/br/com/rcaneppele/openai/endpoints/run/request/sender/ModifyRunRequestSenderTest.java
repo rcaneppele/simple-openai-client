@@ -75,8 +75,6 @@ class ModifyRunRequestSenderTest extends BaseRequestSenderTest {
     @Test
     public void shouldSendRequest() {
         var request = builder
-                .threadId(THREAD_ID)
-                .runId(RUN_ID)
                 .metadata(Map.of("user_id", "user_123"))
                 .build();
 

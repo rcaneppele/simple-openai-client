@@ -72,10 +72,10 @@ class CreateThreadRequestBuilderTest {
     void shouldBuildWithAllParameters() {
         var metadata = Map.of("key", "value");
         var role = "user";
-        var message1 = new CreateMessageRequest(null, role, "message 1", null, null);
-        var message2 = new CreateMessageRequest(null, role, "message 2", Set.of("file-1", "file-2"), null);
-        var message3 = new CreateMessageRequest(null, role, "message 3", null, metadata);
-        var message4 = new CreateMessageRequest(null, role, "message 4", Set.of("file-3"), metadata);
+        var message1 = new CreateMessageRequest(role, "message 1", null, null);
+        var message2 = new CreateMessageRequest(role, "message 2", Set.of("file-1", "file-2"), null);
+        var message3 = new CreateMessageRequest(role, "message 3", null, metadata);
+        var message4 = new CreateMessageRequest(role, "message 4", Set.of("file-3"), metadata);
 
         var actual = builder
                 .addUserMessage(message1.content(), null, null)

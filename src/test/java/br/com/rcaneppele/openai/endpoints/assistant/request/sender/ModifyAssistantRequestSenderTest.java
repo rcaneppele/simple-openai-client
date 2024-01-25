@@ -66,7 +66,6 @@ class ModifyAssistantRequestSenderTest extends BaseRequestSenderTest {
         var instructions = "You are a personal math tutor.";
         var model = OpenAIModel.GPT_4_1106_PREVIEW;
         var request = (ModifyAssistantRequest) builder
-                .assistantId(ASSISTANT_ID)
                 .model(model)
                 .name(name)
                 .description(description)

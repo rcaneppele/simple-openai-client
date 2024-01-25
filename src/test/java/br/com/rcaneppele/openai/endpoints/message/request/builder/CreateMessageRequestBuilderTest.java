@@ -1,6 +1,5 @@
 package br.com.rcaneppele.openai.endpoints.message.request.builder;
 
-import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import br.com.rcaneppele.openai.endpoints.message.request.CreateMessageRequest;
 import org.junit.jupiter.api.Test;
@@ -27,16 +26,6 @@ class CreateMessageRequestBuilderTest {
 
     @Mock
     private MetadataValidator metadataValidator;
-
-    @Mock
-    private IdValidator idValidator;
-
-    @Test
-    void shouldCallThreadIdValidator() {
-        var threadId = "thread-id";
-        builder.threadId(threadId);
-        verify(idValidator).validateThreadId(threadId);
-    }
 
     @Test
     void shouldNotAddNullContent() {
@@ -66,14 +55,8 @@ class CreateMessageRequestBuilderTest {
     }
 
     @Test
-    void shouldCallThreadIdValidatorOnBuild() {
-        builder.content("content").build();
-        verify(idValidator).validateThreadId(null);
-    }
-
-    @Test
     void shouldValidateContentOnBuild() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> builder.threadId("thread-id").build());
+        var exception = assertThrows(IllegalArgumentException.class, () -> builder.build());
         assertEquals(REQUIRED_CONTENT_MESSAGE, exception.getMessage());
     }
 
@@ -82,14 +65,12 @@ class CreateMessageRequestBuilderTest {
         var metadata = Map.of("key", "value");
 
         var actual = builder
-                .threadId("thread-id")
                 .content("content")
                 .fileIds("fileId-1", "fileId-2")
                 .metadata(metadata)
                 .build();
 
         var expected = new CreateMessageRequest(
-                "thread-id",
                 "user",
                 "content",
                 Set.of("fileId-1", "fileId-2"),

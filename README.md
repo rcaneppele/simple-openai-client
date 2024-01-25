@@ -215,13 +215,12 @@ System.out.println(assistant);
 
 ```java
 var request = new ModifyAssistantRequestBuilder()
-    .assistantId("assistant_id")
     .name("New Assistant name")
     .description("New Assistant description")
     .instructions("New Assistant instructions")
     .build();
 
-var response = client.modifyAssistant(request);
+var response = client.modifyAssistant("assistant_id", request);
 System.out.println(response);
 ```
 
@@ -275,11 +274,10 @@ System.out.println(thread);
 var metadata = Map.of("metadata-key", "metadata-value");
 
 var request = new ModifyThreadRequestBuilder()
-    .threadId("thread_id")
     .metadata(metadata)
     .build();
 
-var response = client.modifyThread(request);
+var response = client.modifyThread("thread_id", request);
 System.out.println(response);
 ```
 
@@ -296,13 +294,12 @@ System.out.println(status);
 
 ```java
 var request = new CreateMessageRequestBuilder()
-    .threadId("thread-id")
     .content("content")
     .fileIds("fileId-1", "fileId-2")
     .metadata(Map.of("key", "value"))
     .build();
 
-var response = client.createMessage(request);
+var response = client.createMessage("thread-id", request);
 System.out.println(response);
 ```
 
@@ -339,12 +336,10 @@ var lastImageFileId = message.lastMessageContentImage();
 
 ```java
 var request = new ModifyMessageRequestBuilder()
-    .threadId("thread-id")
-    .messageId("message-id")
     .metadata(Map.of("key", "value"))
     .build();
 
-var response = client.modifyMessage(request);
+var response = client.modifyMessage("thread-id", "message-id", request);
 System.out.println(response);
 ```
 
@@ -354,12 +349,11 @@ System.out.println(response);
 
 ```java
 var request = new CreateRunRequestBuilder()
-    .threadId("thread-id")
     .assistantId("assistant-id")
     .additionalInstructions("additional instructions")
     .build();
 
-var response = client.createRun(request);
+var response = client.createRun("thread-id", request);
 System.out.println(response);
 ```
 
@@ -388,12 +382,10 @@ System.out.println(run);
 
 ```java
 var request = new ModifyRunRequestBuilder()
-    .threadId("thread-id")
-    .runId("run-id")
     .metadata(Map.of("key", "value"))
     .build();
 
-var response = client.modifyRun(request);
+var response = client.modifyRun("thread-id", "run-id", request);
 System.out.println(response);
 ```
 
@@ -429,11 +421,9 @@ The response is an object of type [`RunStep`](src/main/java/br/com/rcaneppele/op
 
 ```java
 var request = new SubmitToolOutputsToRunRequestBuilder()
-        .threadId("thread-id")
-        .runId("run-id")
         .toolOutput("tool-call-id", "output")
         .build();
 
-var response = client.submitToolOutputsToRun(request);
+var response = client.submitToolOutputsToRun("thread-id", "run-id", request);
 System.out.println(response);
 ```

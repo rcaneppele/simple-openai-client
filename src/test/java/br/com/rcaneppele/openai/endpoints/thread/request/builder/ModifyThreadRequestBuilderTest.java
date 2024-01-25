@@ -1,6 +1,5 @@
 package br.com.rcaneppele.openai.endpoints.thread.request.builder;
 
-import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import br.com.rcaneppele.openai.endpoints.thread.request.ModifyThreadRequest;
 import org.junit.jupiter.api.Test;
@@ -24,16 +23,6 @@ class ModifyThreadRequestBuilderTest {
     @Mock
     private MetadataValidator metadataValidator;
 
-    @Mock
-    private IdValidator idValidator;
-
-    @Test
-    void shouldCallThreadIdValidator() {
-        var threadId = "thread-id";
-        builder.threadId(threadId);
-        verify(idValidator).validateThreadId(threadId);
-    }
-
     @Test
     void shouldCallMetadataValidator() {
         var metadata = Map.of("key", "value");
@@ -47,11 +36,10 @@ class ModifyThreadRequestBuilderTest {
         var metadata = Map.of("key1", "value-2", "key-2", "value-2");
 
         var actual = builder
-                .threadId(threadId)
                 .metadata(metadata)
                 .build();
 
-        var expected = new ModifyThreadRequest(threadId, metadata);
+        var expected = new ModifyThreadRequest(metadata);
 
         assertNotNull(actual);
         assertEquals(expected, actual);

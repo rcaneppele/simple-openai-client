@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class CreateMessageRequestBuilder {
 
-    private String threadId;
     private String role = "user"; // Currently only user is supported
     private String content;
     private Set<String> fileIds = new HashSet<>();
@@ -18,12 +17,6 @@ public class CreateMessageRequestBuilder {
 
     private IdValidator idValidator = new IdValidator();
     private MetadataValidator metadataValidator = new MetadataValidator();
-
-    public CreateMessageRequestBuilder threadId(String threadId) {
-        this.validateThreadId(threadId);
-        this.threadId = threadId;
-        return this;
-    }
 
     public CreateMessageRequestBuilder content(String content) {
         this.validateContent(content);
@@ -49,7 +42,6 @@ public class CreateMessageRequestBuilder {
         validateRequiredFields();
 
         return new CreateMessageRequest(
-                this.threadId,
                 this.role,
                 this.content,
                 this.fileIds,
@@ -58,12 +50,7 @@ public class CreateMessageRequestBuilder {
     }
 
     private void validateRequiredFields() {
-        validateThreadId(this.threadId);
         validateContent(this.content);
-    }
-
-    private void validateThreadId(String threadId) {
-        this.idValidator.validateThreadId(threadId);
     }
 
     private void validateContent(String content) {

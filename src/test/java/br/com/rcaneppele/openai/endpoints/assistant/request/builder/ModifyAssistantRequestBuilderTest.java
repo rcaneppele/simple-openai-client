@@ -1,7 +1,6 @@
 package br.com.rcaneppele.openai.endpoints.assistant.request.builder;
 
 import br.com.rcaneppele.openai.common.OpenAIModel;
-import br.com.rcaneppele.openai.common.validation.IdValidator;
 import br.com.rcaneppele.openai.common.validation.MetadataValidator;
 import br.com.rcaneppele.openai.endpoints.assistant.request.ModifyAssistantRequest;
 import br.com.rcaneppele.openai.endpoints.assistant.tools.Function;
@@ -19,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,16 +28,6 @@ class ModifyAssistantRequestBuilderTest {
 
     @Mock
     private MetadataValidator metadataValidator;
-
-    @Mock
-    private IdValidator idValidator;
-
-    @Test
-    void shouldCallAssistantIdValidator() {
-        var id = "assistant-id";
-        builder.assistantId(id);
-        verify(idValidator).validateAssistantId(id);
-    }
 
     @Test
     void shouldNotAddNullFunction() {
@@ -86,7 +74,7 @@ class ModifyAssistantRequestBuilderTest {
     @Test
     public void shouldAddRetrieval() {
         builder.retrieval();
-        var request = builder.assistantId("asst_123").build();
+        var request = builder.build();
         assertEquals(1, request.tools().size());
         var retrieval = new Tool(ToolType.RETRIEVAL.getName(), null);
         assertTrue(request.tools().contains(retrieval));
@@ -95,7 +83,7 @@ class ModifyAssistantRequestBuilderTest {
     @Test
     public void shouldAddCodeInterpreter() {
         builder.codeInterpreter();
-        var request = builder.assistantId("asst_123").build();
+        var request = builder.build();
         assertEquals(1, request.tools().size());
         var retrieval = new Tool(ToolType.CODE_INTERPRETER.getName(), null);
         assertTrue(request.tools().contains(retrieval));
@@ -120,14 +108,7 @@ class ModifyAssistantRequestBuilderTest {
     }
 
     @Test
-    void shouldCallValidatorsOnBuild() {
-        builder.build();
-        verify(idValidator).validateAssistantId(any());
-    }
-
-    @Test
     void shouldBuildWithAllParameters() {
-        var assistantId = "asst_123";
         var name = "The name";
         var description = "The description";
         var instructions = "The instructions";
@@ -136,7 +117,6 @@ class ModifyAssistantRequestBuilderTest {
         var metadata = Map.of("key1", "value-2", "key-2", "value-2");
 
         var request = (ModifyAssistantRequest) builder
-                .assistantId(assistantId)
                 .model(OpenAIModel.GPT_3_5_TURBO)
                 .name(name)
                 .description(description)
@@ -148,7 +128,6 @@ class ModifyAssistantRequestBuilderTest {
                 .metadata(metadata)
                 .build();
 
-        assertEquals(assistantId, request.assistantId());
         assertEquals(OpenAIModel.GPT_3_5_TURBO, request.model());
         assertEquals(name, request.name());
         assertEquals(description, request.description());

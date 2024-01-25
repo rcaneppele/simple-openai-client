@@ -81,8 +81,7 @@ public class OpenAIClient {
         return sender.sendRequest(request);
     }
 
-    public AssistantFile createAssistantFile(CreateAssistantFileRequest request) {
-        var assistantId = request.assistantId();
+    public AssistantFile createAssistantFile(String assistantId, CreateAssistantFileRequest request) {
         idValidator.validateAssistantId(assistantId);
         var sender = new CreateAssistantFileRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
@@ -121,8 +120,7 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Assistant modifyAssistant(ModifyAssistantRequest request) {
-        var assistantId = request.assistantId();
+    public Assistant modifyAssistant(String assistantId, ModifyAssistantRequest request) {
         idValidator.validateAssistantId(assistantId);
         var sender = new ModifyAssistantRequestSender(OPENAI_API_URL, timeout, apiKey, assistantId);
         return sender.sendRequest(request);
@@ -158,8 +156,7 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Thread modifyThread(ModifyThreadRequest request) {
-        var threadId = request.threadId();
+    public Thread modifyThread(String threadId, ModifyThreadRequest request) {
         idValidator.validateThreadId(threadId);
         var sender = new ModifyThreadRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(request);
@@ -171,8 +168,7 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Message createMessage(CreateMessageRequest request) {
-        var threadId = request.threadId();
+    public Message createMessage(String threadId, CreateMessageRequest request) {
         idValidator.validateThreadId(threadId);
         var sender = new CreateMessageRequestSender(OPENAI_API_URL, timeout, apiKey, threadId);
         return sender.sendRequest(request);
@@ -214,17 +210,14 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Message modifyMessage(ModifyMessageRequest request) {
-        var threadId = request.threadId();
-        var messageId = request.messageId();
+    public Message modifyMessage(String threadId, String messageId, ModifyMessageRequest request) {
         idValidator.validateThreadId(threadId);
         idValidator.validateMessageId(messageId);
         var sender = new ModifyMessageRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, messageId);
         return sender.sendRequest(request);
     }
 
-    public Run createRun(CreateRunRequest request) {
-        var threadId = request.threadId();
+    public Run createRun(String threadId, CreateRunRequest request) {
         var assistantId = request.assistantId();
         idValidator.validateThreadId(threadId);
         idValidator.validateAssistantId(assistantId);
@@ -249,9 +242,7 @@ public class OpenAIClient {
         return sender.sendRequest(null);
     }
 
-    public Run modifyRun(ModifyRunRequest request) {
-        var threadId = request.threadId();
-        var runId = request.runId();
+    public Run modifyRun(String threadId, String runId, ModifyRunRequest request) {
         idValidator.validateThreadId(threadId);
         idValidator.validateRunId(runId);
         var sender = new ModifyRunRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, runId);
@@ -290,9 +281,7 @@ public class OpenAIClient {
         return sender.sendRequest(request);
     }
 
-    public Run submitToolOutputsToRun(SubmitToolOutputsToRunRequest request) {
-        var threadId = request.threadId();
-        var runId = request.runId();
+    public Run submitToolOutputsToRun(String threadId, String runId, SubmitToolOutputsToRunRequest request) {
         idValidator.validateThreadId(threadId);
         idValidator.validateRunId(runId);
         var sender = new SubmitToolOutputsToRunRequestSender(OPENAI_API_URL, timeout, apiKey, threadId, runId);

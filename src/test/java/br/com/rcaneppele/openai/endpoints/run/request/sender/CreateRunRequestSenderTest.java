@@ -74,7 +74,6 @@ class CreateRunRequestSenderTest extends BaseRequestSenderTest {
     @Test
     public void shouldSendRequest() {
         var request = builder
-                .threadId(THREAD_ID)
                 .assistantId(ASSISTANT_ID)
                 .build();
 
