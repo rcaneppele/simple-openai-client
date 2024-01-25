@@ -149,7 +149,7 @@ var client = new OpenAIClient(apiKey);
 #### Create Assistant
 
 ```java
-var request = new CreateAssistantRequestBuilder()
+var request = (CreateAssistantRequest) new CreateAssistantRequestBuilder()
     .model(OpenAIModel.GPT_4_1106_PREVIEW)
     .name("Assistant name")
     .description("Assistant description")
@@ -172,7 +172,7 @@ If you need to create an Assistant with [Function Calling](https://platform.open
 // The third parameter is a Map<String, Object> representing the function parameters
 var myFunction = new Function("function-name", "function description", Map.of("name", "string", "age", "number"));
 
-var request = new CreateAssistantRequestBuilder()
+var request = (CreateAssistantRequest) new CreateAssistantRequestBuilder()
     .model(OpenAIModel.GPT_4_1106_PREVIEW)
     .name("Assistant name")
     .description("Assistant description")
@@ -180,58 +180,6 @@ var request = new CreateAssistantRequestBuilder()
     .function(myFunction)
     .build();
 ```
-
-#### List Assistants
-
-```java
-var response = client.listAssistants();
-System.out.println(response);
-```
-
-The response is an object of type [`ListOfAssistants`](src/main/java/br/com/rcaneppele/openai/endpoints/assistant/response/ListOfAssistants.java).
-
-Optionally, you can change the default pagination/filter parameters:
-
-```java
-var parameters = new QueryParametersBuilder()
-    .limit(5)
-    .after("after-assistant-id")
-    .before("before-assistant-id")
-    .ascOrder()
-    .build();
-
-var response = client.listAssistants(parameters);
-System.out.println(response);
-```
-
-#### Retrieve Assistant
-
-```java
-var assistant = client.retrieveAssistant("assistant_id");
-System.out.println(assistant);
-```
-
-#### Modify Assistant
-
-```java
-var request = new ModifyAssistantRequestBuilder()
-    .name("New Assistant name")
-    .description("New Assistant description")
-    .instructions("New Assistant instructions")
-    .build();
-
-var response = client.modifyAssistant("assistant_id", request);
-System.out.println(response);
-```
-
-#### Delete Assistant
-
-```java
-var status = client.deleteAssistant("assistant_id");
-System.out.println(status);
-```
-
-The response is an object of type [`DeletionStatus`](src/main/java/br/com/rcaneppele/openai/common/response/DeletionStatus.java).
 
 ### Threads
 
@@ -261,33 +209,6 @@ var response = client.createThread(request);
 System.out.println(response);
 ```
 
-#### Retrieve Thread
-
-```java
-var thread = client.retrieveThread("thread_id");
-System.out.println(thread);
-```
-
-#### Modify Thread
-
-```java
-var metadata = Map.of("metadata-key", "metadata-value");
-
-var request = new ModifyThreadRequestBuilder()
-    .metadata(metadata)
-    .build();
-
-var response = client.modifyThread("thread_id", request);
-System.out.println(response);
-```
-
-#### Delete Thread
-
-```java
-var status = client.deleteThread("thread_id");
-System.out.println(status);
-```
-
 ### Messages
 
 #### Create Message
@@ -299,49 +220,11 @@ var request = new CreateMessageRequestBuilder()
     .metadata(Map.of("key", "value"))
     .build();
 
-var response = client.createMessage("thread-id", request);
+var response = client.createMessage("thread_id", request);
 System.out.println(response);
 ```
 
 The response is an object of type [`Message`](src/main/java/br/com/rcaneppele/openai/endpoints/message/response/Message.java).
-
-#### List Messages
-
-```java
-var response = client.listMessages("thread-id");
-System.out.println(response);
-
-// You can use the QueryParameters object to filter/limit the result:
-response = client.listMessages("thread-id", queryParameters);
-```
-
-The response is an object of type [`ListOfMessages`](src/main/java/br/com/rcaneppele/openai/endpoints/message/response/ListOfMessages.java).
-
-#### Retrieve Message
-
-```java
-var message = client.retrieveMessage("thread-id", "message-id");
-System.out.println(message);
-
-// Text Message
-var firstMessage = message.firstMessageContentText();
-var lastMessage = message.lastMessageContentText();
-
-// Image Message
-var firstImageFileId = message.firstMessageContentImage();
-var lastImageFileId = message.lastMessageContentImage();
-```
-
-#### Modify Message
-
-```java
-var request = new ModifyMessageRequestBuilder()
-    .metadata(Map.of("key", "value"))
-    .build();
-
-var response = client.modifyMessage("thread-id", "message-id", request);
-System.out.println(response);
-```
 
 ### Runs
 
@@ -353,77 +236,25 @@ var request = new CreateRunRequestBuilder()
     .additionalInstructions("additional instructions")
     .build();
 
-var response = client.createRun("thread-id", request);
+var response = client.createRun("thread_id", request);
 System.out.println(response);
 ```
 
 The response is an object of type [`Run`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/Run.java).
 
-#### List Runs
-
-```java
-var response = client.listRuns("thread-id");
-System.out.println(response);
-
-// You can use the QueryParameters object to filter/limit the result:
-response = client.listRuns("thread-id", queryParameters);
-```
-
-The response is an object of type [`ListOfRuns`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/ListOfRuns.java).
-
-#### Retrieve Run
-
-```java
-var run = client.retrieveRun("thread-id", "run-id");
-System.out.println(run);
-```
-
-#### Modify Run
-
-```java
-var request = new ModifyRunRequestBuilder()
-    .metadata(Map.of("key", "value"))
-    .build();
-
-var response = client.modifyRun("thread-id", "run-id", request);
-System.out.println(response);
-```
-
-#### Cancel Run
-
-```java
-var run = client.cancelRun("thread-id", "run-id");
-System.out.println(run);
-```
-
-#### List Run Steps
-
-```java
-var response = client.listRunSteps("thread-id", "run-id");
-System.out.println(response);
-
-// You can use the QueryParameters object to filter/limit the result:
-response = client.listRunSteps("thread-id", "run-id", queryParameters);
-```
-
-The response is an object of type [`ListOfRunSteps`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/ListOfRunSteps.java).
-
-#### Retrieve Run Step
-
-```java
-var runStep = client.retrieveRunStep("thread-id", "run-id", "step-id");
-System.out.println(runStep);
-```
-
-The response is an object of type [`RunStep`](src/main/java/br/com/rcaneppele/openai/endpoints/run/response/RunStep.java).
-
 #### Submit Tool Outputs to Run
 
 ```java
 var request = new SubmitToolOutputsToRunRequestBuilder()
-        .toolOutput("tool-call-id", "output")
+        .toolOutput("tool_call_id", "output")
         .build();
 
-var response = client.submitToolOutputsToRun("thread-id", "run-id", request);
+var response = client.submitToolOutputsToRun("thread_id", "run_id", request);
 System.out.println(response);
 ```
+
+## Examples Repository
+
+For detailed usage scenarios and code snippets, refer to the [Simple OpenAI Client Examples](https://github.com/rcaneppele/simple-openai-client-examples) repository. The examples are organized by endpoint, making it easy to understand and implement the library in your projects.
+
+Feel free to experiment with these examples to accelerate your integration process and unlock the full potential of the OpenAI API in your Java applications.
