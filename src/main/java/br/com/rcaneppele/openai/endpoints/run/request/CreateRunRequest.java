@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 public record CreateRunRequest(
+        @JsonProperty("thread_id")
         String threadId,
+        @JsonProperty("assistant_id")
         String assistantId,
         OpenAIModel model,
         String instructions,

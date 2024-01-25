@@ -1,9 +1,6 @@
 package br.com.rcaneppele.openai.error;
 
-import br.com.rcaneppele.openai.error.exception.APIKeyException;
-import br.com.rcaneppele.openai.error.exception.BadRequestException;
-import br.com.rcaneppele.openai.error.exception.RateLimitException;
-import br.com.rcaneppele.openai.error.exception.ServiceUnavailableException;
+import br.com.rcaneppele.openai.error.exception.*;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,8 +75,16 @@ class APIErrorHandlerTest {
         assertEquals("Service Unavailable error: error message", exception.getMessage());
     }
 
+    @Test
+    void shouldHandleNotFoundError() {
+        given(response.code()).willReturn(404);
+
+        var exception = assertThrows(NotFoundException.class, () -> handler.handleError(response));
+        assertEquals("Not Found error: error message", exception.getMessage());
+    }
+
     @ParameterizedTest(name = "Testing handle for code {0}")
-    @ValueSource(ints = {404, 405, 406, 408, 415, 422, 500, 501, 502, 504, 522})
+    @ValueSource(ints = {405, 406, 408, 415, 422, 500, 501, 502, 504, 522})
     void shouldHandleUnknownError(int code) {
         given(response.code()).willReturn(code);
 

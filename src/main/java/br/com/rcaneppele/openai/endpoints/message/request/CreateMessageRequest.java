@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public record CreateMessageRequest(
+        @JsonProperty("thread_id")
         String threadId,
         String role,
         String content,
