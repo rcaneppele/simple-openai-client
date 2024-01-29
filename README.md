@@ -258,3 +258,7 @@ System.out.println(response);
 For detailed usage scenarios and code snippets, refer to the [Simple OpenAI Client Examples](https://github.com/rcaneppele/simple-openai-client-examples) repository. The examples are organized by endpoint, making it easy to understand and implement the library in your projects.
 
 Feel free to experiment with these examples to accelerate your integration process and unlock the full potential of the OpenAI API in your Java applications.
+
+## Contributing
+
+We welcome contributions from the community! Whether you want to report a bug or contribute code, your help is greatly appreciated. Please take a moment to review our [contribution guidelines](docs/CONTRIBUTING.md) before getting started.
